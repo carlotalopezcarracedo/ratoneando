@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="126" height="144" viewBox="0 0 126 144">
+  <!-- Dueño · cabeza 3/4 mirando a la IZQUIERDA. Sin ojos ni cejas (capas dinámicas). -->
+  <defs>
+    <linearGradient id="ohSkin" x1="0.15" y1="0" x2="0.9" y2="1">
+      <stop offset="0" stop-color="#f0c39c"/>
+      <stop offset="0.55" stop-color="#dfa87d"/>
+      <stop offset="1" stop-color="#c08b64"/>
+    </linearGradient>
+    <linearGradient id="ohHair" x1="0.2" y1="0" x2="0.8" y2="1">
+      <stop offset="0" stop-color="#3b322d"/>
+      <stop offset="0.6" stop-color="#241d1a"/>
+      <stop offset="1" stop-color="#161110"/>
+    </linearGradient>
+    <linearGradient id="ohBeard" x1="0.3" y1="0" x2="0.7" y2="1">
+      <stop offset="0" stop-color="#332a25"/>
+      <stop offset="1" stop-color="#1c1614"/>
+    </linearGradient>
+  </defs>
+
+  <!-- cuello -->
+  <path d="M62 104 L94 104 L96 138 L60 138 Z" fill="#c78d66" stroke="#7d4f36" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M62 104 L94 104 L94 116 C80 122 68 120 62 114Z" fill="#a6714f" opacity="0.6"/>
+
+  <!-- cara -->
+  <path d="M30 62 C30 32 50 14 76 15 C100 16 112 34 112 60 C112 84 104 106 84 114 C64 122 44 112 36 92 C33 86 28 84 24 78 C20 72 22 66 30 62Z"
+        fill="url(#ohSkin)" stroke="#7d4f36" stroke-width="4" stroke-linejoin="round"/>
+
+  <!-- oreja -->
+  <path d="M110 62 C120 60 124 70 120 78 C117 85 110 86 108 82Z" fill="#dda179" stroke="#7d4f36" stroke-width="3.5" stroke-linejoin="round"/>
+
+  <!-- nariz -->
+  <path d="M28 66 C24 72 22 78 26 82 C29 85 34 85 38 83" fill="none" stroke="#a56c4c" stroke-width="3.6" stroke-linecap="round"/>
+
+  <!-- barba oscura -->
+  <path d="M31 84 C34 100 46 114 66 116 C88 118 102 104 106 84 C108 96 106 112 96 122 C84 134 60 134 48 124 C36 114 30 100 31 84Z"
+        fill="url(#ohBeard)"/>
+  <path d="M31 84 C36 92 44 96 52 96 C50 106 52 114 58 120 C46 118 34 104 31 84Z" fill="#241d1a"/>
+  <path d="M40 92 C56 102 84 100 100 88 C98 106 84 120 66 119 C50 118 42 106 40 92Z"
+        fill="url(#ohBeard)" stroke="#141010" stroke-width="3" stroke-linejoin="round"/>
+  <!-- bigote -->
+  <path d="M32 80 C44 74 58 74 68 78 C58 84 42 86 32 80Z" fill="#241d1a"/>
+
+  <!-- pelo corto oscuro -->
+  <path d="M28 58 C26 30 48 10 76 11 C104 12 116 32 114 58 C110 40 96 28 76 27 C56 26 38 36 28 58Z"
+        fill="url(#ohHair)" stroke="#141010" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M28 58 C32 44 40 34 52 30 C44 40 40 48 40 58Z" fill="#141010" opacity="0.7"/>
+  <path d="M52 18 C70 12 92 16 104 30" fill="none" stroke="#4a3f38" stroke-width="4" stroke-linecap="round" opacity="0.7"/>
+</svg>

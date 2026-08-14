@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="182" height="98" viewBox="0 0 182 98">
+  <!-- Bici urbana (sin ruedas: se montan aparte en 34,62 y 146,62 · r30). Mira a la DERECHA. -->
+  <defs>
+    <linearGradient id="bcF" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7fc4c9"/>
+      <stop offset="1" stop-color="#3f8b93"/>
+    </linearGradient>
+  </defs>
+  <!-- guardabarros -->
+  <path d="M8 56 A30 30 0 0 1 60 56" fill="none" stroke="#4a4038" stroke-width="6" stroke-linecap="round"/>
+  <path d="M120 56 A30 30 0 0 1 172 56" fill="none" stroke="#4a4038" stroke-width="6" stroke-linecap="round"/>
+  <!-- cuadro -->
+  <g stroke="url(#bcF)" stroke-width="9" stroke-linecap="round" fill="none">
+    <path d="M34 62 L74 62"/>
+    <path d="M34 62 L62 30"/>
+    <path d="M62 30 L74 62"/>
+    <path d="M62 30 L120 30"/>
+    <path d="M74 62 L124 30"/>
+    <path d="M124 30 L146 62"/>
+  </g>
+  <g stroke="#2b5f66" stroke-width="2.5" fill="none" opacity="0.55">
+    <path d="M36 59 L72 59"/><path d="M64 33 L118 33"/>
+  </g>
+  <!-- horquilla -->
+  <path d="M124 30 L146 62" stroke="#c8c3ba" stroke-width="5" stroke-linecap="round"/>
+  <!-- manillar alto curvado -->
+  <path d="M124 30 L126 16" stroke="#54504a" stroke-width="6" stroke-linecap="round"/>
+  <path d="M126 16 C114 10 106 14 104 22" fill="none" stroke="#54504a" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="104" cy="23" r="4.5" fill="#241d1a"/>
+  <!-- sillín -->
+  <path d="M62 30 L60 18" stroke="#54504a" stroke-width="6" stroke-linecap="round"/>
+  <path d="M46 18 C46 12 74 12 74 18 C74 23 46 24 46 18Z" fill="#3a2d24" stroke="#241b15" stroke-width="3"/>
+  <!-- cesta -->
+  <path d="M132 20 L162 20 L158 44 L136 44Z" fill="#c8a06a" stroke="#7d5a34" stroke-width="3.5" stroke-linejoin="round"/>
+  <g stroke="#7d5a34" stroke-width="2" opacity="0.7">
+    <path d="M138 20 L140 44"/><path d="M148 20 L148 44"/><path d="M156 20 L152 44"/>
+  </g>
+  <!-- plato + biela -->
+  <circle cx="74" cy="62" r="12" fill="none" stroke="#8e8a82" stroke-width="4"/>
+  <circle cx="74" cy="62" r="4" fill="#5c5852"/>
+</svg>

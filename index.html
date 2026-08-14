@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#1b1412" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <meta
+      name="description"
+      content="RATÓN: MISIONES SECRETAS — Un perro. Tres obsesiones. Cero autocontrol."
+    />
+    <title>RATÓN · MISIONES SECRETAS</title>
+
+    <!--
+      Fuentes con licencia libre (SIL OFL). Se cargan de forma NO bloqueante
+      (`media="print"` + swap al terminar): si Google Fonts va lento o está
+      bloqueado, el juego arranca igual con las fuentes de sistema del fallback.
+    -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@400;700;900&display=swap"
+      rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
+    />
+  </head>
+  <body>
+    <div id="game-root" aria-label="Videojuego Ratón: Misiones Secretas"></div>
+
+    <div id="boot-splash">
+      <div class="boot-ears" aria-hidden="true"><span></span><span></span></div>
+      <p class="boot-title">RATÓN</p>
+      <p class="boot-sub">preparando comportamiento sospechoso…</p>
+    </div>
+
+    <noscript>
+      <p style="color: #f3e3c8; font-family: sans-serif; padding: 24px">
+        Este juego necesita JavaScript activado. Ratón lo entiende, pero no lo aprueba.
+      </p>
+    </noscript>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

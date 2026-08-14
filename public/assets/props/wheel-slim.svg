@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="68" height="68" viewBox="0 0 68 68">
+  <!-- Rueda fina (carretera). Centro 34,34 · radio 30. -->
+  <circle cx="34" cy="34" r="30" fill="none" stroke="#1d1a18" stroke-width="5"/>
+  <circle cx="34" cy="34" r="26" fill="none" stroke="#d7d2c7" stroke-width="4"/>
+  <g stroke="#e6e1d6" stroke-width="1.6" stroke-linecap="round" opacity="0.9">
+    <path d="M34 9 L34 59"/><path d="M9 34 L59 34"/>
+    <path d="M16 16 L52 52"/><path d="M52 16 L16 52"/>
+    <path d="M22 10 L46 58"/><path d="M46 10 L22 58"/>
+    <path d="M10 22 L58 46"/><path d="M10 46 L58 22"/>
+  </g>
+  <circle cx="34" cy="34" r="4.5" fill="#9a958c" stroke="#4b4741" stroke-width="2"/>
+</svg>

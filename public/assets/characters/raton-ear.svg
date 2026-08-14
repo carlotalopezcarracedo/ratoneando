@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="92" height="132" viewBox="0 0 92 132">
+  <!-- Ratón · oreja gigante triangular. Pivote en la base (abajo-centro). -->
+  <defs>
+    <linearGradient id="reFur" x1="0.2" y1="0" x2="0.8" y2="1">
+      <stop offset="0" stop-color="#3a302c"/>
+      <stop offset="0.5" stop-color="#231c19"/>
+      <stop offset="1" stop-color="#120e0d"/>
+    </linearGradient>
+    <linearGradient id="reIn" x1="0.3" y1="0" x2="0.7" y2="1">
+      <stop offset="0" stop-color="#8b6260"/>
+      <stop offset="0.6" stop-color="#664643"/>
+      <stop offset="1" stop-color="#412b2b"/>
+    </linearGradient>
+  </defs>
+
+  <path d="M46 128 C16 118 6 78 12 42 C16 16 32 4 47 10 C64 17 80 52 82 88 C83 112 70 132 46 128Z"
+        fill="url(#reFur)" stroke="#100c0b" stroke-width="5" stroke-linejoin="round"/>
+
+  <path d="M46 112 C28 104 22 74 26 46 C29 26 39 20 47 26 C58 34 68 62 68 88 C68 104 60 118 46 112Z"
+        fill="url(#reIn)"/>
+
+  <!-- pelillos internos -->
+  <g stroke="#a9827c" stroke-width="2" stroke-linecap="round" opacity="0.5">
+    <path d="M36 60 l8 6"/><path d="M40 76 l9 5"/><path d="M44 92 l8 5"/>
+  </g>
+
+  <!-- brillo del borde -->
+  <path d="M47 10 C60 17 72 40 78 66" fill="none" stroke="#5e514b" stroke-width="4" stroke-linecap="round" opacity="0.65"/>
+</svg>

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="46" height="118" viewBox="0 0 46 118">
+  <!-- Ratón · pata delantera con calcetín blanco. Pivote arriba (hombro). -->
+  <defs>
+    <linearGradient id="rlfFur" x1="0" y1="0" x2="1" y2="0.4">
+      <stop offset="0" stop-color="#372e2a"/>
+      <stop offset="0.55" stop-color="#231c19"/>
+      <stop offset="1" stop-color="#130f0e"/>
+    </linearGradient>
+    <linearGradient id="rlfSock" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7efe1"/>
+      <stop offset="1" stop-color="#d5c4aa"/>
+    </linearGradient>
+  </defs>
+
+  <path d="M12 10 C12 4 32 4 33 12 C35 30 33 52 31 74 C30 86 31 96 32 104 C33 112 12 112 12 104 C12 92 11 78 11 62 C11 44 11 26 12 10Z"
+        fill="url(#rlfFur)" stroke="#100c0b" stroke-width="4.5" stroke-linejoin="round"/>
+
+  <!-- calcetín / pata blanca -->
+  <path d="M11 82 C18 78 28 78 32 82 C33 92 33 100 33 106 C33 113 11 113 11 106 C11 98 11 90 11 82Z"
+        fill="url(#rlfSock)" stroke="#100c0b" stroke-width="4.5" stroke-linejoin="round"/>
+  <g stroke="#b8a68c" stroke-width="2.4" stroke-linecap="round">
+    <path d="M17 100 l0 9"/><path d="M23 99 l0 10"/><path d="M29 100 l0 9"/>
+  </g>
+  <path d="M15 16 C15 40 14 62 15 84" fill="none" stroke="#544741" stroke-width="3" stroke-linecap="round" opacity="0.55"/>
+</svg>

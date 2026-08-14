@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="98" height="104" viewBox="0 0 98 104">
+  <!-- Ciclista (torso + cabeza + brazo). Mira a la DERECHA. Cadera ≈ (30, 96). -->
+  <defs>
+    <linearGradient id="cyJ" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f2f0ea"/>
+      <stop offset="1" stop-color="#cfc9bd"/>
+    </linearGradient>
+  </defs>
+  <!-- brazo hacia el manillar -->
+  <path d="M56 48 C68 56 78 66 84 74" fill="none" stroke="#e2a87e" stroke-width="11" stroke-linecap="round"/>
+  <path d="M56 48 C64 53 70 58 74 63" fill="none" stroke="url(#cyJ)" stroke-width="13" stroke-linecap="round"/>
+  <!-- torso inclinado -->
+  <path d="M22 92 C16 72 22 50 40 38 C52 30 64 34 66 44 C68 56 58 66 44 74 C36 79 32 86 32 96Z"
+        fill="url(#cyJ)" stroke="#2f2c28" stroke-width="4.5" stroke-linejoin="round"/>
+  <path d="M28 84 C34 68 44 58 58 50" fill="none" stroke="#e0603f" stroke-width="6" stroke-linecap="round" opacity="0.85"/>
+  <!-- culotte -->
+  <path d="M18 92 C16 82 20 76 28 74 C36 72 42 78 42 88 C42 96 36 100 28 100 C22 100 19 97 18 92Z"
+        fill="#2b2a30" stroke="#171619" stroke-width="4" stroke-linejoin="round"/>
+  <!-- cuello + cabeza -->
+  <path d="M62 40 C68 34 76 32 82 34" fill="none" stroke="#e2a87e" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="82" cy="28" r="14" fill="#e6ac82" stroke="#8b5a3c" stroke-width="4"/>
+  <!-- casco -->
+  <path d="M67 26 C67 12 80 4 92 8 C102 12 104 22 100 30 L68 30Z" fill="#3e4f66" stroke="#242e3c" stroke-width="4" stroke-linejoin="round"/>
+  <g stroke="#5f7998" stroke-width="2.6" stroke-linecap="round">
+    <path d="M74 12 L74 28"/><path d="M84 7 L84 28"/><path d="M94 11 L94 28"/>
+  </g>
+  <path d="M100 26 L106 30" stroke="#242e3c" stroke-width="4" stroke-linecap="round"/>
+</svg>

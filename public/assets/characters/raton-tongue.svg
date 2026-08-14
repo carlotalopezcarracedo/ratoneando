@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="44" height="34" viewBox="0 0 44 34">
+  <!-- Ratón · lengua -->
+  <defs>
+    <linearGradient id="rtoG" x1="0.5" y1="0" x2="0.5" y2="1">
+      <stop offset="0" stop-color="#e88fa0"/>
+      <stop offset="1" stop-color="#bf5d73"/>
+    </linearGradient>
+  </defs>
+  <path d="M6 8 C6 3 38 3 38 9 C38 20 30 30 22 30 C14 30 6 20 6 8Z"
+        fill="url(#rtoG)" stroke="#8d3f52" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M22 8 L22 26" stroke="#a04c60" stroke-width="2.4" stroke-linecap="round" opacity="0.7"/>
+</svg>

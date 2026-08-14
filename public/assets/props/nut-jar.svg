@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="88" height="112" viewBox="0 0 88 112">
+  <!-- El objetivo: bote de nueces -->
+  <defs>
+    <linearGradient id="njGlass" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.42"/>
+      <stop offset="0.3" stop-color="#ffffff" stop-opacity="0.1"/>
+      <stop offset="0.75" stop-color="#8fb8c4" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0.32"/>
+    </linearGradient>
+    <linearGradient id="njLid" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e0603f"/>
+      <stop offset="1" stop-color="#a13a25"/>
+    </linearGradient>
+    <clipPath id="njIn">
+      <path d="M14 34 L74 34 L74 96 C74 104 66 108 44 108 C22 108 14 104 14 96Z"/>
+    </clipPath>
+  </defs>
+
+  <!-- cuerpo del bote -->
+  <path d="M14 34 C14 26 20 24 44 24 C68 24 74 26 74 34 L74 96 C74 105 64 109 44 109 C24 109 14 105 14 96Z"
+        fill="#cfe0e2" fill-opacity="0.35" stroke="#7d939a" stroke-width="3.4" stroke-linejoin="round"/>
+
+  <!-- nueces dentro -->
+  <g clip-path="url(#njIn)">
+    <g fill="#b3803f" stroke="#6d4620" stroke-width="2.4">
+      <ellipse cx="30" cy="92" rx="15" ry="13"/>
+      <ellipse cx="58" cy="94" rx="15" ry="13"/>
+      <ellipse cx="44" cy="74" rx="15" ry="13"/>
+      <ellipse cx="24" cy="68" rx="13" ry="11"/>
+      <ellipse cx="64" cy="70" rx="13" ry="11"/>
+      <ellipse cx="36" cy="54" rx="13" ry="11"/>
+      <ellipse cx="58" cy="52" rx="12" ry="10"/>
+    </g>
+    <g stroke="#7d5225" stroke-width="2" opacity="0.8">
+      <path d="M30 80 L30 105"/><path d="M58 82 L58 107"/><path d="M44 62 L44 87"/>
+      <path d="M36 44 L36 65"/><path d="M58 43 L58 62"/>
+    </g>
+  </g>
+
+  <!-- cristal -->
+  <path d="M14 34 L74 34 L74 96 C74 105 64 109 44 109 C24 109 14 105 14 96Z" fill="url(#njGlass)"/>
+  <path d="M22 40 C20 60 20 82 24 100" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round" opacity="0.4"/>
+
+  <!-- tapa -->
+  <rect x="8" y="6" width="72" height="22" rx="7" fill="url(#njLid)" stroke="#7c2b1a" stroke-width="3.4"/>
+  <g stroke="#c2503a" stroke-width="2.6" opacity="0.8">
+    <path d="M18 10 L18 24"/><path d="M30 10 L30 24"/><path d="M42 10 L42 24"/>
+    <path d="M54 10 L54 24"/><path d="M66 10 L66 24"/>
+  </g>
+  <rect x="8" y="24" width="72" height="6" rx="3" fill="#8a2f1d" opacity="0.7"/>
+</svg>

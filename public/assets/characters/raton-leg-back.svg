@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="80" height="118" viewBox="0 0 80 118">
+  <!-- Ratón · pata trasera (muslo + caña + pie). Pivote arriba-derecha (cadera). -->
+  <defs>
+    <linearGradient id="rlbFur" x1="0.2" y1="0" x2="0.8" y2="1">
+      <stop offset="0" stop-color="#3a312c"/>
+      <stop offset="0.5" stop-color="#241d1a"/>
+      <stop offset="1" stop-color="#130f0e"/>
+    </linearGradient>
+    <linearGradient id="rlbSock" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7efe1"/>
+      <stop offset="1" stop-color="#d5c4aa"/>
+    </linearGradient>
+  </defs>
+
+  <path d="M60 12 C74 22 76 48 66 66 C60 78 54 86 52 96 C51 106 52 112 52 112 C52 116 30 116 30 110 C30 96 34 84 40 72 C30 74 18 68 14 56 C8 38 20 14 38 8 C46 5 54 6 60 12Z"
+        fill="url(#rlbFur)" stroke="#100c0b" stroke-width="4.5" stroke-linejoin="round"/>
+
+  <path d="M31 92 C38 88 50 88 53 93 C53 100 53 106 53 110 C53 116 30 116 30 110 C30 104 30 98 31 92Z"
+        fill="url(#rlbSock)" stroke="#100c0b" stroke-width="4.5" stroke-linejoin="round"/>
+  <g stroke="#b8a68c" stroke-width="2.4" stroke-linecap="round">
+    <path d="M36 104 l0 9"/><path d="M42 103 l0 10"/><path d="M48 104 l0 9"/>
+  </g>
+
+  <path d="M56 18 C66 30 66 50 58 64" fill="none" stroke="#564943" stroke-width="4" stroke-linecap="round" opacity="0.55"/>
+</svg>

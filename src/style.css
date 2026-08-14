@@ -1,0 +1,128 @@
+:root {
+  --ink: #171110;
+  --warm: #2a201c;
+  --cream: #f3e3c8;
+  --font-title: 'Baloo 2', 'Trebuchet MS', 'Segoe UI', system-ui, sans-serif;
+  --font-ui: 'Nunito', 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 35%, #2a201c 0%, #150f0e 70%, #0d0908 100%);
+  font-family: var(--font-ui);
+  color: var(--cream);
+  overscroll-behavior: none;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#game-root {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#game-root canvas {
+  display: block;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.55);
+  border-radius: 4px;
+}
+
+/* ---- Splash mostrado hasta que Phaser toma el control ---- */
+#boot-splash {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: radial-gradient(circle at 50% 40%, #2a201c 0%, #140f0d 75%);
+  z-index: 10;
+  transition: opacity 420ms ease;
+  pointer-events: none;
+}
+
+#boot-splash.is-hidden {
+  opacity: 0;
+}
+
+.boot-ears {
+  display: flex;
+  gap: 34px;
+  margin-bottom: 10px;
+}
+
+.boot-ears span {
+  width: 26px;
+  height: 54px;
+  background: #241d1a;
+  border: 3px solid #100c0b;
+  border-radius: 60% 60% 24% 24% / 78% 78% 22% 22%;
+  animation: bootEar 1.5s ease-in-out infinite;
+}
+
+.boot-ears span:nth-child(1) {
+  transform: rotate(-16deg);
+}
+
+.boot-ears span:nth-child(2) {
+  transform: rotate(16deg);
+  animation-delay: 0.24s;
+}
+
+@keyframes bootEar {
+  0%,
+  100% {
+    transform: rotate(-16deg) translateY(0);
+  }
+  50% {
+    transform: rotate(-4deg) translateY(-5px);
+  }
+}
+
+.boot-ears span:nth-child(2) {
+  animation-name: bootEarRight;
+}
+
+@keyframes bootEarRight {
+  0%,
+  100% {
+    transform: rotate(16deg) translateY(0);
+  }
+  50% {
+    transform: rotate(4deg) translateY(-5px);
+  }
+}
+
+.boot-title {
+  font-family: var(--font-title);
+  font-weight: 800;
+  font-size: 44px;
+  letter-spacing: 10px;
+  margin: 0;
+  color: var(--cream);
+}
+
+.boot-sub {
+  margin: 0;
+  font-size: 14px;
+  letter-spacing: 1px;
+  opacity: 0.55;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .boot-ears span {
+    animation: none;
+  }
+}

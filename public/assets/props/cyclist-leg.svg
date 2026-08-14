@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="28" height="66" viewBox="0 0 28 66">
+  <!-- Pierna de ciclista. Pivote arriba (cadera). -->
+  <path d="M14 6 C22 6 24 14 22 24 C20 34 16 42 16 50 C16 56 6 56 6 50 C6 40 8 30 8 20 C8 12 9 6 14 6Z"
+        fill="#e2a87e" stroke="#8b5a3c" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M8 6 C16 4 22 8 22 16 C22 22 20 26 18 28 C12 28 8 24 8 18Z" fill="#2b2a30" stroke="#171619" stroke-width="3.5" stroke-linejoin="round"/>
+  <path d="M5 50 C5 46 17 46 17 50 C22 52 24 56 22 59 C18 63 8 63 5 60 C3 57 4 53 5 50Z"
+        fill="#33323a" stroke="#17161a" stroke-width="3.5" stroke-linejoin="round"/>
+</svg>

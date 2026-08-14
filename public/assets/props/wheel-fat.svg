@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="68" height="68" viewBox="0 0 68 68">
+  <!-- Rueda ancha (urbana / MTB). Centro 34,34 · radio 30. -->
+  <circle cx="34" cy="34" r="29" fill="none" stroke="#211d1b" stroke-width="9"/>
+  <circle cx="34" cy="34" r="23" fill="none" stroke="#b9b3a8" stroke-width="3.5"/>
+  <g stroke="#cfc9be" stroke-width="2.2" stroke-linecap="round">
+    <path d="M34 12 L34 56"/><path d="M12 34 L56 34"/>
+    <path d="M18 18 L50 50"/><path d="M50 18 L18 50"/>
+    <path d="M24 13 L44 55"/><path d="M44 13 L24 55"/>
+  </g>
+  <g stroke="#3a352f" stroke-width="3" stroke-linecap="round" opacity="0.85">
+    <path d="M34 5 L34 11"/><path d="M57 22 L52 25"/><path d="M57 46 L52 43"/>
+    <path d="M34 63 L34 57"/><path d="M11 46 L16 43"/><path d="M11 22 L16 25"/>
+  </g>
+  <circle cx="34" cy="34" r="5" fill="#8d8880" stroke="#4b4741" stroke-width="2.5"/>
+</svg>

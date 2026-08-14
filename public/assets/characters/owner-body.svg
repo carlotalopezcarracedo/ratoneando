@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="132" height="152" viewBox="0 0 132 152">
+  <!-- Dueño · torso con camiseta negra -->
+  <defs>
+    <linearGradient id="obShirt" x1="0.2" y1="0" x2="0.85" y2="1">
+      <stop offset="0" stop-color="#3a373d"/>
+      <stop offset="0.5" stop-color="#26242a"/>
+      <stop offset="1" stop-color="#17161a"/>
+    </linearGradient>
+  </defs>
+  <path d="M40 14 C52 4 84 4 96 14 C114 22 124 44 126 74 C128 106 124 132 120 146 L14 146 C10 128 6 100 8 72 C10 44 22 22 40 14Z"
+        fill="url(#obShirt)" stroke="#100f12" stroke-width="5" stroke-linejoin="round"/>
+  <!-- cuello de la camiseta -->
+  <path d="M44 14 C54 26 82 26 92 14 C86 30 50 30 44 14Z" fill="#0f0e11"/>
+  <!-- pliegues -->
+  <g stroke="#4a4750" stroke-width="3.5" stroke-linecap="round" opacity="0.55" fill="none">
+    <path d="M28 44 C24 70 24 102 28 132"/>
+    <path d="M104 46 C110 74 110 106 106 134"/>
+    <path d="M56 96 C68 104 82 102 90 94"/>
+  </g>
+  <path d="M14 146 L120 146 L118 152 L16 152Z" fill="#0f0e11" opacity="0.7"/>
+</svg>

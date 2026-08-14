@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="36" height="96" viewBox="0 0 36 96">
+  <!-- Dueño · brazo (manga negra + mano). Pivote arriba (hombro). -->
+  <defs>
+    <linearGradient id="oaSleeve" x1="0" y1="0" x2="1" y2="0.3">
+      <stop offset="0" stop-color="#37343a"/>
+      <stop offset="1" stop-color="#1a191d"/>
+    </linearGradient>
+  </defs>
+  <path d="M8 8 C8 2 30 2 30 9 C30 26 28 44 26 60 C25 68 25 74 25 78 C25 84 9 84 9 78 C9 62 8 40 8 8Z"
+        fill="url(#oaSleeve)" stroke="#100f12" stroke-width="4.5" stroke-linejoin="round"/>
+  <path d="M9 34 C15 32 24 32 28 34" fill="none" stroke="#0f0e11" stroke-width="4"/>
+  <path d="M10 74 C10 70 25 70 25 75 C26 84 24 92 17 92 C10 92 9 84 10 74Z"
+        fill="#e2a87e" stroke="#7d4f36" stroke-width="4" stroke-linejoin="round"/>
+</svg>

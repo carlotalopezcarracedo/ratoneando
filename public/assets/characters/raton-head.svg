@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="152" height="128" viewBox="0 0 152 128">
+  <!-- Ratón · cráneo + hocico, sin orejas ni ojos (se montan como capas aparte). Mira a la IZQUIERDA. -->
+  <defs>
+    <linearGradient id="rhFur" x1="0.25" y1="0" x2="0.7" y2="1">
+      <stop offset="0" stop-color="#40352f"/>
+      <stop offset="0.45" stop-color="#261e1b"/>
+      <stop offset="1" stop-color="#140f0e"/>
+    </linearGradient>
+    <radialGradient id="rhNose" cx="0.35" cy="0.3" r="0.8">
+      <stop offset="0" stop-color="#54494a"/>
+      <stop offset="0.45" stop-color="#1a1415"/>
+      <stop offset="1" stop-color="#0a0708"/>
+    </radialGradient>
+    <clipPath id="rhClip">
+      <path d="M144 56 C144 24 121 8 92 9 C66 10 46 26 39 46 C36 55 26 58 18 63 C8 69 8 80 18 85 C28 90 40 92 52 92 C58 108 76 120 98 119 C127 118 144 97 144 68Z"/>
+    </clipPath>
+  </defs>
+
+  <!-- cabeza + hocico -->
+  <path d="M144 56 C144 24 121 8 92 9 C66 10 46 26 39 46 C36 55 26 58 18 63 C8 69 8 80 18 85 C28 90 40 92 52 92 C58 108 76 120 98 119 C127 118 144 97 144 68Z"
+        fill="url(#rhFur)" stroke="#100c0b" stroke-width="5" stroke-linejoin="round"/>
+
+  <g clip-path="url(#rhClip)">
+    <!-- frente iluminada -->
+    <path d="M52 34 C68 14 100 6 124 18 C138 25 145 38 146 52 C132 30 106 18 82 22 C68 24 58 28 52 34Z"
+          fill="#5b4d47" opacity="0.55"/>
+    <!-- mejilla -->
+    <ellipse cx="106" cy="86" rx="30" ry="20" fill="#3b312d" opacity="0.55"/>
+    <!-- barbilla blanca -->
+    <path d="M34 84 C46 78 62 82 68 92 C74 102 68 112 56 110 C42 108 30 98 34 84Z" fill="#efe4d2" opacity="0.92"/>
+    <!-- sombra bajo el hocico -->
+    <path d="M14 86 C30 96 48 98 62 94 C50 104 26 102 14 92Z" fill="#0b0808" opacity="0.5"/>
+  </g>
+
+  <!-- nariz -->
+  <path d="M22 62 C32 58 42 62 43 70 C44 79 35 84 25 82 C14 80 10 66 22 62Z"
+        fill="url(#rhNose)" stroke="#0a0707" stroke-width="3" stroke-linejoin="round"/>
+  <ellipse cx="25" cy="65" rx="5" ry="3" fill="#8b8183" opacity="0.65"/>
+  <path d="M27 79 L27 88" stroke="#0a0707" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- boca -->
+  <path d="M27 88 C36 95 48 95 56 89" fill="none" stroke="#0a0707" stroke-width="3.4" stroke-linecap="round"/>
+
+  <!-- bigotes -->
+  <g stroke="#9e9086" stroke-width="1.8" stroke-linecap="round" opacity="0.55">
+    <path d="M40 68 C54 62 66 60 78 62"/>
+    <path d="M42 76 C56 74 68 74 80 77"/>
+  </g>
+</svg>
