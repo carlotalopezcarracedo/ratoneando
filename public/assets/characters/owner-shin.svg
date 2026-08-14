@@ -1,20 +1,29 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="40" height="136" viewBox="0 0 40 136">
-  <!-- El dueño · pantorrilla + zapatilla. Pivote arriba, en la rodilla. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="150" viewBox="0 0 48 150">
+  <!-- El dueño · pantorrilla + zapatilla negra de suela blanca. Pivote arriba (rodilla). -->
   <defs>
-    <linearGradient id="osJeans" x1="0" y1="0" x2="1" y2="0.3">
-      <stop offset="0" stop-color="#373c45"/>
-      <stop offset="0.55" stop-color="#22262d"/>
+    <linearGradient id="osJeans" x1="0" y1="0" x2="1" y2="0.25">
+      <stop offset="0" stop-color="#383d46"/>
+      <stop offset="0.5" stop-color="#23282f"/>
       <stop offset="1" stop-color="#14171c"/>
     </linearGradient>
+    <linearGradient id="osShoe" x1="0.2" y1="0" x2="0.8" y2="1">
+      <stop offset="0" stop-color="#33323a"/>
+      <stop offset="1" stop-color="#131217"/>
+    </linearGradient>
   </defs>
-  <path d="M8 6 C8 1 31 1 31 7 C31 30 29 62 28 88 C27 104 27 112 27 116 C27 121 9 121 9 116 C9 110 9 102 9 88 C8 62 7 30 8 6Z"
-        fill="url(#osJeans)" stroke="#101318" stroke-width="4.5" stroke-linejoin="round"/>
-  <path d="M12 14 C12 44 11 82 12 112" fill="none" stroke="#4b525d" stroke-width="3" stroke-linecap="round" opacity="0.45"/>
-  <path d="M9 106 C15 103 26 103 27 106" fill="none" stroke="#101318" stroke-width="3" opacity="0.55"/>
+  <path d="M9 6 C9 1 38 1 38 7 C37 32 34 66 32 92 C31 104 31 110 31 114
+           C31 119 11 119 11 114 C11 108 11 100 10 88 C9 62 8 26 9 6Z"
+        fill="url(#osJeans)" stroke="#101318" stroke-width="4.8" stroke-linejoin="round"/>
+  <path d="M14 14 C14 46 13 84 14 110" fill="none" stroke="#4c535e" stroke-width="3" stroke-linecap="round" opacity="0.4"/>
+  <path d="M11 104 C17 101 30 101 31 104" fill="none" stroke="#101318" stroke-width="3" opacity="0.6"/>
 
   <!-- zapatilla -->
-  <path d="M8 114 C8 110 28 110 28 114 C34 117 39 123 38 128 C37 133 27 134 18 134 C9 134 5 132 5 128 C5 122 7 117 8 114Z"
-        fill="#efe6d6" stroke="#8a7f70" stroke-width="3.5" stroke-linejoin="round"/>
-  <path d="M5 128 C13 131 30 131 38 128 C37 133 27 134 18 134 C9 134 5 132 5 128Z" fill="#c7bba7"/>
-  <path d="M11 116 C15 119 24 119 27 116" fill="none" stroke="#b3a795" stroke-width="2.4"/>
+  <path d="M11 112 C11 108 33 108 33 113 C40 116 44 124 43 130 L8 130 C5 124 8 116 11 112Z"
+        fill="url(#osShoe)" stroke="#0d0c10" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M6 129 L45 129 C46 137 44 141 38 141 L12 141 C6 141 4 137 6 129Z"
+        fill="#f2ebdd" stroke="#8c8375" stroke-width="3.4" stroke-linejoin="round"/>
+  <path d="M6 136 L45 136" stroke="#c9bfae" stroke-width="2.6"/>
+  <g stroke="#c9c3b6" stroke-width="2.4" stroke-linecap="round">
+    <path d="M16 116 L28 116"/><path d="M15 122 L29 122"/>
+  </g>
 </svg>

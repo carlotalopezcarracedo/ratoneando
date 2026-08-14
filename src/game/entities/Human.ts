@@ -6,16 +6,15 @@ import { clamp, damp } from '../utils/helpers';
 export type HumanActivity = 'idle' | 'typing' | 'phone' | 'walking' | 'searching' | 'startled';
 export type HumanPose = 'stand' | 'sit';
 
-const FAR_TINT = 0x9b918c;
-const HEAD_X = -2;
-const HEAD_Y = -390;
-const HIP_Y = -224;
-const SHOULDER_Y = -392;
-const HEAD_SCALE = 0.92;
+const HIP_Y = -262;
+const SHOULDER_Y = -456;
+const HEAD_Y = -470;
+const LEG_X = 26;
+const ARM_X = 62;
 
 /** Centros de los ojos del SVG de la cabeza, en coordenadas locales. */
-const EYE_A = { x: -15, y: -82 };
-const EYE_B = { x: 21, y: -86 };
+const EYE_A = { x: -19, y: -84 };
+const EYE_B = { x: 19, y: -84 };
 
 interface HumanOptions {
   shirt?: number;
@@ -24,33 +23,35 @@ interface HumanOptions {
 }
 
 /**
- * El dueño de Ratón (y el NPC secundario del nivel 3): alto y delgado, con
- * sudadera negra. La cabeza gira de forma independiente del cuerpo, que es lo
- * que el jugador tiene que leer para saber si le están viendo.
+ * El dueño de Ratón (y el NPC secundario del nivel 3), de frente: alto y
+ * delgado, con sudadera negra con capucha. La cabeza se ladea y las pupilas se
+ * desplazan para indicar hacia dónde mira, que es lo que el jugador tiene que
+ * leer para saber si le están viendo.
  */
 export class Human extends Phaser.GameObjects.Container {
   private readonly rig: Phaser.GameObjects.Container;
   private readonly shadow: Phaser.GameObjects.Ellipse;
 
-  private readonly thighNear: Part;
-  private readonly thighFar: Part;
-  private readonly shinNear: Part;
-  private readonly shinFar: Part;
+  private readonly thighL: Part;
+  private readonly thighR: Part;
+  private readonly shinL: Part;
+  private readonly shinR: Part;
   private readonly torso: Part;
-  private readonly armNear: Part;
-  private readonly armFar: Part;
+  private readonly armL: Part;
+  private readonly armR: Part;
   private readonly phone: Part;
 
   private readonly headNode: Phaser.GameObjects.Container;
   private readonly headTurn: Phaser.GameObjects.Container;
-  private readonly pupilA: Phaser.GameObjects.Ellipse;
-  private readonly pupilB: Phaser.GameObjects.Ellipse;
   private readonly irisA: Phaser.GameObjects.Ellipse;
   private readonly irisB: Phaser.GameObjects.Ellipse;
+  private readonly pupilA: Phaser.GameObjects.Ellipse;
+  private readonly pupilB: Phaser.GameObjects.Ellipse;
   private readonly lids: Phaser.GameObjects.Container;
 
   private facing: -1 | 1 = -1;
   private gazeDir: -1 | 1 = -1;
+  private gazeTilt = 0;
   private activity: HumanActivity = 'idle';
   private pose: HumanPose = 'stand';
   private clock = 0;
@@ -62,76 +63,69 @@ export class Human extends Phaser.GameObjects.Container {
   constructor(scene: Phaser.Scene, x: number, y: number, opts: HumanOptions = {}) {
     super(scene, x, y);
 
-    this.shadow = scene.add.ellipse(0, 6, 150, 32, 0x000000, 0.24);
+    this.shadow = scene.add.ellipse(0, 6, 130, 30, 0x000000, 0.24);
     this.add(this.shadow);
 
     this.rig = scene.add.container(0, 0);
-    this.rig.setScale(opts.scale ?? 0.75);
+    this.rig.setScale(opts.scale ?? 0.6);
     this.add(this.rig);
 
     // Piernas con rodilla: muslo + pantorrilla encadenada, para poder sentarse.
-    this.thighFar = new Part(scene, 'owner-thigh', -12, HIP_Y - 16, 0.5, 0.04).tint(FAR_TINT);
-    this.shinFar = new Part(scene, 'owner-shin', 0, 114, 0.5, 0.05).tint(FAR_TINT);
-    this.thighFar.add(this.shinFar);
+    this.thighR = new Part(scene, 'owner-thigh', -LEG_X, HIP_Y, 0.5, 0.05);
+    this.shinR = new Part(scene, 'owner-shin', 0, 118, 0.5, 0.04);
+    this.thighR.add(this.shinR);
 
-    this.thighNear = new Part(scene, 'owner-thigh', 12, HIP_Y - 14, 0.5, 0.04);
-    this.shinNear = new Part(scene, 'owner-shin', 0, 114, 0.5, 0.05);
-    this.thighNear.add(this.shinNear);
-    this.armFar = new Part(scene, 'owner-arm', -24, SHOULDER_Y - 4, 0.5, 0.05).tint(FAR_TINT);
-    this.torso = new Part(scene, 'owner-body', 0, HIP_Y, 0.5, 0.95);
-    if (opts.shirt) this.torso.tint(opts.shirt);
-    this.armNear = new Part(scene, 'owner-arm', 24, SHOULDER_Y, 0.5, 0.05);
+    this.thighL = new Part(scene, 'owner-thigh', LEG_X, HIP_Y, 0.5, 0.05);
+    this.shinL = new Part(scene, 'owner-shin', 0, 118, 0.5, 0.04);
+    this.thighL.add(this.shinL);
+
+    this.armR = new Part(scene, 'owner-arm', -ARM_X, SHOULDER_Y, 0.5, 0.05);
+    this.torso = new Part(scene, 'owner-body', 0, HIP_Y, 0.5, 0.94);
+    this.armL = new Part(scene, 'owner-arm', ARM_X, SHOULDER_Y, 0.5, 0.05);
     if (opts.shirt) {
-      this.armNear.tint(opts.shirt);
-      this.armFar.tint(Phaser.Display.Color.IntegerToColor(opts.shirt).darken(20).color);
+      this.torso.tint(opts.shirt);
+      this.armL.tint(opts.shirt);
+      this.armR.tint(Phaser.Display.Color.IntegerToColor(opts.shirt).darken(18).color);
     }
 
-    this.phone = new Part(scene, 'owner-phone', 0, 156, 0.5, 0.5);
+    this.phone = new Part(scene, 'owner-phone', 0, 150, 0.5, 0.5);
     this.phone.setVisible(false);
-    this.armNear.add(this.phone);
+    this.armL.add(this.phone);
 
     // ---- cabeza
-    this.headNode = scene.add.container(HEAD_X, HEAD_Y);
+    this.headNode = scene.add.container(0, HEAD_Y);
     this.headTurn = scene.add.container(0, 0);
-    this.headTurn.setScale(HEAD_SCALE);
-    const skull = new Part(scene, 'owner-head', 0, 0, 0.5, 0.88);
+    const skull = new Part(scene, 'owner-head', 0, 0, 0.5, 0.86);
 
-    // Los ojos van pintados en el SVG; aquí sólo la pupila (mirada) y el
-    // párpado (parpadeo), colocados justo encima de cada ojo.
-    const irisA = scene.add.ellipse(EYE_A.x, EYE_A.y, 11, 11, 0x6b4423);
-    const irisB = scene.add.ellipse(EYE_B.x, EYE_B.y, 10, 10, 0x6b4423);
+    // Los ojos van pintados en el SVG; aquí sólo el iris, la pupila (mirada) y
+    // el párpado (parpadeo), colocados justo encima de cada ojo.
+    this.irisA = scene.add.ellipse(EYE_A.x, EYE_A.y, 11, 11, 0x6b4423);
+    this.irisB = scene.add.ellipse(EYE_B.x, EYE_B.y, 11, 11, 0x6b4423);
     this.pupilA = scene.add.ellipse(EYE_A.x, EYE_A.y, 6, 6, 0x140f0c);
-    this.pupilB = scene.add.ellipse(EYE_B.x, EYE_B.y, 5.5, 5.5, 0x140f0c);
-    this.irisA = irisA;
-    this.irisB = irisB;
+    this.pupilB = scene.add.ellipse(EYE_B.x, EYE_B.y, 6, 6, 0x140f0c);
 
     this.lids = scene.add.container(0, 0);
-    const lidA = scene.add.ellipse(EYE_A.x, EYE_A.y, 22, 17, 0xe0a97d);
-    const lidB = scene.add.ellipse(EYE_B.x, EYE_B.y, 20, 16, 0xe0a97d);
-    this.lids.add([lidA, lidB]);
+    this.lids.add([
+      scene.add.ellipse(EYE_A.x, EYE_A.y, 24, 18, 0xe2ab7f),
+      scene.add.ellipse(EYE_B.x, EYE_B.y, 24, 18, 0xe2ab7f)
+    ]);
     this.lids.scaleY = 0;
 
-    this.headTurn.add([skull, irisA, irisB, this.pupilA, this.pupilB, this.lids]);
+    this.headTurn.add([skull, this.irisA, this.irisB, this.pupilA, this.pupilB, this.lids]);
 
     if (opts.beanie) {
       const beanie = scene.add.container(0, 0);
-      const cap = scene.add.ellipse(0, -122, 116, 72, PAL.green);
-      const brim = scene.add.rectangle(0, -98, 120, 22, PAL.greenDark).setOrigin(0.5);
-      const bobble = scene.add.circle(0, -154, 15, PAL.creamDim);
-      beanie.add([cap, brim, bobble]);
+      beanie.add([
+        scene.add.ellipse(0, -128, 130, 76, PAL.green),
+        scene.add.rectangle(0, -100, 134, 24, PAL.greenDark).setOrigin(0.5),
+        scene.add.circle(0, -166, 16, PAL.creamDim)
+      ]);
       this.headTurn.add(beanie);
     }
 
     this.headNode.add(this.headTurn);
 
-    this.rig.add([
-      this.thighFar,
-      this.armFar,
-      this.thighNear,
-      this.torso,
-      this.headNode,
-      this.armNear
-    ]);
+    this.rig.add([this.thighR, this.armR, this.thighL, this.torso, this.headNode, this.armL]);
 
     scene.add.existing(this);
   }
@@ -140,7 +134,6 @@ export class Human extends Phaser.GameObjects.Container {
 
   setFacing(dir: -1 | 1): this {
     this.facing = dir;
-    this.rig.scaleX = Math.abs(this.rig.scaleX) * (dir === -1 ? 1 : -1);
     return this;
   }
 
@@ -148,23 +141,27 @@ export class Human extends Phaser.GameObjects.Container {
     return this.facing;
   }
 
-  /** Hacia dónde mira la CABEZA (independiente del cuerpo): esa es la amenaza. */
+  /**
+   * Hacia dónde mira la CABEZA. De frente no se voltea la cara (quedaría
+   * antinatural): se ladea la cabeza y se llevan las pupilas a ese lado.
+   */
   setGaze(dir: -1 | 1, tilt = 0): this {
-    const wanted = dir === this.facing ? 1 : -1;
-    if (this.gazeDir === dir && this.headTurn.scaleX === wanted * HEAD_SCALE) return this;
+    if (this.gazeDir === dir && this.gazeTilt === tilt) return this;
     this.gazeDir = dir;
+    this.gazeTilt = tilt;
     this.scene.tweens.add({
       targets: this.headTurn,
-      scaleX: wanted * HEAD_SCALE,
-      duration: 170,
+      x: dir * 7,
+      duration: 180,
       ease: 'Quad.easeInOut'
     });
     this.scene.tweens.add({
       targets: this.headNode,
-      rotation: tilt,
+      rotation: tilt + dir * 0.07,
       duration: 200,
       ease: 'Quad.easeInOut'
     });
+    this.lookOffset(dir, 0);
     return this;
   }
 
@@ -182,17 +179,17 @@ export class Human extends Phaser.GameObjects.Container {
     this.pose = pose;
     const t = this.scene.tweens;
     if (pose === 'sit') {
-      // Muslo hacia delante y pantorrilla vertical: rodilla en ángulo recto.
-      t.add({ targets: this.rig, y: 86, duration: 300, ease: 'Quad.easeOut' });
-      t.add({ targets: this.thighNear, rotation: 1.32, duration: 300, ease: 'Quad.easeOut' });
-      t.add({ targets: this.thighFar, rotation: 1.2, duration: 300, ease: 'Quad.easeOut' });
-      t.add({ targets: this.shinNear, rotation: -1.3, duration: 300, ease: 'Quad.easeOut' });
-      t.add({ targets: this.shinFar, rotation: -1.16, duration: 300, ease: 'Quad.easeOut' });
+      // Muslos abiertos y pantorrillas verticales: rodilla en ángulo recto.
+      t.add({ targets: this.rig, y: 118, duration: 300, ease: 'Quad.easeOut' });
+      t.add({ targets: this.thighL, rotation: 0.3, scaleY: 0.62, duration: 300, ease: 'Quad.easeOut' });
+      t.add({ targets: this.thighR, rotation: -0.3, scaleY: 0.62, duration: 300, ease: 'Quad.easeOut' });
+      t.add({ targets: [this.shinL, this.shinR], rotation: 0, duration: 300, ease: 'Quad.easeOut' });
     } else {
       t.add({ targets: this.rig, y: 0, duration: 300, ease: 'Quad.easeOut' });
       t.add({
-        targets: [this.thighNear, this.thighFar, this.shinNear, this.shinFar],
+        targets: [this.thighL, this.thighR, this.shinL, this.shinR],
         rotation: 0,
+        scaleY: 1,
         duration: 300,
         ease: 'Quad.easeOut'
       });
@@ -208,27 +205,28 @@ export class Human extends Phaser.GameObjects.Container {
 
     switch (activity) {
       case 'typing':
-        t.add({ targets: this.armNear, rotation: -1.02, duration: 260, ease: 'Quad.easeOut' });
-        t.add({ targets: this.armFar, rotation: -0.92, duration: 260, ease: 'Quad.easeOut' });
+        t.add({ targets: this.armL, rotation: 0.42, duration: 260, ease: 'Quad.easeOut' });
+        t.add({ targets: this.armR, rotation: -0.42, duration: 260, ease: 'Quad.easeOut' });
         break;
       case 'phone':
-        t.add({ targets: this.armNear, rotation: -1.42, duration: 300, ease: 'Quad.easeOut' });
-        t.add({ targets: this.armFar, rotation: -0.28, duration: 300, ease: 'Quad.easeOut' });
+        t.add({ targets: this.armL, rotation: 0.72, duration: 300, ease: 'Quad.easeOut' });
+        t.add({ targets: this.armR, rotation: -0.18, duration: 300, ease: 'Quad.easeOut' });
         break;
       case 'searching':
-        t.add({ targets: this.armNear, rotation: -0.34, duration: 260 });
-        t.add({ targets: this.armFar, rotation: 0.22, duration: 260 });
+        t.add({ targets: this.armL, rotation: -0.28, duration: 260 });
+        t.add({ targets: this.armR, rotation: 0.28, duration: 260 });
         break;
       case 'startled':
-        t.add({ targets: this.armNear, rotation: 0.55, duration: 160, ease: 'Back.easeOut' });
-        t.add({ targets: this.armFar, rotation: -0.55, duration: 160, ease: 'Back.easeOut' });
+        t.add({ targets: this.armL, rotation: -0.65, duration: 160, ease: 'Back.easeOut' });
+        t.add({ targets: this.armR, rotation: 0.65, duration: 160, ease: 'Back.easeOut' });
         break;
       case 'walking':
-        t.add({ targets: [this.armNear, this.armFar], rotation: 0, duration: 200 });
+        t.add({ targets: [this.armL, this.armR], rotation: 0, duration: 200 });
         break;
       default:
-        t.add({ targets: this.armNear, rotation: 0.06, duration: 260 });
-        t.add({ targets: this.armFar, rotation: -0.05, duration: 260 });
+        // En reposo, las manos hacia el bolsillo canguro.
+        t.add({ targets: this.armL, rotation: 0.24, duration: 260 });
+        t.add({ targets: this.armR, rotation: -0.24, duration: 260 });
     }
     return this;
   }
@@ -244,23 +242,23 @@ export class Human extends Phaser.GameObjects.Container {
 
   /** Micro-movimiento de las pupilas. */
   lookOffset(dx: number, dy: number): this {
-    this.pupilTarget.x = clamp(dx, -1, 1) * 3.4;
+    this.pupilTarget.x = clamp(dx, -1, 1) * 3.6;
     this.pupilTarget.y = clamp(dy, -1, 1) * 2.6;
     return this;
   }
 
   headWorld(): { x: number; y: number } {
     return {
-      x: this.x + (this.rig.x + this.headNode.x) * this.rig.scaleX,
-      y: this.y + (this.rig.y + this.headNode.y - 80) * this.rig.scaleY
+      x: this.x + this.rig.x * this.rig.scaleX,
+      y: this.y + (this.rig.y + HEAD_Y - 110) * this.rig.scaleY
     };
   }
 
   /** Origen del cono de visión: a la altura de los ojos. */
   eyeWorld(): { x: number; y: number } {
     return {
-      x: this.x + (this.rig.x + this.headNode.x) * this.rig.scaleX,
-      y: this.y + (this.rig.y + this.headNode.y - 70) * this.rig.scaleY
+      x: this.x + (this.rig.x + this.headTurn.x) * this.rig.scaleX,
+      y: this.y + (this.rig.y + HEAD_Y + EYE_A.y) * this.rig.scaleY
     };
   }
 
@@ -269,7 +267,7 @@ export class Human extends Phaser.GameObjects.Container {
     this.clock += dt;
 
     const breathe = Math.sin(this.clock * 1.9);
-    this.torso.scaleY = 1 + breathe * 0.011;
+    this.torso.scaleY = 1 + breathe * 0.01;
     this.headNode.y = HEAD_Y + breathe * 2.4;
 
     this.pupilA.x = damp(this.pupilA.x, EYE_A.x + this.pupilTarget.x, 12, dt);
@@ -292,28 +290,28 @@ export class Human extends Phaser.GameObjects.Container {
     }
 
     if (this.activity === 'typing') {
-      this.armNear.rotation = -1.02 + Math.sin(this.clock * 15) * 0.05;
-      this.armFar.rotation = -0.92 + Math.sin(this.clock * 15 + 1.7) * 0.05;
+      this.armL.rotation = 0.42 + Math.sin(this.clock * 15) * 0.05;
+      this.armR.rotation = -0.42 + Math.sin(this.clock * 15 + 1.7) * 0.05;
     }
 
     if (this.motion > 0.02) {
       this.walkPhase += dt * (6 + this.motion * 5);
-      const amp = 0.38 + this.motion * 0.18;
-      this.thighNear.rotation = Math.sin(this.walkPhase) * amp;
-      this.thighFar.rotation = Math.sin(this.walkPhase + Math.PI) * amp;
-      // La pantorrilla va un poco retrasada: así la rodilla se dobla al andar.
-      this.shinNear.rotation = Math.min(0, Math.sin(this.walkPhase - 0.9)) * amp * 1.5;
-      this.shinFar.rotation = Math.min(0, Math.sin(this.walkPhase + Math.PI - 0.9)) * amp * 1.5;
+      const amp = 0.32 + this.motion * 0.16;
+      this.thighL.rotation = Math.sin(this.walkPhase) * amp;
+      this.thighR.rotation = Math.sin(this.walkPhase + Math.PI) * amp;
+      // La pantorrilla va retrasada: así la rodilla se dobla al andar.
+      this.shinL.rotation = Math.min(0, Math.sin(this.walkPhase - 0.9)) * amp * 1.5;
+      this.shinR.rotation = Math.min(0, Math.sin(this.walkPhase + Math.PI - 0.9)) * amp * 1.5;
       if (this.activity === 'walking') {
-        this.armNear.rotation = Math.sin(this.walkPhase + Math.PI) * 0.3;
-        this.armFar.rotation = Math.sin(this.walkPhase) * 0.3;
+        this.armL.rotation = Math.sin(this.walkPhase + Math.PI) * 0.28;
+        this.armR.rotation = Math.sin(this.walkPhase) * 0.28;
       }
       this.rig.y = Math.abs(Math.sin(this.walkPhase)) * -6;
     } else if (this.pose === 'stand') {
-      this.thighNear.rotation = damp(this.thighNear.rotation, 0, 9, dt);
-      this.thighFar.rotation = damp(this.thighFar.rotation, 0, 9, dt);
-      this.shinNear.rotation = damp(this.shinNear.rotation, 0, 9, dt);
-      this.shinFar.rotation = damp(this.shinFar.rotation, 0, 9, dt);
+      this.thighL.rotation = damp(this.thighL.rotation, 0, 9, dt);
+      this.thighR.rotation = damp(this.thighR.rotation, 0, 9, dt);
+      this.shinL.rotation = damp(this.shinL.rotation, 0, 9, dt);
+      this.shinR.rotation = damp(this.shinR.rotation, 0, 9, dt);
       this.rig.y = damp(this.rig.y, 0, 9, dt);
     }
   }

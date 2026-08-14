@@ -1,13 +1,15 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="42" height="126" viewBox="0 0 42 126">
-  <!-- El dueño · muslo (vaquero oscuro). Pivote arriba, en la cadera. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="132" viewBox="0 0 48 132">
+  <!-- El dueño · muslo de frente, vaquero oscuro y ajustado. Pivote arriba (cadera). -->
   <defs>
-    <linearGradient id="otJeans" x1="0" y1="0" x2="1" y2="0.3">
-      <stop offset="0" stop-color="#3a3f49"/>
-      <stop offset="0.55" stop-color="#24282f"/>
+    <linearGradient id="otJeans" x1="0" y1="0" x2="1" y2="0.25">
+      <stop offset="0" stop-color="#3b4049"/>
+      <stop offset="0.5" stop-color="#252a31"/>
       <stop offset="1" stop-color="#15181d"/>
     </linearGradient>
   </defs>
-  <path d="M8 6 C8 1 35 1 35 8 C35 32 33 60 31 84 C30 98 30 108 30 114 C30 120 9 120 9 114 C9 106 9 96 9 84 C8 60 7 30 8 6Z"
-        fill="url(#otJeans)" stroke="#101318" stroke-width="4.5" stroke-linejoin="round"/>
-  <path d="M12 16 C12 46 11 82 12 110" fill="none" stroke="#4c535f" stroke-width="3" stroke-linecap="round" opacity="0.45"/>
+  <path d="M8 6 C8 1 41 1 41 8 C40 34 37 66 34 96 C33 108 33 116 33 120
+           C33 126 11 126 11 120 C11 112 10 100 9 84 C8 58 7 26 8 6Z"
+        fill="url(#otJeans)" stroke="#101318" stroke-width="4.8" stroke-linejoin="round"/>
+  <path d="M13 16 C13 48 12 88 13 116" fill="none" stroke="#4d545f" stroke-width="3" stroke-linecap="round" opacity="0.4"/>
+  <path d="M33 20 C33 52 32 90 32 116" fill="none" stroke="#171b21" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
 </svg>

@@ -1,72 +1,76 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="312" height="200" viewBox="0 0 312 200">
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="264" viewBox="0 0 240 264">
   <!--
-    Ratón · CUERPO COMPLETO EN UNA SOLA PIEZA: hocico, cabeza, cuello, tronco y
-    grupa con un único contorno. Las orejas y las patas van DETRÁS de esta capa,
-    de modo que sus arranques quedan escondidos y nunca se ve una junta.
-    Orientado hacia la IZQUIERDA.
+    Ratón · cabeza + cuello + tronco DE FRENTE (3/4), en una sola pieza.
+    Truco de dibujo: la silueta se compone con formas simples y se pinta dos
+    veces — primero trazada gruesa en tinta, después rellena encima. Así la
+    unión de todas las formas queda con un contorno limpio y sin líneas
+    internas. Orejas, patas y cola van aparte.
   -->
   <defs>
-    <linearGradient id="rbFur" x1="0.25" y1="0" x2="0.6" y2="1">
-      <stop offset="0" stop-color="#463a34"/>
-      <stop offset="0.42" stop-color="#27201a"/>
-      <stop offset="1" stop-color="#120e0c"/>
+    <linearGradient id="rbFur" x1="0.3" y1="0" x2="0.72" y2="1">
+      <stop offset="0" stop-color="#4b403a"/>
+      <stop offset="0.38" stop-color="#2b221c"/>
+      <stop offset="1" stop-color="#14100e"/>
     </linearGradient>
-    <linearGradient id="rbBib" x1="0.2" y1="0" x2="0.8" y2="1">
-      <stop offset="0" stop-color="#f8f1e5"/>
-      <stop offset="1" stop-color="#cdbb9f"/>
+    <linearGradient id="rbBib" x1="0.3" y1="0" x2="0.7" y2="1">
+      <stop offset="0" stop-color="#fbf5ea"/>
+      <stop offset="1" stop-color="#d3c2a8"/>
     </linearGradient>
-    <radialGradient id="rbNose" cx="0.35" cy="0.3" r="0.8">
-      <stop offset="0" stop-color="#5c5153"/>
-      <stop offset="0.45" stop-color="#1c1517"/>
+    <radialGradient id="rbNose" cx="0.38" cy="0.28" r="0.8">
+      <stop offset="0" stop-color="#655a5c"/>
+      <stop offset="0.5" stop-color="#1d1618"/>
       <stop offset="1" stop-color="#0a0708"/>
     </radialGradient>
-    <clipPath id="rbClip">
-      <path d="M18 78 C12 70 16 60 30 54 C48 46 62 42 78 40 C88 24 106 14 128 15 C154 16 172 30 178 54 C184 72 194 82 208 84 C234 80 260 82 278 94 C298 108 300 140 284 154 C268 168 246 170 228 162 C210 170 184 174 162 170 C144 167 130 158 122 146 C110 128 98 116 82 108 C64 102 42 100 28 96 C18 93 14 86 18 78Z"/>
-    </clipPath>
+
+    <g id="rbShape">
+      <ellipse cx="120" cy="60" rx="47" ry="43"/>
+      <ellipse cx="95" cy="86" rx="25" ry="23"/>
+      <ellipse cx="145" cy="86" rx="25" ry="23"/>
+      <ellipse cx="120" cy="106" rx="26" ry="24"/>
+      <ellipse cx="120" cy="142" rx="30" ry="30"/>
+      <ellipse cx="120" cy="190" rx="49" ry="49"/>
+      <ellipse cx="81" cy="218" rx="24" ry="30"/>
+      <ellipse cx="159" cy="218" rx="24" ry="30"/>
+      <ellipse cx="120" cy="216" rx="42" ry="32"/>
+    </g>
   </defs>
 
-  <!-- silueta única -->
-  <path d="M18 78 C12 70 16 60 30 54 C48 46 62 42 78 40 C88 24 106 14 128 15 C154 16 172 30 178 54 C184 72 194 82 208 84 C234 80 260 82 278 94 C298 108 300 140 284 154 C268 168 246 170 228 162 C210 170 184 174 162 170 C144 167 130 158 122 146 C110 128 98 116 82 108 C64 102 42 100 28 96 C18 93 14 86 18 78Z"
-        fill="url(#rbFur)" stroke="#0f0b0a" stroke-width="5" stroke-linejoin="round"/>
-
-  <g clip-path="url(#rbClip)">
-    <!-- luz sobre el cráneo y la caña del hocico -->
-    <path d="M80 40 C94 22 116 14 138 20 C160 26 174 42 178 58 C166 36 142 24 118 26 C100 28 88 33 80 40Z"
-          fill="#62544c" opacity="0.62"/>
-    <path d="M78 42 C60 46 42 50 28 56 C46 54 64 50 80 48Z" fill="#5a4d46" opacity="0.5"/>
-    <!-- lomo iluminado -->
-    <path d="M200 86 C226 78 258 80 278 94 C294 106 299 124 296 138 C286 112 262 94 232 92 C216 91 206 88 200 86Z"
-          fill="#5d4f47" opacity="0.6"/>
-    <!-- mejilla -->
-    <ellipse cx="126" cy="80" rx="30" ry="22" fill="#3d322c" opacity="0.45"/>
-    <!-- sombras bajas -->
-    <path d="M120 150 C142 168 190 176 232 162 C258 172 292 164 302 140 C300 176 250 186 226 168 C186 180 136 174 120 150Z"
-          fill="#0b0808" opacity="0.5"/>
-    <path d="M20 90 C40 100 66 104 84 108 C64 112 30 106 20 90Z" fill="#0b0808" opacity="0.45"/>
-
-    <!-- babero blanco del pecho y garganta -->
-    <path d="M100 116 C116 112 132 126 138 146 C144 166 138 178 122 176 C104 174 92 156 92 138 C92 126 94 118 100 116Z"
-          fill="url(#rbBib)"/>
-    <path d="M100 116 C116 112 132 126 138 146" fill="none" stroke="#bba98d" stroke-width="2.4" opacity="0.6"/>
-
-    <!-- pelo corto -->
-    <g stroke="#4e433c" stroke-width="2.2" stroke-linecap="round" opacity="0.35">
-      <path d="M196 92 l11 8"/><path d="M220 88 l11 8"/><path d="M246 90 l10 8"/>
-      <path d="M266 100 l9 9"/><path d="M150 108 l10 8"/><path d="M172 100 l10 8"/>
-    </g>
+  <!-- 1) contorno -->
+  <g fill="#0f0b0a" stroke="#0f0b0a" stroke-width="11" stroke-linejoin="round" stroke-linecap="round">
+    <use href="#rbShape"/>
+  </g>
+  <!-- 2) relleno -->
+  <g fill="url(#rbFur)">
+    <use href="#rbShape"/>
   </g>
 
-  <!-- nariz -->
-  <path d="M20 66 C32 61 45 66 46 76 C47 87 36 92 24 90 C10 87 6 71 20 66Z"
+  <!-- luz cálida por arriba -->
+  <ellipse cx="112" cy="34" rx="34" ry="18" fill="#6a5a51" opacity="0.5"/>
+  <ellipse cx="120" cy="158" rx="34" ry="16" fill="#5c4e46" opacity="0.4"/>
+  <!-- sombra bajo el vientre -->
+  <ellipse cx="120" cy="234" rx="44" ry="16" fill="#0b0808" opacity="0.45"/>
+
+  <!-- babero blanco: garganta y pecho, como la mancha real -->
+  <path d="M120 124 C129 132 132 144 128 156 C137 170 140 192 133 210
+           C127 224 113 224 107 210 C100 192 103 170 112 156
+           C108 144 111 132 120 124Z"
+        fill="url(#rbBib)"/>
+  <path d="M120 126 C127 134 129 144 126 155" fill="none" stroke="#c2b096" stroke-width="2.4" opacity="0.6"/>
+
+  <!-- hocico: caña iluminada, nariz y boca -->
+  <ellipse cx="120" cy="100" rx="19" ry="15" fill="#3b302a" opacity="0.55"/>
+  <path d="M107 92 C112 87 128 87 133 92 C136 99 130 106 120 106 C110 106 104 99 107 92Z"
         fill="url(#rbNose)" stroke="#0a0707" stroke-width="3" stroke-linejoin="round"/>
-  <ellipse cx="24" cy="70" rx="6" ry="3.4" fill="#8d8285" opacity="0.6"/>
-  <!-- boca -->
-  <path d="M28 88 L30 96" stroke="#0a0707" stroke-width="3" stroke-linecap="round"/>
-  <path d="M30 96 C42 103 58 102 66 95" fill="none" stroke="#0a0707" stroke-width="3.4" stroke-linecap="round"/>
+  <ellipse cx="113" cy="93" rx="5" ry="3" fill="#8f8487" opacity="0.6"/>
+  <path d="M120 106 L120 113" stroke="#0a0707" stroke-width="3" stroke-linecap="round"/>
+  <path d="M120 113 C114 120 106 120 101 115" fill="none" stroke="#0a0707" stroke-width="3.2" stroke-linecap="round"/>
+  <path d="M120 113 C126 120 134 120 139 115" fill="none" stroke="#0a0707" stroke-width="3.2" stroke-linecap="round"/>
 
   <!-- bigotes -->
-  <g stroke="#a39489" stroke-width="1.8" stroke-linecap="round" opacity="0.45">
-    <path d="M44 72 C60 66 74 64 88 66"/>
-    <path d="M46 81 C62 79 76 79 90 82"/>
+  <g stroke="#a4958a" stroke-width="1.7" stroke-linecap="round" opacity="0.45">
+    <path d="M100 98 C90 96 82 92 76 88"/>
+    <path d="M100 104 C90 104 82 103 75 100"/>
+    <path d="M140 98 C150 96 158 92 164 88"/>
+    <path d="M140 104 C150 104 158 103 165 100"/>
   </g>
 </svg>

@@ -1,31 +1,34 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="108" height="132" viewBox="0 0 108 132">
+<svg xmlns="http://www.w3.org/2000/svg" width="96" height="128" viewBox="0 0 96 128">
   <!--
-    Ratón · oreja gigante: triángulo ancho de base y con la punta marcada, como
-    en la foto. Va DETRÁS del cuerpo, así que la base queda oculta bajo la
-    cabeza. Pivote en la base (abajo-centro).
+    Ratón · oreja enorme y de punta, vista de frente. Se dibuja apuntando
+    arriba-derecha y en el juego se refleja para la del otro lado.
+    Pivote en la base (abajo-centro).
   -->
   <defs>
-    <linearGradient id="reFur" x1="0.15" y1="0" x2="0.85" y2="1">
-      <stop offset="0" stop-color="#41362f"/>
-      <stop offset="0.5" stop-color="#251d17"/>
-      <stop offset="1" stop-color="#120e0c"/>
+    <linearGradient id="reFur" x1="0.2" y1="1" x2="0.8" y2="0">
+      <stop offset="0" stop-color="#2a211b"/>
+      <stop offset="0.55" stop-color="#3b302a"/>
+      <stop offset="1" stop-color="#1a1411"/>
     </linearGradient>
-    <linearGradient id="reIn" x1="0.25" y1="0" x2="0.75" y2="1">
-      <stop offset="0" stop-color="#9c736d"/>
-      <stop offset="0.55" stop-color="#6d4b46"/>
-      <stop offset="1" stop-color="#3e2828"/>
+    <linearGradient id="reIn" x1="0.3" y1="1" x2="0.7" y2="0">
+      <stop offset="0" stop-color="#7c554f"/>
+      <stop offset="0.55" stop-color="#9a736c"/>
+      <stop offset="1" stop-color="#5a3b39"/>
     </linearGradient>
   </defs>
 
-  <path d="M50 128 C26 120 12 92 12 58 C12 30 22 8 38 8 C50 8 62 26 74 56 C86 84 94 106 92 118 C90 128 74 133 50 128Z"
-        fill="url(#reFur)" stroke="#0f0b0a" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M40 122 C22 108 12 78 16 46 C19 20 30 6 44 10 C58 14 72 40 80 70
+           C87 96 84 116 70 124 C60 129 48 128 40 122Z"
+        fill="url(#reFur)" stroke="#0f0b0a" stroke-width="6" stroke-linejoin="round"/>
 
-  <path d="M52 114 C34 106 25 84 25 58 C25 36 32 22 41 24 C50 26 60 44 68 66 C77 90 82 106 79 112 C76 118 64 118 52 114Z"
+  <path d="M43 110 C30 98 24 74 27 48 C29 28 36 20 44 23 C53 27 63 48 69 72
+           C75 94 73 108 63 113 C55 117 48 115 43 110Z"
         fill="url(#reIn)"/>
 
-  <g stroke="#b8908a" stroke-width="2.2" stroke-linecap="round" opacity="0.4">
-    <path d="M36 50 l10 7"/><path d="M42 72 l10 6"/><path d="M50 92 l10 6"/>
+  <!-- pelillos del interior -->
+  <g stroke="#c0968f" stroke-width="2.2" stroke-linecap="round" opacity="0.45">
+    <path d="M36 44 l9 6"/><path d="M40 64 l10 6"/><path d="M46 84 l10 6"/>
   </g>
-
-  <path d="M38 8 C50 10 62 30 74 58" fill="none" stroke="#6a5b52" stroke-width="4.5" stroke-linecap="round" opacity="0.55"/>
+  <!-- brillo del borde -->
+  <path d="M44 10 C57 14 70 38 78 66" fill="none" stroke="#6d5d53" stroke-width="4.5" stroke-linecap="round" opacity="0.55"/>
 </svg>
