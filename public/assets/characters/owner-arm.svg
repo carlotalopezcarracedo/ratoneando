@@ -1,14 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="36" height="96" viewBox="0 0 36 96">
-  <!-- Dueño · brazo (manga negra + mano). Pivote arriba (hombro). -->
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="180" viewBox="0 0 32 180">
+  <!-- El dueño · brazo largo y fino (manga de sudadera + mano). Pivote arriba (hombro). -->
   <defs>
-    <linearGradient id="oaSleeve" x1="0" y1="0" x2="1" y2="0.3">
-      <stop offset="0" stop-color="#37343a"/>
-      <stop offset="1" stop-color="#1a191d"/>
+    <linearGradient id="oaSleeve" x1="0" y1="0" x2="1" y2="0.25">
+      <stop offset="0" stop-color="#36333a"/>
+      <stop offset="1" stop-color="#18171c"/>
     </linearGradient>
   </defs>
-  <path d="M8 8 C8 2 30 2 30 9 C30 26 28 44 26 60 C25 68 25 74 25 78 C25 84 9 84 9 78 C9 62 8 40 8 8Z"
-        fill="url(#oaSleeve)" stroke="#100f12" stroke-width="4.5" stroke-linejoin="round"/>
-  <path d="M9 34 C15 32 24 32 28 34" fill="none" stroke="#0f0e11" stroke-width="4"/>
-  <path d="M10 74 C10 70 25 70 25 75 C26 84 24 92 17 92 C10 92 9 84 10 74Z"
-        fill="#e2a87e" stroke="#7d4f36" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M6 8 C6 1 27 1 27 9 C27 46 25 88 23 124 C22 138 22 146 22 150 C22 156 7 156 7 150 C7 132 6 92 6 46 C6 28 6 14 6 8Z"
+        fill="url(#oaSleeve)" stroke="#0f0e12" stroke-width="4.5" stroke-linejoin="round"/>
+  <!-- puño elástico -->
+  <path d="M7 138 C12 135 22 135 23 139 C23 145 22 148 22 150 C22 156 7 156 7 150 C7 146 7 142 7 138Z" fill="#100f13"/>
+  <path d="M8 62 C8 92 7 120 8 140" fill="none" stroke="#4a4750" stroke-width="3" stroke-linecap="round" opacity="0.45"/>
+  <!-- mano -->
+  <path d="M8 148 C8 144 22 144 22 149 C24 160 22 172 15 173 C8 174 6 162 8 148Z"
+        fill="#e3aa80" stroke="#7a4c33" stroke-width="4" stroke-linejoin="round"/>
 </svg>

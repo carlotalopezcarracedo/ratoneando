@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="40" height="136" viewBox="0 0 40 136">
+  <!-- El dueño · pantorrilla + zapatilla. Pivote arriba, en la rodilla. -->
+  <defs>
+    <linearGradient id="osJeans" x1="0" y1="0" x2="1" y2="0.3">
+      <stop offset="0" stop-color="#373c45"/>
+      <stop offset="0.55" stop-color="#22262d"/>
+      <stop offset="1" stop-color="#14171c"/>
+    </linearGradient>
+  </defs>
+  <path d="M8 6 C8 1 31 1 31 7 C31 30 29 62 28 88 C27 104 27 112 27 116 C27 121 9 121 9 116 C9 110 9 102 9 88 C8 62 7 30 8 6Z"
+        fill="url(#osJeans)" stroke="#101318" stroke-width="4.5" stroke-linejoin="round"/>
+  <path d="M12 14 C12 44 11 82 12 112" fill="none" stroke="#4b525d" stroke-width="3" stroke-linecap="round" opacity="0.45"/>
+  <path d="M9 106 C15 103 26 103 27 106" fill="none" stroke="#101318" stroke-width="3" opacity="0.55"/>
+
+  <!-- zapatilla -->
+  <path d="M8 114 C8 110 28 110 28 114 C34 117 39 123 38 128 C37 133 27 134 18 134 C9 134 5 132 5 128 C5 122 7 117 8 114Z"
+        fill="#efe6d6" stroke="#8a7f70" stroke-width="3.5" stroke-linejoin="round"/>
+  <path d="M5 128 C13 131 30 131 38 128 C37 133 27 134 18 134 C9 134 5 132 5 128Z" fill="#c7bba7"/>
+  <path d="M11 116 C15 119 24 119 27 116" fill="none" stroke="#b3a795" stroke-width="2.4"/>
+</svg>

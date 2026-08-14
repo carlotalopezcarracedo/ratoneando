@@ -1,3 +1,9 @@
+# La foto de referencia es personal: se queda en local y NUNCA se publica.
+# (Si estuviera en el repo, Vite la copiaría a dist/ y acabaría en GitHub Pages.)
+public/reference/*.jpg
+public/reference/*.jpeg
+public/reference/*.png
+
 node_modules
 dist
 dist-ssr

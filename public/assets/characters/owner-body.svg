@@ -1,21 +1,44 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="132" height="152" viewBox="0 0 132 152">
-  <!-- Dueño · torso con camiseta negra -->
+<svg xmlns="http://www.w3.org/2000/svg" width="124" height="196" viewBox="0 0 124 196">
+  <!--
+    El dueño · torso delgado con SUDADERA NEGRA CON CAPUCHA (190 cm, 70 kg:
+    hombros estrechos y tronco largo). Pivote abajo, en la cadera.
+  -->
   <defs>
-    <linearGradient id="obShirt" x1="0.2" y1="0" x2="0.85" y2="1">
-      <stop offset="0" stop-color="#3a373d"/>
-      <stop offset="0.5" stop-color="#26242a"/>
-      <stop offset="1" stop-color="#17161a"/>
+    <linearGradient id="obHood" x1="0.2" y1="0" x2="0.85" y2="1">
+      <stop offset="0" stop-color="#3a373e"/>
+      <stop offset="0.45" stop-color="#252329"/>
+      <stop offset="1" stop-color="#151418"/>
     </linearGradient>
   </defs>
-  <path d="M40 14 C52 4 84 4 96 14 C114 22 124 44 126 74 C128 106 124 132 120 146 L14 146 C10 128 6 100 8 72 C10 44 22 22 40 14Z"
-        fill="url(#obShirt)" stroke="#100f12" stroke-width="5" stroke-linejoin="round"/>
-  <!-- cuello de la camiseta -->
-  <path d="M44 14 C54 26 82 26 92 14 C86 30 50 30 44 14Z" fill="#0f0e11"/>
-  <!-- pliegues -->
-  <g stroke="#4a4750" stroke-width="3.5" stroke-linecap="round" opacity="0.55" fill="none">
-    <path d="M28 44 C24 70 24 102 28 132"/>
-    <path d="M104 46 C110 74 110 106 106 134"/>
-    <path d="M56 96 C68 104 82 102 90 94"/>
+
+  <!-- capucha caída por detrás -->
+  <path d="M34 20 C40 4 84 4 90 20 C102 26 106 40 100 50 C92 34 32 34 24 50 C18 40 22 26 34 20Z"
+        fill="#1b1a1f" stroke="#0f0e12" stroke-width="4.5" stroke-linejoin="round"/>
+
+  <!-- cuerpo largo y estrecho -->
+  <path d="M40 18 C50 8 74 8 84 18 C102 26 110 46 112 78 C114 112 112 152 110 188 L14 188 C12 152 10 112 12 78 C14 46 22 26 40 18Z"
+        fill="url(#obHood)" stroke="#0f0e12" stroke-width="5" stroke-linejoin="round"/>
+
+  <!-- cuello de la capucha -->
+  <path d="M42 18 C52 32 72 32 82 18 C86 30 78 40 62 40 C46 40 38 30 42 18Z" fill="#100f13"/>
+  <!-- cordones -->
+  <g stroke="#cdc7bb" stroke-width="4" stroke-linecap="round">
+    <path d="M52 38 C50 52 50 62 52 72"/>
+    <path d="M72 38 C74 52 74 62 72 70"/>
   </g>
-  <path d="M14 146 L120 146 L118 152 L16 152Z" fill="#0f0e11" opacity="0.7"/>
+  <circle cx="52" cy="74" r="3.4" fill="#8d8880"/>
+  <circle cx="72" cy="72" r="3.4" fill="#8d8880"/>
+
+  <!-- bolsillo canguro -->
+  <path d="M26 120 C28 142 32 154 36 160 L88 160 C92 154 96 142 98 120 C86 132 38 132 26 120Z"
+        fill="#1b1a1f" stroke="#0f0e12" stroke-width="3.5" stroke-linejoin="round"/>
+
+  <!-- pliegues -->
+  <g stroke="#4a4750" stroke-width="3.4" stroke-linecap="round" fill="none" opacity="0.5">
+    <path d="M26 52 C22 84 22 130 26 174"/>
+    <path d="M98 54 C104 86 104 132 100 176"/>
+  </g>
+
+  <!-- bajo elástico -->
+  <path d="M14 176 L110 176 L110 188 L14 188Z" fill="#100f13" opacity="0.85"/>
 </svg>

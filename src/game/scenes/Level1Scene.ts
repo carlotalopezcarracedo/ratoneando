@@ -37,7 +37,8 @@ import { drawPanel } from '../ui/Panel';
 type OwnerState = 'work' | 'phone' | 'turning' | 'watch' | 'stretch';
 
 const GROUND = 600;
-const RATON_X = 902;
+const RATON_X = 958;
+const OWNER_X = 626;
 
 const STATUS: Record<OwnerState, { text: string; color: number }> = {
   work: { text: 'AHORA', color: PAL.ok },
@@ -162,9 +163,9 @@ export class Level1Scene extends Phaser.Scene {
     this.add.existing(makeRug(this, 880, 648, 540, 116)).setDepth(3);
     this.add.existing(makeDogBed(this, RATON_X, 636)).setDepth(4);
 
-    this.add.existing(makeChair(this, 566, 600)).setDepth(20);
-    this.add.existing(makeMonitor(this, 300, 410)).setDepth(45);
-    this.add.existing(makeDesk(this, 360, 610)).setDepth(44);
+    this.add.existing(makeChair(this, 704, 600)).setDepth(20);
+    this.add.existing(makeMonitor(this, 268, 410)).setDepth(45);
+    this.add.existing(makeDesk(this, 322, 610)).setDepth(44);
 
     this.buildFly();
   }
@@ -178,7 +179,7 @@ export class Level1Scene extends Phaser.Scene {
   }
 
   private buildCast(): void {
-    this.owner = new Human(this, 520, GROUND, { scale: 0.9 });
+    this.owner = new Human(this, OWNER_X, GROUND, { scale: 0.7 });
     this.owner.setDepth(30);
     this.owner.setFacing(-1).setPose('sit').setActivity('typing').setGaze(-1);
 
@@ -219,7 +220,7 @@ export class Level1Scene extends Phaser.Scene {
       align: 'right'
     }).setScrollFactor(0).setDepth(6000);
 
-    this.statusPanel = this.add.container(520, 232).setDepth(6050);
+    this.statusPanel = this.add.container(OWNER_X, 196).setDepth(6050);
     const g = this.add.graphics();
     drawPanel(g, -84, -24, 168, 48, { radius: 24, fillAlpha: 0.9, strokeWidth: 3 });
     this.statusText = this.add
@@ -304,7 +305,7 @@ export class Level1Scene extends Phaser.Scene {
     const status = STATUS[this.ownerState];
     this.statusText.setText(status.text).setColor(css(status.color));
     this.statusPanel.x = damp(this.statusPanel.x, this.owner.x, 8, dt);
-    this.statusPanel.y = damp(this.statusPanel.y, this.ownerState === 'watch' ? 220 : 232, 8, dt);
+    this.statusPanel.y = damp(this.statusPanel.y, this.ownerState === 'watch' ? 184 : 196, 8, dt);
 
     this.drawCone();
   }
@@ -336,7 +337,7 @@ export class Level1Scene extends Phaser.Scene {
     this.stateTimer = Math.max(0.5, duration);
     if (state !== 'stretch') {
       this.tweens.killTweensOf(this.owner);
-      this.owner.x = 520;
+      this.owner.x = OWNER_X;
     }
 
     switch (state) {
@@ -352,7 +353,9 @@ export class Level1Scene extends Phaser.Scene {
         this.owner.setActivity('idle');
         this.owner.lookOffset(0.7, 0);
         Audio.suspicion();
-        alertMark(this, this.owner.x + 46, 250, '···', PAL.amber);
+        alertMark(this, this.owner.x + 46, 214, '···', PAL.amber);
+        // Ratón lo oye antes de verlo: las orejas se ponen tiesas.
+        this.raton.perkEars(this.stateTimer + 0.3);
         break;
       case 'watch':
         this.owner.setGaze(1);
@@ -363,7 +366,7 @@ export class Level1Scene extends Phaser.Scene {
         this.owner.setPose('stand').setActivity('searching').setGaze(-1);
         this.tweens.add({
           targets: this.owner,
-          x: 600,
+          x: OWNER_X + 90,
           duration: 900,
           yoyo: true,
           hold: 500,
@@ -494,14 +497,18 @@ export class Level1Scene extends Phaser.Scene {
     if (this.segment > 0.55) {
       this.cleanLicks++;
       Run.bump('clandestineLicks');
-      const gained = Run.addChaos(CHAOS.CLANDESTINE_LICK, 1);
+      // Cuanto más aguantas el lametón sin que te vean, más multiplica.
+      const streak = Math.min(4, 1 + Math.floor(this.segment / 1.3));
+      const gained = Run.addChaos(CHAOS.CLANDESTINE_LICK * streak, 1);
       this.hud.bump(true);
       const paw = this.raton.leftPawWorld();
-      floatText(this, paw.x, paw.y - 90, `+${gained} LAMIDO CLANDESTINO`, {
-        color: PAL.ok,
-        size: 20
+      const label = streak > 1 ? `+${gained}  LAMIDO CLANDESTINO x${streak}` : `+${gained} LAMIDO CLANDESTINO`;
+      floatText(this, paw.x, paw.y - 90, label, {
+        color: streak > 2 ? PAL.amber : PAL.ok,
+        size: 20 + streak * 2
       });
-      sparkles(this, paw.x, paw.y - 40, { count: 5, radius: 40, color: PAL.ok });
+      sparkles(this, paw.x, paw.y - 40, { count: 4 + streak * 2, radius: 40, color: PAL.ok });
+      if (streak >= 3) Audio.bell();
     }
     this.segment = 0;
   }

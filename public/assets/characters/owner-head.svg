@@ -1,48 +1,69 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="126" height="144" viewBox="0 0 126 144">
-  <!-- Dueño · cabeza 3/4 mirando a la IZQUIERDA. Sin ojos ni cejas (capas dinámicas). -->
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="144" viewBox="0 0 120 144">
+  <!--
+    El dueño · cabeza 3/4 mirando a la IZQUIERDA. Cara alargada y estrecha,
+    pelo oscuro rizado con volumen y barba completa. Sin ojos ni cejas: capas
+    dinámicas que se montan desde el código.
+  -->
   <defs>
-    <linearGradient id="ohSkin" x1="0.15" y1="0" x2="0.9" y2="1">
-      <stop offset="0" stop-color="#f0c39c"/>
-      <stop offset="0.55" stop-color="#dfa87d"/>
-      <stop offset="1" stop-color="#c08b64"/>
+    <linearGradient id="ohSkin" x1="0.1" y1="0" x2="0.9" y2="1">
+      <stop offset="0" stop-color="#f2c8a2"/>
+      <stop offset="0.5" stop-color="#dfa87c"/>
+      <stop offset="1" stop-color="#bc8560"/>
     </linearGradient>
     <linearGradient id="ohHair" x1="0.2" y1="0" x2="0.8" y2="1">
-      <stop offset="0" stop-color="#3b322d"/>
-      <stop offset="0.6" stop-color="#241d1a"/>
-      <stop offset="1" stop-color="#161110"/>
+      <stop offset="0" stop-color="#3a302a"/>
+      <stop offset="0.55" stop-color="#211a16"/>
+      <stop offset="1" stop-color="#120e0c"/>
     </linearGradient>
     <linearGradient id="ohBeard" x1="0.3" y1="0" x2="0.7" y2="1">
-      <stop offset="0" stop-color="#332a25"/>
-      <stop offset="1" stop-color="#1c1614"/>
+      <stop offset="0" stop-color="#332a23"/>
+      <stop offset="1" stop-color="#1a1512"/>
     </linearGradient>
   </defs>
 
-  <!-- cuello -->
-  <path d="M62 104 L94 104 L96 138 L60 138 Z" fill="#c78d66" stroke="#7d4f36" stroke-width="4" stroke-linejoin="round"/>
-  <path d="M62 104 L94 104 L94 116 C80 122 68 120 62 114Z" fill="#a6714f" opacity="0.6"/>
+  <!-- cuello fino -->
+  <path d="M54 100 L82 100 L84 140 L52 140 Z" fill="#c68c64" stroke="#7a4c33" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M54 100 L82 100 L82 112 C70 118 58 116 54 110Z" fill="#a06e4d" opacity="0.6"/>
 
-  <!-- cara -->
-  <path d="M30 62 C30 32 50 14 76 15 C100 16 112 34 112 60 C112 84 104 106 84 114 C64 122 44 112 36 92 C33 86 28 84 24 78 C20 72 22 66 30 62Z"
-        fill="url(#ohSkin)" stroke="#7d4f36" stroke-width="4" stroke-linejoin="round"/>
+  <!-- cara alargada -->
+  <path d="M28 58 C28 32 44 16 66 16 C88 16 100 33 100 58 C100 78 96 96 84 108 C74 118 58 118 48 108 C42 102 38 94 35 86 C31 82 25 78 22 72 C19 66 21 61 28 58Z"
+        fill="url(#ohSkin)" stroke="#7a4c33" stroke-width="4" stroke-linejoin="round"/>
 
   <!-- oreja -->
-  <path d="M110 62 C120 60 124 70 120 78 C117 85 110 86 108 82Z" fill="#dda179" stroke="#7d4f36" stroke-width="3.5" stroke-linejoin="round"/>
+  <path d="M98 58 C108 56 111 66 108 74 C105 81 99 82 97 78Z" fill="#dda179" stroke="#7a4c33" stroke-width="3.4" stroke-linejoin="round"/>
 
-  <!-- nariz -->
-  <path d="M28 66 C24 72 22 78 26 82 C29 85 34 85 38 83" fill="none" stroke="#a56c4c" stroke-width="3.6" stroke-linecap="round"/>
+  <!-- nariz recta y fina -->
+  <path d="M26 60 C22 68 20 76 24 80 C27 83 32 83 36 81" fill="none" stroke="#a56c4c" stroke-width="3.4" stroke-linecap="round"/>
 
-  <!-- barba oscura -->
-  <path d="M31 84 C34 100 46 114 66 116 C88 118 102 104 106 84 C108 96 106 112 96 122 C84 134 60 134 48 124 C36 114 30 100 31 84Z"
+  <!-- barba completa: patillas, mandíbula y perilla -->
+  <path d="M30 76 C32 92 40 106 54 112 C70 119 86 110 92 92 C96 80 97 68 96 58 C99 76 99 96 92 110 C82 128 58 130 46 118 C36 108 30 92 30 76Z"
         fill="url(#ohBeard)"/>
-  <path d="M31 84 C36 92 44 96 52 96 C50 106 52 114 58 120 C46 118 34 104 31 84Z" fill="#241d1a"/>
-  <path d="M40 92 C56 102 84 100 100 88 C98 106 84 120 66 119 C50 118 42 106 40 92Z"
+  <path d="M31 74 C36 86 44 94 54 96 C52 106 55 114 62 120 C48 118 34 100 31 74Z" fill="#241d18"/>
+  <path d="M36 84 C50 96 76 94 92 82 C91 100 80 116 62 118 C46 120 39 100 36 84Z"
         fill="url(#ohBeard)" stroke="#141010" stroke-width="3" stroke-linejoin="round"/>
   <!-- bigote -->
-  <path d="M32 80 C44 74 58 74 68 78 C58 84 42 86 32 80Z" fill="#241d1a"/>
+  <path d="M28 74 C40 68 54 68 63 72 C54 79 38 80 28 74Z" fill="#241d18"/>
 
-  <!-- pelo corto oscuro -->
-  <path d="M28 58 C26 30 48 10 76 11 C104 12 116 32 114 58 C110 40 96 28 76 27 C56 26 38 36 28 58Z"
-        fill="url(#ohHair)" stroke="#141010" stroke-width="4" stroke-linejoin="round"/>
-  <path d="M28 58 C32 44 40 34 52 30 C44 40 40 48 40 58Z" fill="#141010" opacity="0.7"/>
-  <path d="M52 18 C70 12 92 16 104 30" fill="none" stroke="#4a3f38" stroke-width="4" stroke-linecap="round" opacity="0.7"/>
+  <!-- pelo rizado con volumen -->
+  <path d="M26 56 C22 34 34 12 60 9 C86 6 102 24 100 52 C104 40 102 24 92 16 C104 20 108 34 104 46 C110 34 104 16 92 10 C80 3 62 1 48 6 C32 12 24 28 26 56Z"
+        fill="url(#ohHair)"/>
+  <path d="M25 52 C21 26 40 8 64 8 C88 8 104 26 101 52 C96 34 82 24 64 24 C44 24 30 34 25 52Z"
+        fill="url(#ohHair)" stroke="#120e0c" stroke-width="4" stroke-linejoin="round"/>
+  <!-- rizos del contorno -->
+  <g fill="url(#ohHair)" stroke="#120e0c" stroke-width="3.4">
+    <circle cx="34" cy="26" r="11"/>
+    <circle cx="52" cy="13" r="12"/>
+    <circle cx="72" cy="11" r="12"/>
+    <circle cx="90" cy="22" r="11"/>
+    <circle cx="99" cy="40" r="9"/>
+    <circle cx="26" cy="44" r="9"/>
+  </g>
+  <g fill="#4b3f37" opacity="0.75">
+    <circle cx="50" cy="18" r="5"/>
+    <circle cx="72" cy="16" r="5"/>
+    <circle cx="88" cy="26" r="4"/>
+  </g>
+  <!-- patillas -->
+  <path d="M27 50 C28 62 30 70 32 76 C26 68 24 58 27 50Z" fill="#1c1613"/>
+  <path d="M99 52 C99 64 97 72 94 78 C99 70 101 60 99 52Z" fill="#1c1613"/>
 </svg>

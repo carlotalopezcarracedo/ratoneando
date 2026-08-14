@@ -7,8 +7,11 @@ export type HumanActivity = 'idle' | 'typing' | 'phone' | 'walking' | 'searching
 export type HumanPose = 'stand' | 'sit';
 
 const FAR_TINT = 0x9b918c;
-const HEAD_X = -6;
-const HEAD_Y = -244;
+const HEAD_X = -2;
+const HEAD_Y = -404;
+const HIP_Y = -224;
+const SHOULDER_Y = -392;
+const HEAD_SCALE = 0.92;
 
 interface HumanOptions {
   shirt?: number;
@@ -17,15 +20,18 @@ interface HumanOptions {
 }
 
 /**
- * El dueño de Ratón (y el NPC secundario del nivel 3): rig por capas con cabeza
- * que gira de forma independiente, que es lo que el jugador tiene que leer.
+ * El dueño de Ratón (y el NPC secundario del nivel 3): alto y delgado, con
+ * sudadera negra. La cabeza gira de forma independiente del cuerpo, que es lo
+ * que el jugador tiene que leer para saber si le están viendo.
  */
 export class Human extends Phaser.GameObjects.Container {
   private readonly rig: Phaser.GameObjects.Container;
   private readonly shadow: Phaser.GameObjects.Ellipse;
 
-  private readonly legNear: Part;
-  private readonly legFar: Part;
+  private readonly thighNear: Part;
+  private readonly thighFar: Part;
+  private readonly shinNear: Part;
+  private readonly shinFar: Part;
   private readonly torso: Part;
   private readonly armNear: Part;
   private readonly armFar: Part;
@@ -33,7 +39,6 @@ export class Human extends Phaser.GameObjects.Container {
 
   private readonly headNode: Phaser.GameObjects.Container;
   private readonly headTurn: Phaser.GameObjects.Container;
-  private readonly skull: Part;
   private readonly eyes: Phaser.GameObjects.Container;
   private readonly pupilA: Phaser.GameObjects.Ellipse;
   private readonly pupilB: Phaser.GameObjects.Ellipse;
@@ -54,58 +59,74 @@ export class Human extends Phaser.GameObjects.Container {
   constructor(scene: Phaser.Scene, x: number, y: number, opts: HumanOptions = {}) {
     super(scene, x, y);
 
-    this.shadow = scene.add.ellipse(0, 6, 170, 36, 0x000000, 0.24);
+    this.shadow = scene.add.ellipse(0, 6, 150, 32, 0x000000, 0.24);
     this.add(this.shadow);
 
     this.rig = scene.add.container(0, 0);
-    this.rig.setScale(opts.scale ?? 0.9);
+    this.rig.setScale(opts.scale ?? 0.75);
     this.add(this.rig);
 
-    this.legFar = new Part(scene, 'owner-leg', -16, -100, 0.5, 0.04).tint(FAR_TINT);
-    this.legNear = new Part(scene, 'owner-leg', 16, -100, 0.5, 0.04);
-    this.armFar = new Part(scene, 'owner-arm', -22, -226, 0.5, 0.06).tint(FAR_TINT);
-    this.torso = new Part(scene, 'owner-body', 0, -96, 0.5, 0.94);
-    if (opts.shirt) this.torso.tint(opts.shirt);
-    this.armNear = new Part(scene, 'owner-arm', 20, -222, 0.5, 0.06);
-    if (opts.shirt) this.armNear.tint(opts.shirt);
-    if (opts.shirt) this.armFar.tint(Phaser.Display.Color.IntegerToColor(opts.shirt).darken(20).color);
+    // Piernas con rodilla: muslo + pantorrilla encadenada, para poder sentarse.
+    this.thighFar = new Part(scene, 'owner-thigh', -12, HIP_Y - 16, 0.5, 0.04).tint(FAR_TINT);
+    this.shinFar = new Part(scene, 'owner-shin', 0, 114, 0.5, 0.05).tint(FAR_TINT);
+    this.thighFar.add(this.shinFar);
 
-    this.phone = new Part(scene, 'owner-phone', 0, 86, 0.5, 0.5);
+    this.thighNear = new Part(scene, 'owner-thigh', 12, HIP_Y - 14, 0.5, 0.04);
+    this.shinNear = new Part(scene, 'owner-shin', 0, 114, 0.5, 0.05);
+    this.thighNear.add(this.shinNear);
+    this.armFar = new Part(scene, 'owner-arm', -24, SHOULDER_Y - 4, 0.5, 0.05).tint(FAR_TINT);
+    this.torso = new Part(scene, 'owner-body', 0, HIP_Y, 0.5, 0.95);
+    if (opts.shirt) this.torso.tint(opts.shirt);
+    this.armNear = new Part(scene, 'owner-arm', 24, SHOULDER_Y, 0.5, 0.05);
+    if (opts.shirt) {
+      this.armNear.tint(opts.shirt);
+      this.armFar.tint(Phaser.Display.Color.IntegerToColor(opts.shirt).darken(20).color);
+    }
+
+    this.phone = new Part(scene, 'owner-phone', 0, 156, 0.5, 0.5);
     this.phone.setVisible(false);
     this.armNear.add(this.phone);
 
     // ---- cabeza
     this.headNode = scene.add.container(HEAD_X, HEAD_Y);
     this.headTurn = scene.add.container(0, 0);
-    this.skull = new Part(scene, 'owner-head', 0, 0, 0.5, 0.86);
+    this.headTurn.setScale(HEAD_SCALE);
+    const skull = new Part(scene, 'owner-head', 0, 0, 0.5, 0.88);
 
     this.eyes = scene.add.container(0, 0);
-    const whiteA = scene.add.ellipse(-17, -62, 15, 12, PAL.white);
-    const whiteB = scene.add.ellipse(15, -66, 13, 11, PAL.white);
+    const whiteA = scene.add.ellipse(-14, -71, 15, 12, PAL.white);
+    const whiteB = scene.add.ellipse(18, -77, 13, 11, PAL.white);
     whiteA.setStrokeStyle(2, 0x6d452c, 1);
     whiteB.setStrokeStyle(2, 0x6d452c, 1);
-    this.pupilA = scene.add.ellipse(-17, -62, 7, 7, 0x1d1512);
-    this.pupilB = scene.add.ellipse(15, -66, 6.4, 6.4, 0x1d1512);
-    this.browA = scene.add.rectangle(-18, -77, 22, 6, 0x241d1a).setOrigin(0.5);
-    this.browB = scene.add.rectangle(16, -81, 20, 6, 0x241d1a).setOrigin(0.5);
-    this.browA.setAngle(-6);
-    this.browB.setAngle(6);
+    this.pupilA = scene.add.ellipse(-14, -71, 7, 7, 0x1d1512);
+    this.pupilB = scene.add.ellipse(18, -77, 6.4, 6.4, 0x1d1512);
+    this.browA = scene.add.rectangle(-15, -87, 24, 7, 0x241d1a).setOrigin(0.5);
+    this.browB = scene.add.rectangle(19, -93, 21, 7, 0x241d1a).setOrigin(0.5);
+    this.browA.setAngle(-4);
+    this.browB.setAngle(4);
     this.eyes.add([whiteA, whiteB, this.pupilA, this.pupilB, this.browA, this.browB]);
 
-    this.headTurn.add([this.skull, this.eyes]);
+    this.headTurn.add([skull, this.eyes]);
 
     if (opts.beanie) {
       const beanie = scene.add.container(0, 0);
-      const cap = scene.add.ellipse(0, -96, 108, 66, PAL.green);
-      const brim = scene.add.rectangle(0, -70, 112, 20, PAL.greenDark).setOrigin(0.5);
-      const bobble = scene.add.circle(0, -126, 14, PAL.creamDim);
+      const cap = scene.add.ellipse(0, -104, 112, 70, PAL.green);
+      const brim = scene.add.rectangle(0, -78, 116, 22, PAL.greenDark).setOrigin(0.5);
+      const bobble = scene.add.circle(0, -136, 15, PAL.creamDim);
       beanie.add([cap, brim, bobble]);
       this.headTurn.add(beanie);
     }
 
     this.headNode.add(this.headTurn);
 
-    this.rig.add([this.legFar, this.armFar, this.legNear, this.torso, this.headNode, this.armNear]);
+    this.rig.add([
+      this.thighFar,
+      this.armFar,
+      this.thighNear,
+      this.torso,
+      this.headNode,
+      this.armNear
+    ]);
 
     scene.add.existing(this);
   }
@@ -125,13 +146,11 @@ export class Human extends Phaser.GameObjects.Container {
   /** Hacia dónde mira la CABEZA (independiente del cuerpo): esa es la amenaza. */
   setGaze(dir: -1 | 1, tilt = 0): this {
     const wanted = dir === this.facing ? 1 : -1;
-    if (this.gazeDir === dir && this.headTurn.scaleX === wanted && this.headNode.rotation === tilt) {
-      return this;
-    }
+    if (this.gazeDir === dir && this.headTurn.scaleX === wanted * HEAD_SCALE) return this;
     this.gazeDir = dir;
     this.scene.tweens.add({
       targets: this.headTurn,
-      scaleX: dir === this.facing ? 1 : -1,
+      scaleX: wanted * HEAD_SCALE,
       duration: 170,
       ease: 'Quad.easeInOut'
     });
@@ -158,12 +177,20 @@ export class Human extends Phaser.GameObjects.Container {
     this.pose = pose;
     const t = this.scene.tweens;
     if (pose === 'sit') {
-      t.add({ targets: this.rig, y: 54, duration: 300, ease: 'Quad.easeOut' });
-      t.add({ targets: this.legNear, rotation: 1.22, duration: 300, ease: 'Quad.easeOut' });
-      t.add({ targets: this.legFar, rotation: 1.14, duration: 300, ease: 'Quad.easeOut' });
+      // Muslo hacia delante y pantorrilla vertical: rodilla en ángulo recto.
+      t.add({ targets: this.rig, y: 86, duration: 300, ease: 'Quad.easeOut' });
+      t.add({ targets: this.thighNear, rotation: 1.32, duration: 300, ease: 'Quad.easeOut' });
+      t.add({ targets: this.thighFar, rotation: 1.2, duration: 300, ease: 'Quad.easeOut' });
+      t.add({ targets: this.shinNear, rotation: -1.3, duration: 300, ease: 'Quad.easeOut' });
+      t.add({ targets: this.shinFar, rotation: -1.16, duration: 300, ease: 'Quad.easeOut' });
     } else {
       t.add({ targets: this.rig, y: 0, duration: 300, ease: 'Quad.easeOut' });
-      t.add({ targets: [this.legNear, this.legFar], rotation: 0, duration: 300, ease: 'Quad.easeOut' });
+      t.add({
+        targets: [this.thighNear, this.thighFar, this.shinNear, this.shinFar],
+        rotation: 0,
+        duration: 300,
+        ease: 'Quad.easeOut'
+      });
     }
     return this;
   }
@@ -226,15 +253,15 @@ export class Human extends Phaser.GameObjects.Container {
   headWorld(): { x: number; y: number } {
     return {
       x: this.x + (this.rig.x + this.headNode.x) * this.rig.scaleX,
-      y: this.y + (this.rig.y + this.headNode.y - 70) * this.rig.scaleY
+      y: this.y + (this.rig.y + this.headNode.y - 80) * this.rig.scaleY
     };
   }
 
-  /** Origen del cono de visión. */
+  /** Origen del cono de visión: a la altura de los ojos. */
   eyeWorld(): { x: number; y: number } {
     return {
       x: this.x + (this.rig.x + this.headNode.x) * this.rig.scaleX,
-      y: this.y + (this.rig.y + this.headNode.y - 60) * this.rig.scaleY
+      y: this.y + (this.rig.y + this.headNode.y - 70) * this.rig.scaleY
     };
   }
 
@@ -243,16 +270,16 @@ export class Human extends Phaser.GameObjects.Container {
     this.clock += dt;
 
     const breathe = Math.sin(this.clock * 1.9);
-    this.torso.scaleY = 1 + breathe * 0.013;
-    this.headNode.y = HEAD_Y + breathe * 2.2;
+    this.torso.scaleY = 1 + breathe * 0.011;
+    this.headNode.y = HEAD_Y + breathe * 2.4;
 
-    this.pupilA.x = damp(this.pupilA.x, -17 + this.pupilTarget.x, 12, dt);
-    this.pupilB.x = damp(this.pupilB.x, 15 + this.pupilTarget.x, 12, dt);
-    this.pupilA.y = damp(this.pupilA.y, -62 + this.pupilTarget.y, 12, dt);
-    this.pupilB.y = damp(this.pupilB.y, -66 + this.pupilTarget.y, 12, dt);
+    this.pupilA.x = damp(this.pupilA.x, -14 + this.pupilTarget.x, 12, dt);
+    this.pupilB.x = damp(this.pupilB.x, 18 + this.pupilTarget.x, 12, dt);
+    this.pupilA.y = damp(this.pupilA.y, -71 + this.pupilTarget.y, 12, dt);
+    this.pupilB.y = damp(this.pupilB.y, -77 + this.pupilTarget.y, 12, dt);
 
-    this.browA.y = damp(this.browA.y, -77 + this.browTarget * 26, 10, dt);
-    this.browB.y = damp(this.browB.y, -81 + this.browTarget * 26, 10, dt);
+    this.browA.y = damp(this.browA.y, -87 + this.browTarget * 26, 10, dt);
+    this.browB.y = damp(this.browB.y, -93 + this.browTarget * 26, 10, dt);
 
     this.blinkAt -= dt;
     if (this.blinkAt <= 0) {
@@ -272,18 +299,23 @@ export class Human extends Phaser.GameObjects.Container {
     }
 
     if (this.motion > 0.02) {
-      this.walkPhase += dt * (7 + this.motion * 6);
-      const amp = 0.42 + this.motion * 0.2;
-      this.legNear.rotation = Math.sin(this.walkPhase) * amp;
-      this.legFar.rotation = Math.sin(this.walkPhase + Math.PI) * amp;
+      this.walkPhase += dt * (6 + this.motion * 5);
+      const amp = 0.38 + this.motion * 0.18;
+      this.thighNear.rotation = Math.sin(this.walkPhase) * amp;
+      this.thighFar.rotation = Math.sin(this.walkPhase + Math.PI) * amp;
+      // La pantorrilla va un poco retrasada: así la rodilla se dobla al andar.
+      this.shinNear.rotation = Math.min(0, Math.sin(this.walkPhase - 0.9)) * amp * 1.5;
+      this.shinFar.rotation = Math.min(0, Math.sin(this.walkPhase + Math.PI - 0.9)) * amp * 1.5;
       if (this.activity === 'walking') {
-        this.armNear.rotation = Math.sin(this.walkPhase + Math.PI) * 0.32;
-        this.armFar.rotation = Math.sin(this.walkPhase) * 0.32;
+        this.armNear.rotation = Math.sin(this.walkPhase + Math.PI) * 0.3;
+        this.armFar.rotation = Math.sin(this.walkPhase) * 0.3;
       }
-      this.rig.y = Math.abs(Math.sin(this.walkPhase)) * -5;
+      this.rig.y = Math.abs(Math.sin(this.walkPhase)) * -6;
     } else if (this.pose === 'stand') {
-      this.legNear.rotation = damp(this.legNear.rotation, 0, 9, dt);
-      this.legFar.rotation = damp(this.legFar.rotation, 0, 9, dt);
+      this.thighNear.rotation = damp(this.thighNear.rotation, 0, 9, dt);
+      this.thighFar.rotation = damp(this.thighFar.rotation, 0, 9, dt);
+      this.shinNear.rotation = damp(this.shinNear.rotation, 0, 9, dt);
+      this.shinFar.rotation = damp(this.shinFar.rotation, 0, 9, dt);
       this.rig.y = damp(this.rig.y, 0, 9, dt);
     }
   }

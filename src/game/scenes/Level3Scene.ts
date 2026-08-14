@@ -14,6 +14,7 @@ import { clamp, pick, rand, segmentIntersectsRect, type Rect } from '../utils/he
 import { Raton } from '../entities/Raton';
 import { Human } from '../entities/Human';
 import { MissionHUD } from '../ui/MissionHUD';
+import { drawPanel } from '../ui/Panel';
 import { ProgressBar } from '../ui/ProgressBar';
 import { Hint } from '../ui/Hint';
 import { TouchControls, needsTouch } from '../ui/TouchControls';
@@ -75,6 +76,8 @@ export class Level3Scene extends Phaser.Scene {
   private cones!: Phaser.GameObjects.Graphics;
   private jarNode!: Phaser.GameObjects.Container;
   private objectiveMark!: Phaser.GameObjects.Container;
+  private stealthChip!: Phaser.GameObjects.Container;
+  private stealthLabel!: Phaser.GameObjects.Text;
 
   private solids: Solid[] = [];
   private watchers: Watcher[] = [];
@@ -238,7 +241,7 @@ export class Level3Scene extends Phaser.Scene {
     this.raton.setDepth(Math.round(HIDEOUT.y));
     this.raton.setFacing(1).setExpression('normal');
 
-    const owner = new Human(this, 660, 500, { scale: 0.95 });
+    const owner = new Human(this, 660, 500, { scale: 0.6 });
     owner.setFacing(-1).setActivity('walking');
     this.watchers.push({
       human: owner,
@@ -252,7 +255,7 @@ export class Level3Scene extends Phaser.Scene {
       range: 430
     });
 
-    const visitor = new Human(this, 1140, 466, { scale: 0.88, shirt: PAL.popDeep, beanie: true });
+    const visitor = new Human(this, 1140, 466, { scale: 0.56, shirt: PAL.popDeep, beanie: true });
     visitor.setFacing(-1).setActivity('idle');
     this.watchers.push({
       human: visitor,
@@ -294,6 +297,20 @@ export class Level3Scene extends Phaser.Scene {
       .setScrollFactor(0)
       .setDepth(6000)
       .setVisible(false);
+
+    // Indicador de sigilo pegado a Ratón: OCULTO / ¡TE VEN!
+    this.stealthChip = this.add.container(0, 0).setDepth(8500).setVisible(false);
+    const chipBg = this.add.graphics();
+    drawPanel(chipBg, -62, -19, 124, 38, { radius: 19, fillAlpha: 0.9, strokeWidth: 3 });
+    this.stealthLabel = this.add
+      .text(0, 0, 'OCULTO', {
+        fontFamily: FONT_TITLE,
+        fontSize: '19px',
+        color: css(PAL.ok),
+        fontStyle: '800'
+      })
+      .setOrigin(0.5);
+    this.stealthChip.add([chipBg, this.stealthLabel]);
 
     this.hint = new Hint(this, 132);
 
@@ -819,6 +836,7 @@ export class Level3Scene extends Phaser.Scene {
 
   private updateDetection(dt: number): void {
     const seenBy = this.watchers.filter((w) => this.canSee(w));
+    this.updateStealthChip(seenBy.length > 0);
     if (seenBy.length > 0) {
       const rate = (0.42 + seenBy.length * 0.16) * (this.hasNut ? 1.5 : 1);
       this.detection = clamp(this.detection + rate * dt, 0, 1);
@@ -835,6 +853,22 @@ export class Level3Scene extends Phaser.Scene {
     }
 
     if (this.detection >= 1) this.busted();
+  }
+
+  /** Dice al jugador, sin ambigüedad, si ahora mismo está a cubierto. */
+  private updateStealthChip(seen: boolean): void {
+    const nearWatcher = this.watchers.some(
+      (w) => Math.hypot(w.human.x - this.raton.x, (w.floorY - this.raton.y) * 1.8) < w.range + 90
+    );
+    if (!nearWatcher && !seen) {
+      this.stealthChip.setVisible(false);
+      return;
+    }
+    this.stealthChip.setVisible(true);
+    this.stealthChip.setPosition(this.raton.x, this.raton.y - 196);
+    this.stealthLabel
+      .setText(seen ? '¡TE VEN!' : 'OCULTO')
+      .setColor(css(seen ? PAL.danger : PAL.ok));
   }
 
   private busted(): void {

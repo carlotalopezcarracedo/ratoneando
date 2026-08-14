@@ -70,6 +70,9 @@ export class Level2Scene extends Phaser.Scene {
   private taughtMove = false;
   private taughtBark = false;
   private nearMisses = new Set<Bicycle>();
+  private advanceMark = WORLD_H;
+  private laneCombo = 0;
+  private lastAdvanceAt = 0;
 
   private keys!: {
     up: Phaser.Input.Keyboard.Key[];
@@ -121,6 +124,9 @@ export class Level2Scene extends Phaser.Scene {
     this.taughtMove = false;
     this.taughtBark = false;
     this.nearMisses = new Set();
+    this.advanceMark = WORLD_H;
+    this.laneCombo = 0;
+    this.lastAdvanceAt = 0;
   }
 
   // ------------------------------------------------------------------ mundo
@@ -230,7 +236,7 @@ export class Level2Scene extends Phaser.Scene {
       [980, GOAL_Y - 40, -1]
     ];
     spots.forEach(([x, y, dir]) => {
-      const p = new Human(this, x, y, { scale: 0.8, shirt: PAL.pop, beanie: chance(0.5) });
+      const p = new Human(this, x, y, { scale: 0.55, shirt: PAL.pop, beanie: chance(0.5) });
       p.setDepth(Math.round(y));
       p.setFacing(dir).setActivity('walking').setMotion(0.45);
       this.pedestrians.push(p);
@@ -390,6 +396,31 @@ export class Level2Scene extends Phaser.Scene {
       kind = 'rocket';
     }
 
+    // Aviso en el borde del carril antes de que entre la bici: nada de golpes
+    // que no se puedan ver venir.
+    this.showLaneWarning(lane, kind === 'rocket');
+    this.time.delayedCall(660, () => this.createBike(lane, kind));
+  }
+
+  private showLaneWarning(lane: Lane, urgent: boolean): void {
+    const x = lane.dir === 1 ? 30 : GAME_WIDTH - 30;
+    const tip = 26 * lane.dir;
+    const arrow = this.add
+      .triangle(x, lane.y - 46, 0, 0, 0, 34, tip, 17, urgent ? PAL.danger : PAL.amber)
+      .setDepth(8000)
+      .setAlpha(0);
+    this.tweens.add({
+      targets: arrow,
+      alpha: 0.95,
+      duration: 150,
+      yoyo: true,
+      repeat: 1,
+      onComplete: () => arrow.destroy()
+    });
+  }
+
+  private createBike(lane: Lane, kind: BikeKind): void {
+    if (this.finished) return;
     const x = lane.dir === 1 ? -240 : GAME_WIDTH + 240;
     const bike = new Bicycle(this, x, lane.y, kind, lane.dir);
     bike.setDepth(Math.round(lane.y));
@@ -636,6 +667,24 @@ export class Level2Scene extends Phaser.Scene {
   private checkProgress(): void {
     const y = this.raton.y;
     if (y < this.bestY) this.bestY = y;
+
+    // Avanzar sin pararse encadena bonificación: premia arriesgar.
+    if (y < this.advanceMark - LANE_H) {
+      this.advanceMark -= LANE_H;
+      const now = this.time.now;
+      this.laneCombo = now - this.lastAdvanceAt < 3400 ? this.laneCombo + 1 : 1;
+      this.lastAdvanceAt = now;
+      if (this.laneCombo >= 2) {
+        const gained = Run.addChaos(50 * this.laneCombo, 2);
+        this.hud.bump(true);
+        floatText(this, this.raton.x, this.raton.y - 170, `¡SIN PARAR! x${this.laneCombo}  +${gained}`, {
+          color: PAL.amber,
+          size: 20,
+          title: true,
+          depth: 9000
+        });
+      }
+    }
 
     this.safeBands.forEach((band, i) => {
       if (y > band[0] && y < band[1] && i > this.checkpointIndex) {

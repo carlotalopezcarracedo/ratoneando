@@ -24,7 +24,8 @@ const CHARACTERS = [
   'owner-head',
   'owner-body',
   'owner-arm',
-  'owner-leg',
+  'owner-thigh',
+  'owner-shin',
   'owner-phone'
 ];
 

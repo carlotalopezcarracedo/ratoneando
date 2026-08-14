@@ -1,38 +1,44 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="200" height="132" viewBox="0 0 200 132">
-  <!-- Ratón · torso. Orientado hacia la IZQUIERDA (pecho a la izquierda, grupa a la derecha). -->
+<svg xmlns="http://www.w3.org/2000/svg" width="230" height="162" viewBox="0 0 230 162">
+  <!--
+    Ratón · torso CON CUELLO. Orientado hacia la IZQUIERDA.
+    El cuello sube por delante (arriba-izquierda) para que la cabeza se apoye
+    encima y nunca se vea despegada. Barriga recogida, tipo podenco.
+  -->
   <defs>
-    <linearGradient id="rbFur" x1="0.35" y1="0" x2="0.6" y2="1">
-      <stop offset="0" stop-color="#3d3330"/>
-      <stop offset="0.42" stop-color="#241d1a"/>
-      <stop offset="1" stop-color="#130f0e"/>
+    <linearGradient id="rbFur" x1="0.3" y1="0" x2="0.55" y2="1">
+      <stop offset="0" stop-color="#453a35"/>
+      <stop offset="0.4" stop-color="#282019"/>
+      <stop offset="1" stop-color="#120e0c"/>
     </linearGradient>
-    <linearGradient id="rbChest" x1="0" y1="0" x2="0.4" y2="1">
-      <stop offset="0" stop-color="#f7efe1"/>
-      <stop offset="1" stop-color="#d9c8ae"/>
+    <linearGradient id="rbBib" x1="0.2" y1="0" x2="0.8" y2="1">
+      <stop offset="0" stop-color="#f8f1e5"/>
+      <stop offset="1" stop-color="#cfbda3"/>
     </linearGradient>
     <clipPath id="rbClip">
-      <path d="M26 66 C28 36 58 17 104 17 C152 17 184 34 190 63 C196 90 183 114 156 121 C120 130 60 128 36 115 C23 108 24 83 26 66Z"/>
+      <path d="M56 10 C42 26 34 46 33 68 C32 90 31 110 40 126 C50 144 70 152 92 150 C110 148 122 142 130 133 C144 145 168 152 190 146 C214 138 228 114 224 90 C220 63 200 47 172 45 C150 43 130 47 116 56 C110 35 94 13 76 7 C66 4 60 5 56 10Z"/>
     </clipPath>
   </defs>
 
-  <path d="M26 66 C28 36 58 17 104 17 C152 17 184 34 190 63 C196 90 183 114 156 121 C120 130 60 128 36 115 C23 108 24 83 26 66Z"
-        fill="url(#rbFur)" stroke="#100c0b" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M56 10 C42 26 34 46 33 68 C32 90 31 110 40 126 C50 144 70 152 92 150 C110 148 122 142 130 133 C144 145 168 152 190 146 C214 138 228 114 224 90 C220 63 200 47 172 45 C150 43 130 47 116 56 C110 35 94 13 76 7 C66 4 60 5 56 10Z"
+        fill="url(#rbFur)" stroke="#0f0b0a" stroke-width="5" stroke-linejoin="round"/>
 
   <g clip-path="url(#rbClip)">
-    <!-- lomo brillante -->
-    <path d="M34 56 C46 28 78 16 112 18 C150 20 176 34 188 58 C170 36 138 26 108 27 C72 28 46 38 34 56Z"
-          fill="#574a45" opacity="0.55"/>
-    <!-- sombra de la barriga -->
-    <path d="M22 96 C60 128 146 130 194 100 C186 128 130 138 74 132 C44 128 26 116 22 96Z"
-          fill="#0c0908" opacity="0.5"/>
-    <!-- mancha blanca del pecho -->
-    <path d="M24 68 C34 60 46 64 50 76 C55 90 50 108 40 116 C30 124 18 120 14 108 C10 92 14 76 24 68Z"
-          fill="url(#rbChest)"/>
-    <path d="M24 68 C34 60 46 64 50 76 C55 90 50 108 40 116" fill="none" stroke="#c0ad93" stroke-width="2.5" opacity="0.7"/>
-    <!-- textura de pelo corto -->
-    <g stroke="#4b3f3a" stroke-width="2" stroke-linecap="round" opacity="0.4">
-      <path d="M86 34 l10 7"/><path d="M104 30 l10 7"/><path d="M122 33 l10 7"/>
-      <path d="M140 40 l9 8"/><path d="M156 50 l8 8"/><path d="M70 42 l9 8"/>
+    <!-- lomo iluminado -->
+    <path d="M112 58 C132 46 158 42 182 48 C206 54 220 70 224 90 C210 66 186 54 158 55 C136 56 122 58 112 58Z"
+          fill="#5d4f47" opacity="0.6"/>
+    <path d="M58 14 C48 30 42 48 41 68 C46 46 54 28 66 16Z" fill="#5d4f47" opacity="0.5"/>
+    <!-- sombra de barriga -->
+    <path d="M32 108 C56 142 108 152 132 128 C150 148 196 156 226 122 C222 152 176 164 138 146 C108 162 46 152 32 108Z"
+          fill="#0b0808" opacity="0.55"/>
+    <!-- babero blanco del pecho -->
+    <path d="M50 62 C64 58 76 70 78 90 C80 112 72 134 58 140 C42 146 32 132 31 110 C30 86 36 66 50 62Z"
+          fill="url(#rbBib)"/>
+    <path d="M50 62 C64 58 76 70 78 90 C80 112 72 134 58 140" fill="none" stroke="#bda98d" stroke-width="2.5" opacity="0.65"/>
+    <!-- pelo corto -->
+    <g stroke="#4e433c" stroke-width="2.2" stroke-linecap="round" opacity="0.38">
+      <path d="M132 60 l11 8"/><path d="M152 55 l11 8"/><path d="M174 54 l10 8"/>
+      <path d="M194 62 l9 9"/><path d="M208 78 l8 9"/><path d="M100 78 l10 8"/>
+      <path d="M116 96 l10 8"/>
     </g>
   </g>
 </svg>
