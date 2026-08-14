@@ -8,10 +8,14 @@ export type HumanPose = 'stand' | 'sit';
 
 const FAR_TINT = 0x9b918c;
 const HEAD_X = -2;
-const HEAD_Y = -404;
+const HEAD_Y = -390;
 const HIP_Y = -224;
 const SHOULDER_Y = -392;
 const HEAD_SCALE = 0.92;
+
+/** Centros de los ojos del SVG de la cabeza, en coordenadas locales. */
+const EYE_A = { x: -15, y: -82 };
+const EYE_B = { x: 21, y: -86 };
 
 interface HumanOptions {
   shirt?: number;
@@ -39,11 +43,11 @@ export class Human extends Phaser.GameObjects.Container {
 
   private readonly headNode: Phaser.GameObjects.Container;
   private readonly headTurn: Phaser.GameObjects.Container;
-  private readonly eyes: Phaser.GameObjects.Container;
   private readonly pupilA: Phaser.GameObjects.Ellipse;
   private readonly pupilB: Phaser.GameObjects.Ellipse;
-  private readonly browA: Phaser.GameObjects.Rectangle;
-  private readonly browB: Phaser.GameObjects.Rectangle;
+  private readonly irisA: Phaser.GameObjects.Ellipse;
+  private readonly irisB: Phaser.GameObjects.Ellipse;
+  private readonly lids: Phaser.GameObjects.Container;
 
   private facing: -1 | 1 = -1;
   private gazeDir: -1 | 1 = -1;
@@ -54,7 +58,6 @@ export class Human extends Phaser.GameObjects.Container {
   private motion = 0;
   private blinkAt = 2;
   private pupilTarget = { x: 0, y: 0 };
-  private browTarget = 0;
 
   constructor(scene: Phaser.Scene, x: number, y: number, opts: HumanOptions = {}) {
     super(scene, x, y);
@@ -93,26 +96,28 @@ export class Human extends Phaser.GameObjects.Container {
     this.headTurn.setScale(HEAD_SCALE);
     const skull = new Part(scene, 'owner-head', 0, 0, 0.5, 0.88);
 
-    this.eyes = scene.add.container(0, 0);
-    const whiteA = scene.add.ellipse(-14, -71, 15, 12, PAL.white);
-    const whiteB = scene.add.ellipse(18, -77, 13, 11, PAL.white);
-    whiteA.setStrokeStyle(2, 0x6d452c, 1);
-    whiteB.setStrokeStyle(2, 0x6d452c, 1);
-    this.pupilA = scene.add.ellipse(-14, -71, 7, 7, 0x1d1512);
-    this.pupilB = scene.add.ellipse(18, -77, 6.4, 6.4, 0x1d1512);
-    this.browA = scene.add.rectangle(-15, -87, 24, 7, 0x241d1a).setOrigin(0.5);
-    this.browB = scene.add.rectangle(19, -93, 21, 7, 0x241d1a).setOrigin(0.5);
-    this.browA.setAngle(-4);
-    this.browB.setAngle(4);
-    this.eyes.add([whiteA, whiteB, this.pupilA, this.pupilB, this.browA, this.browB]);
+    // Los ojos van pintados en el SVG; aquí sólo la pupila (mirada) y el
+    // párpado (parpadeo), colocados justo encima de cada ojo.
+    const irisA = scene.add.ellipse(EYE_A.x, EYE_A.y, 11, 11, 0x6b4423);
+    const irisB = scene.add.ellipse(EYE_B.x, EYE_B.y, 10, 10, 0x6b4423);
+    this.pupilA = scene.add.ellipse(EYE_A.x, EYE_A.y, 6, 6, 0x140f0c);
+    this.pupilB = scene.add.ellipse(EYE_B.x, EYE_B.y, 5.5, 5.5, 0x140f0c);
+    this.irisA = irisA;
+    this.irisB = irisB;
 
-    this.headTurn.add([skull, this.eyes]);
+    this.lids = scene.add.container(0, 0);
+    const lidA = scene.add.ellipse(EYE_A.x, EYE_A.y, 22, 17, 0xe0a97d);
+    const lidB = scene.add.ellipse(EYE_B.x, EYE_B.y, 20, 16, 0xe0a97d);
+    this.lids.add([lidA, lidB]);
+    this.lids.scaleY = 0;
+
+    this.headTurn.add([skull, irisA, irisB, this.pupilA, this.pupilB, this.lids]);
 
     if (opts.beanie) {
       const beanie = scene.add.container(0, 0);
-      const cap = scene.add.ellipse(0, -104, 112, 70, PAL.green);
-      const brim = scene.add.rectangle(0, -78, 116, 22, PAL.greenDark).setOrigin(0.5);
-      const bobble = scene.add.circle(0, -136, 15, PAL.creamDim);
+      const cap = scene.add.ellipse(0, -122, 116, 72, PAL.green);
+      const brim = scene.add.rectangle(0, -98, 120, 22, PAL.greenDark).setOrigin(0.5);
+      const bobble = scene.add.circle(0, -154, 15, PAL.creamDim);
       beanie.add([cap, brim, bobble]);
       this.headTurn.add(beanie);
     }
@@ -205,31 +210,25 @@ export class Human extends Phaser.GameObjects.Container {
       case 'typing':
         t.add({ targets: this.armNear, rotation: -1.02, duration: 260, ease: 'Quad.easeOut' });
         t.add({ targets: this.armFar, rotation: -0.92, duration: 260, ease: 'Quad.easeOut' });
-        this.browTarget = 0;
         break;
       case 'phone':
         t.add({ targets: this.armNear, rotation: -1.42, duration: 300, ease: 'Quad.easeOut' });
         t.add({ targets: this.armFar, rotation: -0.28, duration: 300, ease: 'Quad.easeOut' });
-        this.browTarget = 0.08;
         break;
       case 'searching':
         t.add({ targets: this.armNear, rotation: -0.34, duration: 260 });
         t.add({ targets: this.armFar, rotation: 0.22, duration: 260 });
-        this.browTarget = -0.16;
         break;
       case 'startled':
         t.add({ targets: this.armNear, rotation: 0.55, duration: 160, ease: 'Back.easeOut' });
         t.add({ targets: this.armFar, rotation: -0.55, duration: 160, ease: 'Back.easeOut' });
-        this.browTarget = -0.3;
         break;
       case 'walking':
         t.add({ targets: [this.armNear, this.armFar], rotation: 0, duration: 200 });
-        this.browTarget = 0;
         break;
       default:
         t.add({ targets: this.armNear, rotation: 0.06, duration: 260 });
         t.add({ targets: this.armFar, rotation: -0.05, duration: 260 });
-        this.browTarget = 0;
     }
     return this;
   }
@@ -273,21 +272,20 @@ export class Human extends Phaser.GameObjects.Container {
     this.torso.scaleY = 1 + breathe * 0.011;
     this.headNode.y = HEAD_Y + breathe * 2.4;
 
-    this.pupilA.x = damp(this.pupilA.x, -14 + this.pupilTarget.x, 12, dt);
-    this.pupilB.x = damp(this.pupilB.x, 18 + this.pupilTarget.x, 12, dt);
-    this.pupilA.y = damp(this.pupilA.y, -71 + this.pupilTarget.y, 12, dt);
-    this.pupilB.y = damp(this.pupilB.y, -77 + this.pupilTarget.y, 12, dt);
-
-    this.browA.y = damp(this.browA.y, -87 + this.browTarget * 26, 10, dt);
-    this.browB.y = damp(this.browB.y, -93 + this.browTarget * 26, 10, dt);
+    this.pupilA.x = damp(this.pupilA.x, EYE_A.x + this.pupilTarget.x, 12, dt);
+    this.pupilB.x = damp(this.pupilB.x, EYE_B.x + this.pupilTarget.x, 12, dt);
+    this.pupilA.y = damp(this.pupilA.y, EYE_A.y + this.pupilTarget.y, 12, dt);
+    this.pupilB.y = damp(this.pupilB.y, EYE_B.y + this.pupilTarget.y, 12, dt);
+    this.irisA.setPosition(this.pupilA.x, this.pupilA.y);
+    this.irisB.setPosition(this.pupilB.x, this.pupilB.y);
 
     this.blinkAt -= dt;
     if (this.blinkAt <= 0) {
       this.blinkAt = 2.4 + Math.random() * 3.2;
       this.scene.tweens.add({
-        targets: this.eyes,
-        scaleY: 0.08,
-        duration: 80,
+        targets: this.lids,
+        scaleY: 1,
+        duration: 90,
         yoyo: true,
         ease: 'Quad.easeInOut'
       });

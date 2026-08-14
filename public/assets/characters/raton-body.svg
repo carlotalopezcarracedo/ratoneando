@@ -1,44 +1,72 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="230" height="162" viewBox="0 0 230 162">
+<svg xmlns="http://www.w3.org/2000/svg" width="312" height="200" viewBox="0 0 312 200">
   <!--
-    Ratón · torso CON CUELLO. Orientado hacia la IZQUIERDA.
-    El cuello sube por delante (arriba-izquierda) para que la cabeza se apoye
-    encima y nunca se vea despegada. Barriga recogida, tipo podenco.
+    Ratón · CUERPO COMPLETO EN UNA SOLA PIEZA: hocico, cabeza, cuello, tronco y
+    grupa con un único contorno. Las orejas y las patas van DETRÁS de esta capa,
+    de modo que sus arranques quedan escondidos y nunca se ve una junta.
+    Orientado hacia la IZQUIERDA.
   -->
   <defs>
-    <linearGradient id="rbFur" x1="0.3" y1="0" x2="0.55" y2="1">
-      <stop offset="0" stop-color="#453a35"/>
-      <stop offset="0.4" stop-color="#282019"/>
+    <linearGradient id="rbFur" x1="0.25" y1="0" x2="0.6" y2="1">
+      <stop offset="0" stop-color="#463a34"/>
+      <stop offset="0.42" stop-color="#27201a"/>
       <stop offset="1" stop-color="#120e0c"/>
     </linearGradient>
     <linearGradient id="rbBib" x1="0.2" y1="0" x2="0.8" y2="1">
       <stop offset="0" stop-color="#f8f1e5"/>
-      <stop offset="1" stop-color="#cfbda3"/>
+      <stop offset="1" stop-color="#cdbb9f"/>
     </linearGradient>
+    <radialGradient id="rbNose" cx="0.35" cy="0.3" r="0.8">
+      <stop offset="0" stop-color="#5c5153"/>
+      <stop offset="0.45" stop-color="#1c1517"/>
+      <stop offset="1" stop-color="#0a0708"/>
+    </radialGradient>
     <clipPath id="rbClip">
-      <path d="M56 10 C42 26 34 46 33 68 C32 90 31 110 40 126 C50 144 70 152 92 150 C110 148 122 142 130 133 C144 145 168 152 190 146 C214 138 228 114 224 90 C220 63 200 47 172 45 C150 43 130 47 116 56 C110 35 94 13 76 7 C66 4 60 5 56 10Z"/>
+      <path d="M18 78 C12 70 16 60 30 54 C48 46 62 42 78 40 C88 24 106 14 128 15 C154 16 172 30 178 54 C184 72 194 82 208 84 C234 80 260 82 278 94 C298 108 300 140 284 154 C268 168 246 170 228 162 C210 170 184 174 162 170 C144 167 130 158 122 146 C110 128 98 116 82 108 C64 102 42 100 28 96 C18 93 14 86 18 78Z"/>
     </clipPath>
   </defs>
 
-  <path d="M56 10 C42 26 34 46 33 68 C32 90 31 110 40 126 C50 144 70 152 92 150 C110 148 122 142 130 133 C144 145 168 152 190 146 C214 138 228 114 224 90 C220 63 200 47 172 45 C150 43 130 47 116 56 C110 35 94 13 76 7 C66 4 60 5 56 10Z"
+  <!-- silueta única -->
+  <path d="M18 78 C12 70 16 60 30 54 C48 46 62 42 78 40 C88 24 106 14 128 15 C154 16 172 30 178 54 C184 72 194 82 208 84 C234 80 260 82 278 94 C298 108 300 140 284 154 C268 168 246 170 228 162 C210 170 184 174 162 170 C144 167 130 158 122 146 C110 128 98 116 82 108 C64 102 42 100 28 96 C18 93 14 86 18 78Z"
         fill="url(#rbFur)" stroke="#0f0b0a" stroke-width="5" stroke-linejoin="round"/>
 
   <g clip-path="url(#rbClip)">
+    <!-- luz sobre el cráneo y la caña del hocico -->
+    <path d="M80 40 C94 22 116 14 138 20 C160 26 174 42 178 58 C166 36 142 24 118 26 C100 28 88 33 80 40Z"
+          fill="#62544c" opacity="0.62"/>
+    <path d="M78 42 C60 46 42 50 28 56 C46 54 64 50 80 48Z" fill="#5a4d46" opacity="0.5"/>
     <!-- lomo iluminado -->
-    <path d="M112 58 C132 46 158 42 182 48 C206 54 220 70 224 90 C210 66 186 54 158 55 C136 56 122 58 112 58Z"
+    <path d="M200 86 C226 78 258 80 278 94 C294 106 299 124 296 138 C286 112 262 94 232 92 C216 91 206 88 200 86Z"
           fill="#5d4f47" opacity="0.6"/>
-    <path d="M58 14 C48 30 42 48 41 68 C46 46 54 28 66 16Z" fill="#5d4f47" opacity="0.5"/>
-    <!-- sombra de barriga -->
-    <path d="M32 108 C56 142 108 152 132 128 C150 148 196 156 226 122 C222 152 176 164 138 146 C108 162 46 152 32 108Z"
-          fill="#0b0808" opacity="0.55"/>
-    <!-- babero blanco del pecho -->
-    <path d="M50 62 C64 58 76 70 78 90 C80 112 72 134 58 140 C42 146 32 132 31 110 C30 86 36 66 50 62Z"
+    <!-- mejilla -->
+    <ellipse cx="126" cy="80" rx="30" ry="22" fill="#3d322c" opacity="0.45"/>
+    <!-- sombras bajas -->
+    <path d="M120 150 C142 168 190 176 232 162 C258 172 292 164 302 140 C300 176 250 186 226 168 C186 180 136 174 120 150Z"
+          fill="#0b0808" opacity="0.5"/>
+    <path d="M20 90 C40 100 66 104 84 108 C64 112 30 106 20 90Z" fill="#0b0808" opacity="0.45"/>
+
+    <!-- babero blanco del pecho y garganta -->
+    <path d="M100 116 C116 112 132 126 138 146 C144 166 138 178 122 176 C104 174 92 156 92 138 C92 126 94 118 100 116Z"
           fill="url(#rbBib)"/>
-    <path d="M50 62 C64 58 76 70 78 90 C80 112 72 134 58 140" fill="none" stroke="#bda98d" stroke-width="2.5" opacity="0.65"/>
+    <path d="M100 116 C116 112 132 126 138 146" fill="none" stroke="#bba98d" stroke-width="2.4" opacity="0.6"/>
+
     <!-- pelo corto -->
-    <g stroke="#4e433c" stroke-width="2.2" stroke-linecap="round" opacity="0.38">
-      <path d="M132 60 l11 8"/><path d="M152 55 l11 8"/><path d="M174 54 l10 8"/>
-      <path d="M194 62 l9 9"/><path d="M208 78 l8 9"/><path d="M100 78 l10 8"/>
-      <path d="M116 96 l10 8"/>
+    <g stroke="#4e433c" stroke-width="2.2" stroke-linecap="round" opacity="0.35">
+      <path d="M196 92 l11 8"/><path d="M220 88 l11 8"/><path d="M246 90 l10 8"/>
+      <path d="M266 100 l9 9"/><path d="M150 108 l10 8"/><path d="M172 100 l10 8"/>
     </g>
+  </g>
+
+  <!-- nariz -->
+  <path d="M20 66 C32 61 45 66 46 76 C47 87 36 92 24 90 C10 87 6 71 20 66Z"
+        fill="url(#rbNose)" stroke="#0a0707" stroke-width="3" stroke-linejoin="round"/>
+  <ellipse cx="24" cy="70" rx="6" ry="3.4" fill="#8d8285" opacity="0.6"/>
+  <!-- boca -->
+  <path d="M28 88 L30 96" stroke="#0a0707" stroke-width="3" stroke-linecap="round"/>
+  <path d="M30 96 C42 103 58 102 66 95" fill="none" stroke="#0a0707" stroke-width="3.4" stroke-linecap="round"/>
+
+  <!-- bigotes -->
+  <g stroke="#a39489" stroke-width="1.8" stroke-linecap="round" opacity="0.45">
+    <path d="M44 72 C60 66 74 64 88 66"/>
+    <path d="M46 81 C62 79 76 79 90 82"/>
   </g>
 </svg>

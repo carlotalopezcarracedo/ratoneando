@@ -1,31 +1,31 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="126" height="134" viewBox="0 0 126 134">
+<svg xmlns="http://www.w3.org/2000/svg" width="108" height="132" viewBox="0 0 108 132">
   <!--
-    Ratón · oreja gigante, ancha y de punta redondeada. En el juego se inclinan
-    MUCHO hacia los lados (es su rasgo más reconocible), no rectas hacia arriba.
-    Pivote en la base (abajo-centro).
+    Ratón · oreja gigante: triángulo ancho de base y con la punta marcada, como
+    en la foto. Va DETRÁS del cuerpo, así que la base queda oculta bajo la
+    cabeza. Pivote en la base (abajo-centro).
   -->
   <defs>
     <linearGradient id="reFur" x1="0.15" y1="0" x2="0.85" y2="1">
-      <stop offset="0" stop-color="#40352f"/>
+      <stop offset="0" stop-color="#41362f"/>
       <stop offset="0.5" stop-color="#251d17"/>
       <stop offset="1" stop-color="#120e0c"/>
     </linearGradient>
     <linearGradient id="reIn" x1="0.25" y1="0" x2="0.75" y2="1">
-      <stop offset="0" stop-color="#9a716c"/>
-      <stop offset="0.55" stop-color="#6f4d48"/>
-      <stop offset="1" stop-color="#40292a"/>
+      <stop offset="0" stop-color="#9c736d"/>
+      <stop offset="0.55" stop-color="#6d4b46"/>
+      <stop offset="1" stop-color="#3e2828"/>
     </linearGradient>
   </defs>
 
-  <path d="M62 130 C30 124 10 96 8 62 C6 32 22 8 46 8 C72 8 100 34 112 68 C122 96 116 124 88 131 C79 133 70 132 62 130Z"
+  <path d="M50 128 C26 120 12 92 12 58 C12 30 22 8 38 8 C50 8 62 26 74 56 C86 84 94 106 92 118 C90 128 74 133 50 128Z"
         fill="url(#reFur)" stroke="#0f0b0a" stroke-width="5" stroke-linejoin="round"/>
 
-  <path d="M62 116 C38 110 24 88 23 62 C22 40 33 24 49 24 C68 24 88 45 96 71 C103 93 98 114 79 118 C73 119 67 118 62 116Z"
+  <path d="M52 114 C34 106 25 84 25 58 C25 36 32 22 41 24 C50 26 60 44 68 66 C77 90 82 106 79 112 C76 118 64 118 52 114Z"
         fill="url(#reIn)"/>
 
-  <g stroke="#b8908a" stroke-width="2.2" stroke-linecap="round" opacity="0.45">
-    <path d="M40 52 l10 7"/><path d="M46 72 l11 6"/><path d="M54 92 l10 6"/>
+  <g stroke="#b8908a" stroke-width="2.2" stroke-linecap="round" opacity="0.4">
+    <path d="M36 50 l10 7"/><path d="M42 72 l10 6"/><path d="M50 92 l10 6"/>
   </g>
 
-  <path d="M46 8 C68 10 94 36 106 64" fill="none" stroke="#6a5b52" stroke-width="4.5" stroke-linecap="round" opacity="0.6"/>
+  <path d="M38 8 C50 10 62 30 74 58" fill="none" stroke="#6a5b52" stroke-width="4.5" stroke-linecap="round" opacity="0.55"/>
 </svg>

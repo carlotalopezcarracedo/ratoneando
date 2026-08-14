@@ -28,47 +28,64 @@ interface Look {
   crouch: number;
   wagSpeed: number;
   wagAmp: number;
-  headTilt: number;
 }
 
 /**
  * Las orejas de Ratón se abren mucho hacia los lados (es su rasgo más
- * reconocible) y sólo se enderezan cuando está alerta. Cada expresión mueve
- * orejas, ojos, cola y altura del cuerpo a la vez.
+ * reconocible) y sólo se enderezan cuando está alerta.
  */
 const LOOKS: Record<RatonExpression, Look> = {
-  normal:   { eyeOpen: 1,    lid: 1,    dilation: 1,    earNear: -0.54, earFar: 0.50, crouch:  0, wagSpeed: 1.6, wagAmp: 0.16, headTilt:  0 },
-  alert:    { eyeOpen: 1.12, lid: 1,    dilation: 1.14, earNear: -0.28, earFar: 0.24, crouch: -4, wagSpeed: 2.6, wagAmp: 0.10, headTilt: -0.06 },
-  fear:     { eyeOpen: 1.34, lid: 1,    dilation: 1.5,  earNear:  0.22, earFar: 0.92, crouch: 10, wagSpeed: 0.6, wagAmp: 0.05, headTilt:  0.12 },
-  obsessed: { eyeOpen: 1.16, lid: 1,    dilation: 0.6,  earNear: -0.62, earFar: 0.38, crouch:  2, wagSpeed: 8.5, wagAmp: 0.34, headTilt: -0.12 },
-  caught:   { eyeOpen: 1.45, lid: 1,    dilation: 0.48, earNear: -0.06, earFar: 0.74, crouch:  5, wagSpeed: 0.2, wagAmp: 0.02, headTilt:  0.07 },
-  happy:    { eyeOpen: 1.06, lid: 0.34, dilation: 1,    earNear: -0.66, earFar: 0.58, crouch: -3, wagSpeed: 9.5, wagAmp: 0.42, headTilt: -0.09 },
-  sleepy:   { eyeOpen: 0.95, lid: 0.3,  dilation: 0.9,  earNear: -0.16, earFar: 0.72, crouch:  6, wagSpeed: 0.8, wagAmp: 0.07, headTilt:  0.13 }
+  normal:   { eyeOpen: 1,    lid: 1,    dilation: 1,    earNear: -0.46, earFar: 0.44, crouch:  0, wagSpeed: 1.6, wagAmp: 0.16 },
+  alert:    { eyeOpen: 1.12, lid: 1,    dilation: 1.14, earNear: -0.20, earFar: 0.18, crouch: -4, wagSpeed: 2.6, wagAmp: 0.10 },
+  fear:     { eyeOpen: 1.34, lid: 1,    dilation: 1.5,  earNear:  0.30, earFar: 0.95, crouch: 10, wagSpeed: 0.6, wagAmp: 0.05 },
+  obsessed: { eyeOpen: 1.16, lid: 1,    dilation: 0.6,  earNear: -0.54, earFar: 0.34, crouch:  2, wagSpeed: 8.5, wagAmp: 0.34 },
+  caught:   { eyeOpen: 1.45, lid: 1,    dilation: 0.48, earNear:  0.02, earFar: 0.78, crouch:  5, wagSpeed: 0.2, wagAmp: 0.02 },
+  happy:    { eyeOpen: 1.06, lid: 0.34, dilation: 1,    earNear: -0.58, earFar: 0.52, crouch: -3, wagSpeed: 9.5, wagAmp: 0.42 },
+  sleepy:   { eyeOpen: 0.95, lid: 0.3,  dilation: 0.9,  earNear: -0.10, earFar: 0.74, crouch:  6, wagSpeed: 0.8, wagAmp: 0.07 }
 };
 
-/** El cuello del torso sube por delante; la cabeza se apoya justo encima. */
-const HEAD_X = -122;
-const HEAD_Y = -190;
-const RIG_SCALE = 0.44;
+const RIG_SCALE = 0.46;
 const FAR_TINT = 0x8a7f7a;
 
-/** Hocico en coordenadas locales de la cabeza (bocadillos y ondas de ladrido). */
-const MUZZLE = { x: -62, y: 6 };
+/**
+ * El cuerpo (cabeza incluida) es una sola pieza centrada aquí. Todo lo demás se
+ * sitúa en coordenadas locales a este punto.
+ */
+const BODY_Y = -140;
 
-/** Pose de lamido de la pata delantera IZQUIERDA. */
-const LICK = { leg: 1.67, legScale: 1.05, headRot: -0.5, headDX: 10, headDY: 26 };
+/** Puntos de referencia dentro del cuerpo, en coordenadas locales al mismo. */
+const ANCHOR = {
+  nose: { x: -132, y: -20 },
+  mouth: { x: -108, y: -4 },
+  earNear: { x: -38, y: -70 },
+  earFar: { x: -10, y: -68 },
+  eyeNear: { x: -48, y: -44 },
+  eyeFar: { x: -14, y: -52 },
+  shoulder: { x: -10, y: 28 },
+  hip: { x: 94, y: 20 },
+  tail: { x: 128, y: -4 }
+};
 
-const POSE_OFFSETS: Record<RatonPose, { rig: number; torso: number; head: number; headX: number }> = {
-  stand: { rig: 0, torso: -89, head: HEAD_Y, headX: HEAD_X },
-  sit: { rig: 6, torso: -80, head: HEAD_Y - 16, headX: HEAD_X + 14 },
-  lie: { rig: 40, torso: -60, head: HEAD_Y + 62, headX: HEAD_X - 14 }
+/** Pose de lamido: la pata delantera IZQUIERDA sube hasta el hocico. */
+const LICK = { leg: 1.72, legScale: 0.96 };
+
+const POSE_OFFSETS: Record<RatonPose, { rig: number; body: number }> = {
+  stand: { rig: 0, body: BODY_Y },
+  sit: { rig: 12, body: BODY_Y + 26 },
+  lie: { rig: 38, body: BODY_Y + 46 }
 };
 
 /**
- * Ratón. Rig por capas: cola, patas, torso (con cuello) y cabeza (orejas +
- * ojos + boca). Mira a la IZQUIERDA por defecto, de modo que el flanco visible
- * es el izquierdo y la pata delantera **izquierda** queda en primer plano: ese
- * es el chiste del primer nivel.
+ * Ratón.
+ *
+ * El cuerpo, el cuello y la cabeza son **un único SVG**: así no puede aparecer
+ * una junta entre cabeza y tronco, que es el fallo clásico de los rigs por
+ * capas. Las orejas y las patas van detrás de esa silueta, de modo que sus
+ * arranques quedan escondidos, y encima sólo se pintan ojos, boca y lengua.
+ *
+ * Mira a la IZQUIERDA por defecto: así el flanco visible es el izquierdo y la
+ * pata delantera **izquierda** queda en primer plano, que es el chiste del
+ * primer nivel.
  */
 export class Raton extends Phaser.GameObjects.Container {
   /** Desplazamientos de salto/retroceso; los animan los tweens. */
@@ -78,14 +95,15 @@ export class Raton extends Phaser.GameObjects.Container {
   private readonly rig: Phaser.GameObjects.Container;
   private readonly shadow: Phaser.GameObjects.Ellipse;
 
-  private readonly torso: Part;
+  /** Contiene cuerpo, orejas, ojos y boca: todo lo que respira a la vez. */
+  private readonly bodyNode: Phaser.GameObjects.Container;
+  private readonly bodyPart: Part;
   private readonly tailPart: Part;
   private readonly legFN: Part; // delantera IZQUIERDA (cercana) — la protagonista
   private readonly legFF: Part;
   private readonly legBN: Part;
   private readonly legBF: Part;
 
-  private readonly headNode: Phaser.GameObjects.Container;
   private readonly earNear: Part;
   private readonly earFar: Part;
   private readonly eyeNear: Eye;
@@ -118,71 +136,62 @@ export class Raton extends Phaser.GameObjects.Container {
   private earNow = { near: LOOKS.normal.earNear, far: LOOKS.normal.earFar };
   private crouchNow = 0;
   private rigNow = 0;
-  private torsoNow = POSE_OFFSETS.stand.torso;
+  private bodyNow = BODY_Y;
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
     super(scene, x, y);
 
-    const earScale = Save.data.ratonMode ? 1.2 : 1;
+    const earScale = (Save.data.ratonMode ? 1.2 : 1) * 0.92;
 
-    this.shadow = scene.add.ellipse(0, 6, 210, 42, 0x000000, 0.26);
+    this.shadow = scene.add.ellipse(0, 6, 214, 42, 0x000000, 0.26);
     this.add(this.shadow);
 
     this.rig = scene.add.container(0, 0);
     this.rig.setScale(RIG_SCALE);
     this.add(this.rig);
 
-    // ---- capas traseras
-    this.tailPart = new Part(scene, 'raton-tail', 100, -96, 0.2, 0.94);
-    this.legBF = new Part(scene, 'raton-leg-back', 52, -110, 0.7, 0.06).tint(FAR_TINT);
-    this.legFF = new Part(scene, 'raton-leg-front', -58, -113, 0.5, 0.05).tint(FAR_TINT);
+    this.tailPart = new Part(scene, 'raton-tail', ANCHOR.tail.x, ANCHOR.tail.y + BODY_Y, 0.2, 0.94);
+    this.legBF = new Part(scene, 'raton-leg-back', 76, -112, 0.7, 0.06).tint(FAR_TINT);
+    this.legFF = new Part(scene, 'raton-leg-front', -32, -108, 0.5, 0.05).tint(FAR_TINT);
 
-    // ---- torso con cuello
-    this.torso = new Part(scene, 'raton-body', 0, POSE_OFFSETS.stand.torso, 0.5, 0.5);
+    // ---- cuerpo entero (cabeza incluida) + lo que va pegado a él
+    this.bodyNode = scene.add.container(0, BODY_Y);
 
-    // ---- cabeza
-    this.headNode = scene.add.container(HEAD_X, HEAD_Y);
-    this.earFar = new Part(scene, 'raton-ear', 44, -50, 0.5, 0.94).tint(FAR_TINT);
+    this.earFar = new Part(scene, 'raton-ear', ANCHOR.earFar.x, ANCHOR.earFar.y, 0.5, 0.95).tint(FAR_TINT);
     this.earFar.setScale(0.9 * earScale);
-    const skull = new Part(scene, 'raton-head', 0, 0, 0.5, 0.5);
-    this.earNear = new Part(scene, 'raton-ear', 0, -46, 0.5, 0.94);
+    this.earNear = new Part(scene, 'raton-ear', ANCHOR.earNear.x, ANCHOR.earNear.y, 0.5, 0.95);
     this.earNear.setScale(earScale);
 
-    this.mouthShape = scene.add.ellipse(-40, 28, 34, 19, 0x2b1216).setVisible(false);
+    this.bodyPart = new Part(scene, 'raton-body', 0, 0, 0.5, 0.5);
+
+    this.eyeFar = new Eye(scene, ANCHOR.eyeFar.x, ANCHOR.eyeFar.y, 13);
+    this.eyeFar.setScale(0.8);
+    this.eyeNear = new Eye(scene, ANCHOR.eyeNear.x, ANCHOR.eyeNear.y, 17);
+
+    this.mouthShape = scene.add
+      .ellipse(ANCHOR.mouth.x, ANCHOR.mouth.y, 32, 18, 0x2b1216)
+      .setVisible(false);
     this.mouthShape.setStrokeStyle(3, PAL.furDark, 1);
-    this.tonguePart = new Part(scene, 'raton-tongue', -42, 30, 0.5, 0.1);
+    this.tonguePart = new Part(scene, 'raton-tongue', ANCHOR.mouth.x - 2, ANCHOR.mouth.y + 2, 0.5, 0.1);
     this.tonguePart.setVisible(false);
-    this.nutPart = new Part(scene, 'nut', -58, 26, 0.5, 0.5);
+    this.nutPart = new Part(scene, 'nut', ANCHOR.mouth.x - 18, ANCHOR.mouth.y - 2, 0.5, 0.5);
     this.nutPart.setVisible(false);
 
-    this.eyeFar = new Eye(scene, 38, -22, 15);
-    this.eyeFar.setScale(0.86);
-    this.eyeNear = new Eye(scene, 8, -16, 18);
-
-    this.headNode.add([
+    this.bodyNode.add([
       this.earFar,
-      skull,
+      this.earNear,
+      this.bodyPart,
       this.mouthShape,
       this.tonguePart,
-      this.earNear,
       this.eyeFar,
       this.eyeNear,
       this.nutPart
     ]);
 
-    // ---- capas delanteras
-    this.legBN = new Part(scene, 'raton-leg-back', 72, -112, 0.7, 0.06);
-    this.legFN = new Part(scene, 'raton-leg-front', -38, -116, 0.5, 0.05);
+    this.legBN = new Part(scene, 'raton-leg-back', 96, -116, 0.7, 0.06);
+    this.legFN = new Part(scene, 'raton-leg-front', -10, -112, 0.5, 0.05);
 
-    this.rig.add([
-      this.tailPart,
-      this.legBF,
-      this.legFF,
-      this.torso,
-      this.headNode,
-      this.legBN,
-      this.legFN
-    ]);
+    this.rig.add([this.tailPart, this.legBF, this.legFF, this.bodyNode, this.legBN, this.legFN]);
 
     scene.add.existing(this);
   }
@@ -236,13 +245,13 @@ export class Raton extends Phaser.GameObjects.Container {
     this.pose = pose;
     const t = this.scene.tweens;
     if (pose === 'sit') {
-      t.add({ targets: [this.legBN, this.legBF], rotation: -0.72, scaleY: 0.7, duration: 280, ease: 'Quad.easeOut' });
+      t.add({ targets: [this.legBN, this.legBF], rotation: 0.5, scaleY: 0.58, duration: 280, ease: 'Quad.easeOut' });
       t.add({ targets: [this.legFN, this.legFF], rotation: 0, scaleY: 1, duration: 280, ease: 'Quad.easeOut' });
-      t.add({ targets: this.torso, rotation: -0.14, duration: 280, ease: 'Quad.easeOut' });
+      t.add({ targets: this.bodyNode, rotation: -0.1, duration: 280, ease: 'Quad.easeOut' });
     } else if (pose === 'lie') {
-      t.add({ targets: [this.legBN, this.legBF], rotation: -1.24, scaleY: 0.56, duration: 340 });
-      t.add({ targets: [this.legFN, this.legFF], rotation: -1.4, scaleY: 0.68, duration: 340 });
-      t.add({ targets: this.torso, rotation: 0.05, duration: 340 });
+      t.add({ targets: [this.legBN, this.legBF], rotation: -1.24, scaleY: 0.54, duration: 340 });
+      t.add({ targets: [this.legFN, this.legFF], rotation: -1.4, scaleY: 0.66, duration: 340 });
+      t.add({ targets: this.bodyNode, rotation: 0.04, duration: 340 });
     } else {
       t.add({
         targets: [this.legBN, this.legBF, this.legFN, this.legFF],
@@ -250,7 +259,7 @@ export class Raton extends Phaser.GameObjects.Container {
         scaleY: 1,
         duration: 260
       });
-      t.add({ targets: this.torso, rotation: 0, duration: 260 });
+      t.add({ targets: this.bodyNode, rotation: 0, duration: 260 });
     }
     return this;
   }
@@ -371,19 +380,14 @@ export class Raton extends Phaser.GameObjects.Container {
     const power = opts.power ?? (Save.data.ratonMode ? 1.45 : 1);
     this.barkTimer = 0.36;
     const t = this.scene.tweens;
-    t.add({
-      targets: this.headNode,
-      x: POSE_OFFSETS[this.pose].headX - 16,
-      duration: 90,
-      yoyo: true,
-      ease: 'Quad.easeOut'
-    });
+    // Estirón hacia delante y retroceso del cuerpo entero.
+    t.add({ targets: this.bodyNode, x: -14, duration: 90, yoyo: true, ease: 'Quad.easeOut' });
     t.add({ targets: this, hopX: 10, duration: 80, yoyo: true, ease: 'Quad.easeOut' });
-    t.add({ targets: this.torso, scaleX: 1.08, scaleY: 0.93, duration: 90, yoyo: true });
-    this.mouthShape.setVisible(true).setScale(1.15, 1.25);
+    t.add({ targets: this.bodyPart, scaleX: 1.06, scaleY: 0.94, duration: 90, yoyo: true });
+    this.mouthShape.setVisible(true).setScale(1.15, 1.3);
     this.tonguePart.setVisible(true).setScale(1, 0.9);
-    this.earNow.near = -0.2;
-    this.earNow.far = 0.18;
+    this.earNow.near = -0.12;
+    this.earNow.far = 0.12;
 
     Audio.bark(power);
     if (opts.fx !== false) {
@@ -412,9 +416,9 @@ export class Raton extends Phaser.GameObjects.Container {
       ease: 'Quad.easeOut'
     });
     this.scene.tweens.add({
-      targets: this.torso,
-      scaleY: 1.12,
-      scaleX: 0.92,
+      targets: this.bodyPart,
+      scaleY: 1.1,
+      scaleX: 0.94,
       duration: 260,
       yoyo: true,
       repeat: 2
@@ -446,16 +450,12 @@ export class Raton extends Phaser.GameObjects.Container {
 
   /** Punto del hocico en coordenadas de mundo. */
   muzzleWorld(): { x: number; y: number } {
-    const r = this.headNode.rotation;
-    return this.rigToWorld(
-      this.headNode.x + MUZZLE.x * Math.cos(r) - MUZZLE.y * Math.sin(r),
-      this.headNode.y + MUZZLE.x * Math.sin(r) + MUZZLE.y * Math.cos(r)
-    );
+    return this.rigToWorld(this.bodyNode.x + ANCHOR.nose.x, this.bodyNode.y + ANCHOR.nose.y);
   }
 
   /** Punto sobre la cabeza (para bocadillos y marcas de alerta). */
   headWorld(): { x: number; y: number } {
-    return this.rigToWorld(this.headNode.x, this.headNode.y - 190);
+    return this.rigToWorld(this.bodyNode.x + ANCHOR.earNear.x, this.bodyNode.y + ANCHOR.earNear.y - 130);
   }
 
   /** Punto de la pata delantera izquierda. */
@@ -480,48 +480,43 @@ export class Raton extends Phaser.GameObjects.Container {
     }
     if (this.pawHold > 0) this.pawHold -= dt;
     if (this.cameraStare > 0) this.cameraStare -= dt;
-
-    // Objetivos de expresión, suavizados.
-    const look = this.look;
     if (this.perkTimer > 0) this.perkTimer -= dt;
+
+    // Orejas: objetivo suavizado, con el aviso anticipado por encima.
+    const look = this.look;
     const perked = this.perkTimer > 0;
-    const earTargetNear = perked ? LOOKS.alert.earNear : look.earNear;
-    const earTargetFar = perked ? LOOKS.alert.earFar : look.earFar;
+    const earNearTarget = perked ? LOOKS.alert.earNear : look.earNear;
+    const earFarTarget = perked ? LOOKS.alert.earFar : look.earFar;
     if (!this.frozen) {
-      this.earNow.near = damp(this.earNow.near, earTargetNear, perked ? 22 : 9, dt);
-      this.earNow.far = damp(this.earNow.far, earTargetFar, perked ? 22 : 9, dt);
+      this.earNow.near = damp(this.earNow.near, earNearTarget, perked ? 22 : 9, dt);
+      this.earNow.far = damp(this.earNow.far, earFarTarget, perked ? 22 : 9, dt);
       this.crouchNow = damp(this.crouchNow, look.crouch, 7, dt);
     }
-
     this.earNear.rotation = this.earNow.near + Math.sin(this.clock * 1.7) * 0.03;
     this.earFar.rotation = this.earNow.far + Math.sin(this.clock * 1.31 + 1.2) * 0.036;
 
-    // Respiración, peso y rebote al caminar.
+    // Respiración y rebote: los aplica el contenedor, así que la cabeza y las
+    // orejas se mueven solidarias con el cuerpo.
     const breathe = this.frozen ? 0 : Math.sin(this.clock * 2.2);
     const bounce = this.motion > 0.02 ? Math.abs(Math.sin(this.walkPhase * 2)) * -5 * this.motion : 0;
-    this.torso.scaleY = 1 + breathe * 0.022;
-    this.torso.scaleX = 1 - breathe * 0.014;
-    this.torsoNow = damp(this.torsoNow, offsets.torso, 10, dt);
-    this.torso.y = this.torsoNow + this.crouchNow * 0.5 + bounce;
+    this.bodyPart.scaleY = 1 + breathe * 0.02;
+    this.bodyPart.scaleX = 1 - breathe * 0.012;
+    this.bodyNow = damp(this.bodyNow, offsets.body, 10, dt);
+    this.bodyNode.y = this.bodyNow + this.crouchNow * 0.5 + bounce + (this.licking ? Math.sin(this.lickPhase) * 2 : 0);
+    if (this.barkTimer <= 0) this.bodyNode.x = damp(this.bodyNode.x, 0, 12, dt);
 
-    this.rigNow = damp(this.rigNow, offsets.rig + this.crouchNow * 0.5, 10, dt);
+    this.rigNow = damp(this.rigNow, offsets.rig + this.crouchNow * 0.4, 10, dt);
     this.rig.y = this.rigNow + this.hopY;
     this.rig.x = this.hopX + (this.trembling ? Math.sin(this.clock * 46) * 2.2 : 0);
-
-    // Cabeza.
-    if (!this.licking && this.barkTimer <= 0) {
-      this.headNode.rotation = damp(this.headNode.rotation, look.headTilt, 8, dt);
-      this.headNode.y = damp(this.headNode.y, offsets.head + breathe * 2 + bounce, 10, dt);
-      this.headNode.x = damp(this.headNode.x, offsets.headX, 10, dt);
-    }
 
     // Cola.
     const wag = this.frozen ? 0.1 : look.wagSpeed;
     this.tailPart.rotation = Math.sin(this.clock * wag * 3) * look.wagAmp;
+    this.tailPart.y = this.bodyNode.y + ANCHOR.tail.y;
 
     // Ojos.
     this.eyeNear.setOpen(damp(this.eyeNear.openScale, look.eyeOpen, 10, dt));
-    this.eyeFar.setOpen(damp(this.eyeFar.openScale, look.eyeOpen * 0.86, 10, dt));
+    this.eyeFar.setOpen(damp(this.eyeFar.openScale, look.eyeOpen * 0.88, 10, dt));
     this.eyeNear.setLid(look.lid);
     this.eyeFar.setLid(look.lid);
 
@@ -541,7 +536,7 @@ export class Raton extends Phaser.GameObjects.Container {
     }
 
     this.updateLegs(dt);
-    this.updateLick(dt);
+    if (this.licking) this.updateLick(dt);
 
     // La sombra encoge cuando está en el aire.
     const lift = clamp(-(this.rigNow + this.hopY) / 90, 0, 1);
@@ -581,16 +576,12 @@ export class Raton extends Phaser.GameObjects.Container {
     this.legBF.rotation = damp(this.legBF.rotation, 0, 9, dt);
   }
 
-  /** La cabeza baja a buscar la pata levantada, con el ritmo del lametón. */
+  /** Ritmo del lametón: la lengua asoma y la pata vibra contra el hocico. */
   private updateLick(dt: number): void {
-    if (!this.licking) return;
     this.lickPhase += dt * 13;
     const l = Math.sin(this.lickPhase);
-    const offsets = POSE_OFFSETS[this.pose];
-    this.headNode.rotation = LICK.headRot + l * 0.07;
-    this.headNode.x = offsets.headX + LICK.headDX;
-    this.headNode.y = offsets.head + LICK.headDY + l * 3;
+    this.legFN.rotation = LICK.leg + l * 0.05;
     this.tonguePart.scaleY = 0.35 + (l * 0.5 + 0.5) * 0.85;
-    this.tonguePart.y = 30 + l * 3;
+    this.tonguePart.y = ANCHOR.mouth.y + 2 + l * 2;
   }
 }

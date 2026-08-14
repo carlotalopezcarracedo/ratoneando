@@ -15,7 +15,6 @@ import { Save } from '../systems/SaveManager';
 
 const CHARACTERS = [
   'raton-body',
-  'raton-head',
   'raton-ear',
   'raton-tail',
   'raton-leg-front',
