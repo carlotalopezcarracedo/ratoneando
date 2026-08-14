@@ -66,8 +66,15 @@ const ANCHOR = {
   tail: { x: 128, y: -4 }
 };
 
-/** Pose de lamido: la pata delantera IZQUIERDA sube hasta el hocico. */
-const LICK = { leg: 1.72, legScale: 0.96 };
+/**
+ * Pose de lamido: la pata delantera IZQUIERDA sube por delante del pecho y el
+ * cuerpo entero se inclina para que el hocico BAJE a buscarla, que es como lo
+ * hace un perro de verdad. Si sólo subiera la pata, le cruzaría la cara.
+ */
+const LICK = { leg: 1.23, legScale: 0.84, bodyTilt: -0.26 };
+
+/** Inclinación del cuerpo en cada postura, para poder restaurarla. */
+const POSE_TILT: Record<RatonPose, number> = { stand: 0, sit: -0.1, lie: 0.04 };
 
 const POSE_OFFSETS: Record<RatonPose, { rig: number; body: number }> = {
   stand: { rig: 0, body: BODY_Y },
@@ -191,7 +198,10 @@ export class Raton extends Phaser.GameObjects.Container {
     this.legBN = new Part(scene, 'raton-leg-back', 96, -116, 0.7, 0.06);
     this.legFN = new Part(scene, 'raton-leg-front', -10, -112, 0.5, 0.05);
 
-    this.rig.add([this.tailPart, this.legBF, this.legFF, this.bodyNode, this.legBN, this.legFN]);
+    // Sólo la pata delantera IZQUIERDA va por delante del cuerpo (la necesita
+    // para el lamido). Las traseras van detrás: si no, al sentarse la pezuña
+    // recogida asoma sobre el costado.
+    this.rig.add([this.tailPart, this.legBF, this.legBN, this.legFF, this.bodyNode, this.legFN]);
 
     scene.add.existing(this);
   }
@@ -247,11 +257,11 @@ export class Raton extends Phaser.GameObjects.Container {
     if (pose === 'sit') {
       t.add({ targets: [this.legBN, this.legBF], rotation: 0.5, scaleY: 0.58, duration: 280, ease: 'Quad.easeOut' });
       t.add({ targets: [this.legFN, this.legFF], rotation: 0, scaleY: 1, duration: 280, ease: 'Quad.easeOut' });
-      t.add({ targets: this.bodyNode, rotation: -0.1, duration: 280, ease: 'Quad.easeOut' });
+      t.add({ targets: this.bodyNode, rotation: POSE_TILT.sit, duration: 280, ease: 'Quad.easeOut' });
     } else if (pose === 'lie') {
       t.add({ targets: [this.legBN, this.legBF], rotation: -1.24, scaleY: 0.54, duration: 340 });
       t.add({ targets: [this.legFN, this.legFF], rotation: -1.4, scaleY: 0.66, duration: 340 });
-      t.add({ targets: this.bodyNode, rotation: 0.04, duration: 340 });
+      t.add({ targets: this.bodyNode, rotation: POSE_TILT.lie, duration: 340 });
     } else {
       t.add({
         targets: [this.legBN, this.legBF, this.legFN, this.legFF],
@@ -259,7 +269,7 @@ export class Raton extends Phaser.GameObjects.Container {
         scaleY: 1,
         duration: 260
       });
-      t.add({ targets: this.bodyNode, rotation: 0, duration: 260 });
+      t.add({ targets: this.bodyNode, rotation: POSE_TILT.stand, duration: 260 });
     }
     return this;
   }
@@ -337,6 +347,12 @@ export class Raton extends Phaser.GameObjects.Container {
       duration: 220,
       ease: 'Back.easeOut'
     });
+    t.add({
+      targets: this.bodyNode,
+      rotation: POSE_TILT[this.pose] + LICK.bodyTilt,
+      duration: 240,
+      ease: 'Quad.easeOut'
+    });
     this.tonguePart.setVisible(true).setScale(1, 0.2);
     this.mouthShape.setVisible(true).setScale(0.8, 0.5);
     return this;
@@ -349,6 +365,7 @@ export class Raton extends Phaser.GameObjects.Container {
     const t = this.scene.tweens;
     t.killTweensOf(this.legFN);
     t.add({ targets: this.legFN, rotation: 0, scaleY: 1, duration: 200, ease: 'Quad.easeInOut' });
+    t.add({ targets: this.bodyNode, rotation: POSE_TILT[this.pose], duration: 220, ease: 'Quad.easeInOut' });
     this.tonguePart.setVisible(false);
     this.mouthShape.setVisible(false);
     return this;
@@ -364,6 +381,7 @@ export class Raton extends Phaser.GameObjects.Container {
     const t = this.scene.tweens;
     t.killTweensOf(this.legFN);
     this.legFN.rotation = LICK.leg;
+    t.add({ targets: this.bodyNode, rotation: POSE_TILT[this.pose], duration: 180, ease: 'Quad.easeOut' });
     t.add({
       targets: this.legFN,
       rotation: 0,
