@@ -1,31 +1,29 @@
 # Referencia visual
 
-La fotografía de referencia va aquí:
+## `raton-character-reference.png` — ESPECIFICACIÓN DE DISEÑO
 
+Esta ilustración **define** el aspecto de los personajes. No es inspiración: el
+arte del juego se extrae literalmente de ella.
+
+```bash
+npm run characters
 ```
-public/reference/raton-y-hermano.jpg
-```
 
-## Es privada y no se publica
+recorta a Ratón y a su dueño de la ilustración, los trocea en capas (cuerpo,
+orejas, pata, cabeza, torso, piernas), escribe los PNG con transparencia en
+`public/assets/characters/` y guarda las posiciones exactas de cada capa en
+`src/game/art/characters.json`. El juego recompone esas capas y las anima
+moviéndolas; nunca redibuja el personaje.
 
-Las imágenes de esta carpeta están en `.gitignore`. Es a propósito: Vite copia
-`public/` tal cual al build, así que si la foto estuviera en el repositorio
-acabaría publicada en GitHub Pages. Se queda sólo en local.
+Por eso los personajes del juego se ven como la ilustración: **son** la
+ilustración.
 
-El juego **no carga esta carpeta en tiempo de ejecución**: es material de
-referencia para dibujar, nada más.
+Si cambias la imagen maestra, vuelve a lanzar `npm run characters` y revisa el
+resultado en la escena de comparación (`?personajes`, o botón PERSONAJES dentro
+de *Seleccionar misión*).
 
-## Qué se sacó de la foto
+## `raton-y-hermano.jpg` — foto original
 
-**Ratón** — perro pequeño de pelo corto y negro, con **hocico largo y estrecho**
-tipo podenco. Sus **orejas son enormes y se abren mucho hacia los lados**, casi
-horizontales: es su rasgo más reconocible y define la silueta. Ojos redondos y
-grandes, iris marrón claro. Babero blanco en el pecho y calcetines blancos en
-las patas. Cuerpo delgado con la barriga recogida.
-
-**El dueño** — joven alto y muy delgado (190 cm, 70 kg): hombros estrechos,
-piernas largas. Pelo oscuro **rizado y con volumen**, barba completa que enlaza
-con las patillas, cejas marcadas y rectas, **sudadera negra con capucha**.
-
-Los assets están en `public/assets/characters/` como SVG originales, una capa
-por parte del cuerpo (incluidas rodillas articuladas en el dueño).
+La fotografía real de Ratón y su dueño. Está en `.gitignore` **a propósito**:
+es material personal y, al vivir dentro de `public/`, Vite la copiaría al build
+y acabaría publicada en GitHub Pages. Se queda sólo en local.

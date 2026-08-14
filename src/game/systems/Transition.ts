@@ -25,7 +25,7 @@ function buildOverlay(scene: Phaser.Scene, covered: boolean): Overlay {
 
   const make = (x: number, flip: boolean): Phaser.GameObjects.Image => {
     const img = scene.add
-      .image(x, GAME_HEIGHT * 0.98, 'raton-ear')
+      .image(x, GAME_HEIGHT * 0.98, 'raton-ear-l')
       .setOrigin(0.5, 0.94)
       .setScrollFactor(0)
       .setDepth(DEPTH + 1)
@@ -56,7 +56,7 @@ function buildOverlay(scene: Phaser.Scene, covered: boolean): Overlay {
 export const Transition = {
   /** Tapa la pantalla y ejecuta el callback cuando está cubierta. */
   cover(scene: Phaser.Scene, onCovered: () => void, duration = 420): void {
-    if (!scene.textures.exists('raton-ear')) {
+    if (!scene.textures.exists('raton-ear-l')) {
       scene.cameras.main.fadeOut(200, 20, 15, 14);
       scene.time.delayedCall(220, onCovered);
       return;
@@ -86,7 +86,7 @@ export const Transition = {
 
   /** Abre la cortinilla al entrar en una escena. */
   reveal(scene: Phaser.Scene, duration = 460): void {
-    if (!scene.textures.exists('raton-ear')) return;
+    if (!scene.textures.exists('raton-ear-l')) return;
     const ov = buildOverlay(scene, true);
     scene.tweens.add({
       targets: ov.fill,

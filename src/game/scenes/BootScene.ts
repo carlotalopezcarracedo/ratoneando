@@ -24,6 +24,7 @@ export class BootScene extends Phaser.Scene {
     Save.load();
     Audio.init();
     Run.reset();
-    this.scene.start(SCENES.PRELOAD, { jumpTo: requestedLevel() });
+    const characterTest = new URLSearchParams(window.location.search).has('personajes');
+    this.scene.start(SCENES.PRELOAD, { jumpTo: requestedLevel(), characterTest });
   }
 }

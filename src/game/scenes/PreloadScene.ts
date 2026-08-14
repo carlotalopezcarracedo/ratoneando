@@ -12,21 +12,7 @@ import {
 import { PAL, css } from '../utils/palette';
 import { assetUrl, pick } from '../utils/helpers';
 import { Save } from '../systems/SaveManager';
-
-const CHARACTERS = [
-  'raton-body',
-  'raton-ear',
-  'raton-tail',
-  'raton-leg-front',
-  'raton-leg-back',
-  'raton-tongue',
-  'owner-head',
-  'owner-body',
-  'owner-arm',
-  'owner-thigh',
-  'owner-shin',
-  'owner-phone'
-];
+import { CHARACTER_TEXTURES } from '../art/CharacterRig';
 
 const PROPS = [
   'bike-city',
@@ -50,20 +36,23 @@ export class PreloadScene extends Phaser.Scene {
   private earL!: Phaser.GameObjects.Graphics;
   private earR!: Phaser.GameObjects.Graphics;
   private jumpTo: LevelIndex | null = null;
+  private characterTest = false;
 
   constructor() {
     super(SCENES.PRELOAD);
   }
 
-  init(data: { jumpTo?: LevelIndex | null }): void {
+  init(data: { jumpTo?: LevelIndex | null; characterTest?: boolean }): void {
     this.jumpTo = data?.jumpTo ?? null;
+    this.characterTest = data?.characterTest === true;
   }
 
   preload(): void {
     this.buildLoadingScreen();
 
+    // Los personajes son recortes de la ilustración maestra: PNG con alfa.
+    CHARACTER_TEXTURES.forEach((k) => this.load.image(k, assetUrl(`assets/characters/${k}.png`)));
     const opts = { scale: SVG_LOAD_SCALE };
-    CHARACTERS.forEach((k) => this.load.svg(k, assetUrl(`assets/characters/${k}.svg`), opts));
     PROPS.forEach((k) => this.load.svg(k, assetUrl(`assets/props/${k}.svg`), opts));
 
     this.load.on(Phaser.Loader.Events.PROGRESS, (v: number) => this.drawBar(v));
@@ -71,7 +60,9 @@ export class PreloadScene extends Phaser.Scene {
 
   create(): void {
     this.time.delayedCall(240, () => {
-      if (this.jumpTo) {
+      if (this.characterTest) {
+        this.scene.start(SCENES.CHARACTER_TEST);
+      } else if (this.jumpTo) {
         Save.unlockLevel(this.jumpTo);
         this.scene.start(SCENES.LEVEL_INTRO, { level: this.jumpTo });
       } else {

@@ -163,7 +163,7 @@ export class Level1Scene extends Phaser.Scene {
     this.add.existing(makeRug(this, 880, 648, 540, 116)).setDepth(3);
     this.add.existing(makeDogBed(this, RATON_X, 636)).setDepth(4);
 
-    this.add.existing(makeChair(this, 704, 600)).setDepth(20);
+    this.add.existing(makeChair(this, 790, 600)).setDepth(12);
     this.add.existing(makeMonitor(this, 268, 410)).setDepth(45);
     this.add.existing(makeDesk(this, 322, 610)).setDepth(44);
 
@@ -179,9 +179,9 @@ export class Level1Scene extends Phaser.Scene {
   }
 
   private buildCast(): void {
-    this.owner = new Human(this, OWNER_X, GROUND, { scale: 0.7 });
+    this.owner = new Human(this, OWNER_X, GROUND);
     this.owner.setDepth(30);
-    this.owner.setFacing(-1).setPose('sit').setActivity('typing').setGaze(-1);
+    this.owner.setFacing(-1).setPose('stand').setActivity('typing').setGaze(-1);
 
     this.cone = this.add.graphics().setDepth(35);
 
@@ -342,11 +342,11 @@ export class Level1Scene extends Phaser.Scene {
 
     switch (state) {
       case 'work':
-        this.owner.setPose('sit').setActivity('typing').setGaze(-1);
+        this.owner.setActivity('typing').setGaze(-1);
         this.owner.lookOffset(-0.6, 0.2);
         break;
       case 'phone':
-        this.owner.setPose('sit').setActivity('phone').setGaze(-1, 0.06);
+        this.owner.setActivity('phone').setGaze(-1, 0.06);
         this.owner.lookOffset(-0.4, 0.6);
         break;
       case 'turning':
@@ -363,7 +363,7 @@ export class Level1Scene extends Phaser.Scene {
         Audio.alert();
         break;
       case 'stretch':
-        this.owner.setPose('stand').setActivity('searching').setGaze(-1);
+        this.owner.setActivity('searching').setGaze(-1);
         this.tweens.add({
           targets: this.owner,
           x: OWNER_X + 90,

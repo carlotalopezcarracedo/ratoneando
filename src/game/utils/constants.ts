@@ -5,8 +5,19 @@ export const GAME_HEIGHT = 720;
 export const SVG_LOAD_SCALE = 2;
 export const SVG_DISPLAY_SCALE = 1 / SVG_LOAD_SCALE;
 
+/**
+ * Escala única de TODOS los personajes. Salen de la misma ilustración, así que
+ * compartiendo escala conservan exactamente la proporción de la referencia:
+ * Ratón le llega a la rodilla. Nunca se estira un personaje por su cuenta.
+ */
+export const CHARACTER_SCALE = 0.34;
+
+/** Personajes de fondo (peatones): más pequeños por perspectiva, nunca deformados. */
+export const BACKGROUND_CHARACTER_SCALE = 0.23;
+
 export const SCENES = {
   BOOT: 'BootScene',
+  CHARACTER_TEST: 'CharacterReferenceScene',
   PRELOAD: 'PreloadScene',
   MENU: 'MainMenuScene',
   INTRO: 'IntroScene',

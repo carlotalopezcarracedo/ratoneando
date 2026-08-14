@@ -7,7 +7,8 @@ import {
   GAME_WIDTH,
   LEVELS,
   SCENES,
-  THOUGHTS
+  THOUGHTS,
+  CHARACTER_SCALE
 } from '../utils/constants';
 import { PAL, css } from '../utils/palette';
 import { clamp, pick, rand, segmentIntersectsRect, type Rect } from '../utils/helpers';
@@ -241,7 +242,7 @@ export class Level3Scene extends Phaser.Scene {
     this.raton.setDepth(Math.round(HIDEOUT.y));
     this.raton.setFacing(1).setExpression('normal');
 
-    const owner = new Human(this, 660, 500, { scale: 0.6 });
+    const owner = new Human(this, 660, 500);
     owner.setFacing(-1).setActivity('walking');
     this.watchers.push({
       human: owner,
@@ -255,7 +256,7 @@ export class Level3Scene extends Phaser.Scene {
       range: 430
     });
 
-    const visitor = new Human(this, 1140, 466, { scale: 0.56, shirt: PAL.popDeep, beanie: true });
+    const visitor = new Human(this, 1140, 466, { scale: CHARACTER_SCALE * 0.94, tint: 0xa8b6c4 });
     visitor.setFacing(-1).setActivity('idle');
     this.watchers.push({
       human: visitor,

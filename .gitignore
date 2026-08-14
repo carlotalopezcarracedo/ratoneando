@@ -1,8 +1,8 @@
-# La foto de referencia es personal: se queda en local y NUNCA se publica.
-# (Si estuviera en el repo, Vite la copiaría a dist/ y acabaría en GitHub Pages.)
+# La FOTO personal se queda en local y nunca se publica. La ilustración maestra
+# (raton-character-reference.png) sí se versiona: es la especificación de diseño
+# de los personajes y hace falta para regenerarlos con `npm run characters`.
 public/reference/*.jpg
 public/reference/*.jpeg
-public/reference/*.png
 
 node_modules
 dist

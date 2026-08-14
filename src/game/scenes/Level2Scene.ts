@@ -7,7 +7,8 @@ import {
   GAME_WIDTH,
   LEVELS,
   SCENES,
-  THOUGHTS
+  THOUGHTS,
+  BACKGROUND_CHARACTER_SCALE
 } from '../utils/constants';
 import { PAL, css } from '../utils/palette';
 import { chance, clamp, pick, rand } from '../utils/helpers';
@@ -236,7 +237,10 @@ export class Level2Scene extends Phaser.Scene {
       [980, GOAL_Y - 40, -1]
     ];
     spots.forEach(([x, y, dir]) => {
-      const p = new Human(this, x, y, { scale: 0.55, shirt: PAL.pop, beanie: chance(0.5) });
+      const p = new Human(this, x, y, {
+        scale: BACKGROUND_CHARACTER_SCALE,
+        tint: chance(0.5) ? 0xb9c4cf : 0xd7c3a8
+      });
       p.setDepth(Math.round(y));
       p.setFacing(dir).setActivity('walking').setMotion(0.45);
       this.pedestrians.push(p);

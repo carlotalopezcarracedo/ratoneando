@@ -1,0 +1,111 @@
+{
+  "source": "raton-character-reference.png",
+  "raton": {
+    "size": {
+      "w": 371,
+      "h": 489
+    },
+    "ear-l": {
+      "key": "raton-ear-l",
+      "x": 52,
+      "y": 0,
+      "w": 66,
+      "h": 185
+    },
+    "ear-r": {
+      "key": "raton-ear-r",
+      "x": 197,
+      "y": 21,
+      "w": 59,
+      "h": 145
+    },
+    "paw-l": {
+      "key": "raton-paw-l",
+      "x": 74,
+      "y": 350,
+      "w": 82,
+      "h": 121
+    },
+    "core": {
+      "key": "raton-core",
+      "x": 84,
+      "y": 52,
+      "w": 257,
+      "h": 437
+    },
+    "full": {
+      "key": "raton-full",
+      "x": 52,
+      "y": 0,
+      "w": 289,
+      "h": 489
+    },
+    "eyes": {
+      "left": {
+        "x": 103,
+        "y": 159,
+        "r": 8
+      },
+      "right": {
+        "x": 259,
+        "y": 167,
+        "r": 8
+      },
+      "samples": 369
+    }
+  },
+  "owner": {
+    "size": {
+      "w": 411,
+      "h": 1176
+    },
+    "head": {
+      "key": "owner-head",
+      "x": 64,
+      "y": 0,
+      "w": 254,
+      "h": 251
+    },
+    "torso": {
+      "key": "owner-torso",
+      "x": 23,
+      "y": 239,
+      "w": 337,
+      "h": 362
+    },
+    "leg-l": {
+      "key": "owner-leg-l",
+      "x": 205,
+      "y": 589,
+      "w": 104,
+      "h": 587
+    },
+    "leg-r": {
+      "key": "owner-leg-r",
+      "x": 12,
+      "y": 589,
+      "w": 193,
+      "h": 553
+    },
+    "full": {
+      "key": "owner-full",
+      "x": 12,
+      "y": 0,
+      "w": 348,
+      "h": 1176
+    },
+    "eyes": {
+      "left": {
+        "x": 108,
+        "y": 124,
+        "r": 24
+      },
+      "right": {
+        "x": 180,
+        "y": 125,
+        "r": 20
+      },
+      "samples": 2980
+    }
+  }
+}

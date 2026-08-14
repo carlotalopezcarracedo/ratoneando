@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { GAME_HEIGHT, GAME_WIDTH } from './utils/constants';
 import { BootScene } from './scenes/BootScene';
+import { CharacterReferenceScene } from './scenes/CharacterReferenceScene';
 import { PreloadScene } from './scenes/PreloadScene';
 import { MainMenuScene } from './scenes/MainMenuScene';
 import { IntroScene } from './scenes/IntroScene';
@@ -27,9 +28,14 @@ export function createGameConfig(): Phaser.Types.Core.GameConfig {
       height: GAME_HEIGHT,
       expandParent: true
     },
+    // Ilustración suave: nada de pixel-art ni de vecino más próximo.
+    pixelArt: false,
+    antialias: true,
     render: {
       antialias: true,
+      antialiasGL: true,
       roundPixels: false,
+      mipmapFilter: 'LINEAR_MIPMAP_LINEAR',
       powerPreference: 'high-performance'
     },
     dom: { createContainer: false },
@@ -48,7 +54,8 @@ export function createGameConfig(): Phaser.Types.Core.GameConfig {
       ResultScene,
       FinalScene,
       CreditsScene,
-      PauseScene
+      PauseScene,
+      CharacterReferenceScene
     ]
   };
 }

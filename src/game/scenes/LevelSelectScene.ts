@@ -101,12 +101,21 @@ export class LevelSelectScene extends Phaser.Scene {
       btn.setEnabled(unlocked);
     });
 
-    new Button(this, GAME_WIDTH / 2, GAME_HEIGHT - 64, 'VOLVER', () => Transition.to(this, SCENES.MENU), {
+    new Button(this, GAME_WIDTH / 2 - 150, GAME_HEIGHT - 64, 'VOLVER', () => Transition.to(this, SCENES.MENU), {
       width: 220,
       height: 54,
       fontSize: 22,
       variant: 'secondary'
     });
+
+    new Button(
+      this,
+      GAME_WIDTH / 2 + 150,
+      GAME_HEIGHT - 64,
+      'PERSONAJES',
+      () => Transition.to(this, SCENES.CHARACTER_TEST),
+      { width: 220, height: 54, fontSize: 20, variant: 'ghost' }
+    );
 
     this.input.keyboard?.once('keydown-ESC', () => Transition.to(this, SCENES.MENU));
     Audio.playMusic('menu');

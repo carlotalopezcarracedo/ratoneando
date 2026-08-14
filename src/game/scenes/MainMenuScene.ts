@@ -145,7 +145,7 @@ export class MainMenuScene extends Phaser.Scene {
   }
 
   private buildCast(): void {
-    this.owner = new Human(this, 1480, 616, { scale: 0.66 });
+    this.owner = new Human(this, 1480, 630);
     this.owner.setFacing(-1).setPose('stand').setActivity('idle');
 
     this.raton = new Raton(this, 900, 618);
