@@ -197,8 +197,52 @@ function findEyes(mask, box, bandY0, bandY1, test) {
 
 const manifest = { source: 'raton-character-reference.png', raton: {}, owner: {} };
 const report = [];
+// Reduce la resolución: los recortes vienen a tamaño de ilustración y en
+// pantalla el perro mide 166 px y el dueño 400 px. Se guardan al 62 %, que
+// sigue siendo casi el doble de lo que se ve, y pesan menos de la mitad.
+const DOWNSCALE = 0.62;
+
+function resize(img, factor) {
+  const w = Math.max(1, Math.round(img.width * factor));
+  const h = Math.max(1, Math.round(img.height * factor));
+  const out = new PNG({ width: w, height: h });
+  const sx = img.width / w;
+  const sy = img.height / h;
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      // Media de la caja de píxeles origen, ponderada por alfa para que el
+      // borde no arrastre color del fondo transparente.
+      let r = 0, g = 0, b = 0, a = 0, wsum = 0;
+      const x0 = Math.floor(x * sx);
+      const y0 = Math.floor(y * sy);
+      const x1 = Math.min(img.width, Math.ceil((x + 1) * sx));
+      const y1 = Math.min(img.height, Math.ceil((y + 1) * sy));
+      for (let yy = y0; yy < y1; yy++) {
+        for (let xx = x0; xx < x1; xx++) {
+          const i = (img.width * yy + xx) << 2;
+          const al = img.data[i + 3] / 255;
+          r += img.data[i] * al;
+          g += img.data[i + 1] * al;
+          b += img.data[i + 2] * al;
+          a += img.data[i + 3];
+          wsum += al;
+        }
+      }
+      const n = (x1 - x0) * (y1 - y0) || 1;
+      const d = (w * y + x) << 2;
+      const k = wsum || 1;
+      out.data[d] = Math.round(r / k);
+      out.data[d + 1] = Math.round(g / k);
+      out.data[d + 2] = Math.round(b / k);
+      out.data[d + 3] = Math.round(a / n);
+    }
+  }
+  return out;
+}
+
 const emit = (group, name, res) => {
-  const info = L.save(res.png, path.join(OUT, `${name}.png`));
+  const small = resize(res.png, DOWNSCALE);
+  const info = L.save(small, path.join(OUT, `${name}.png`));
   manifest[group][name.replace(/^(raton|owner)-/, '')] = {
     key: name,
     x: res.offset.x,
@@ -242,7 +286,6 @@ emit(
   'raton-core',
   layer(dog.mask, D, (x, y) => !earL(x, y) && !earR(x, y) && !paw(x, y, OVERLAP))
 );
-emit('raton', 'raton-full', layer(dog.mask, D));
 
 manifest.raton.eyes = findEyes(dog.mask, D, 110, 210, ([r, g, b]) => r > 110 && r > b * 1.7 && g > b);
 
@@ -261,7 +304,6 @@ emit('owner', 'owner-head', layer(man.mask, M, (_x, y) => y <= HEAD_Y));
 emit('owner', 'owner-torso', layer(man.mask, M, (_x, y) => y > HEAD_Y - OVERLAP_H && y <= LEG_Y));
 emit('owner', 'owner-leg-l', layer(man.mask, M, (x, y) => y > LEG_Y - OVERLAP_H && x >= LEG_X));
 emit('owner', 'owner-leg-r', layer(man.mask, M, (x, y) => y > LEG_Y - OVERLAP_H && x < LEG_X));
-emit('owner', 'owner-full', layer(man.mask, M));
 
 manifest.owner.eyes = findEyes(man.mask, M, 60, 180, ([r, g, b]) => r > 90 && r < 190 && r > b * 1.8 && g > b * 1.2);
 

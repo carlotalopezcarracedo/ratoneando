@@ -53,6 +53,9 @@ export class Layer extends Phaser.GameObjects.Container {
     const py = pivot?.y ?? spec.y + spec.h / 2;
     super(scene, px - anchor.x, py - anchor.y);
     this.img = scene.add.image(spec.x - px, spec.y - py, spec.key).setOrigin(0, 0);
+    // Los PNG se guardan reducidos para que pesen menos; se vuelven a su
+    // tamaño de ilustración para que el manifiesto siga cuadrando.
+    this.img.setDisplaySize(spec.w, spec.h);
     this.add(this.img);
   }
 }

@@ -33,6 +33,7 @@ const PROPS = [
 
 export class PreloadScene extends Phaser.Scene {
   private bar!: Phaser.GameObjects.Graphics;
+  private percent!: Phaser.GameObjects.Text;
   private earL!: Phaser.GameObjects.Graphics;
   private earR!: Phaser.GameObjects.Graphics;
   private jumpTo: LevelIndex | null = null;
@@ -121,11 +122,21 @@ export class PreloadScene extends Phaser.Scene {
       })
       .setOrigin(0.5);
 
+    this.percent = this.add
+      .text(cx, GAME_HEIGHT / 2 + 168, '0 %', {
+        fontFamily: FONT_UI,
+        fontSize: '15px',
+        color: css(PAL.amber),
+        fontStyle: '900'
+      })
+      .setOrigin(0.5);
+
     this.bar = this.add.graphics();
     this.drawBar(0);
   }
 
   private drawBar(v: number): void {
+    this.percent?.setText(`${Math.round(v * 100)} %`);
     const w = 420;
     const x = (GAME_WIDTH - w) / 2;
     const y = GAME_HEIGHT / 2 + 132;

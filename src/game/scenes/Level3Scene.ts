@@ -277,7 +277,11 @@ export class Level3Scene extends Phaser.Scene {
     const info = LEVELS[2];
     this.hud = new MissionHUD(this, info.code, info.title);
 
-    this.detectionBar = new ProgressBar(this, GAME_WIDTH - 340, GAME_HEIGHT - 62, {
+    // Con controles táctiles las barras se van arriba: abajo las tapan el
+    // joystick y los botones, que ocupan las dos esquinas inferiores.
+    const touch = needsTouch(this);
+
+    this.detectionBar = new ProgressBar(this, GAME_WIDTH - 340, touch ? 116 : GAME_HEIGHT - 62, {
       width: 300,
       label: 'NIVEL DE SOSPECHA',
       color: PAL.amber,
@@ -288,7 +292,7 @@ export class Level3Scene extends Phaser.Scene {
       .setScrollFactor(0)
       .setDepth(6000);
 
-    this.stealBar = new ProgressBar(this, GAME_WIDTH / 2 - 170, GAME_HEIGHT - 150, {
+    this.stealBar = new ProgressBar(this, GAME_WIDTH / 2 - 170, touch ? 178 : GAME_HEIGHT - 150, {
       width: 340,
       label: 'ROBO EN PROGRESO',
       color: PAL.ok,
@@ -313,9 +317,9 @@ export class Level3Scene extends Phaser.Scene {
       .setOrigin(0.5);
     this.stealthChip.add([chipBg, this.stealthLabel]);
 
-    this.hint = new Hint(this, 132);
+    this.hint = new Hint(this, touch ? 244 : 132);
 
-    if (needsTouch(this)) {
+    if (touch) {
       this.touch = new TouchControls(this, {
         stick: true,
         buttons: [
@@ -341,6 +345,11 @@ export class Level3Scene extends Phaser.Scene {
     kb.addCapture([K.SPACE, K.UP, K.DOWN, K.LEFT, K.RIGHT, K.E]);
     kb.on('keydown-M', () => Audio.toggleMute());
     kb.on('keydown-ESC', () => this.pauseGame());
+    // Reintento inmediato: en un juego de intentos cortos, volver al menú
+    // de pausa para repetir es un peaje innecesario.
+    kb.on('keydown-R', () => {
+      if (!this.finished) this.scene.restart();
+    });
     kb.on('keydown-P', () => this.pauseGame());
   }
 

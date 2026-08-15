@@ -195,7 +195,11 @@ export class Level1Scene extends Phaser.Scene {
     const info = LEVELS[0];
     this.hud = new MissionHUD(this, info.code, info.title);
 
-    this.needBar = new ProgressBar(this, 40, GAME_HEIGHT - 118, {
+    // Con controles táctiles las barras se van arriba: abajo las tapan el
+    // joystick y los botones, que ocupan las dos esquinas inferiores.
+    const touch = needsTouch(this);
+
+    this.needBar = new ProgressBar(this, 40, touch ? 116 : GAME_HEIGHT - 118, {
       width: 300,
       label: 'NECESIDAD DE LAMER',
       color: PAL.pop,
@@ -203,7 +207,7 @@ export class Level1Scene extends Phaser.Scene {
       warnAt: 0.8
     }).setScrollFactor(0).setDepth(6000);
 
-    this.lickBar = new ProgressBar(this, 40, GAME_HEIGHT - 62, {
+    this.lickBar = new ProgressBar(this, 40, touch ? 172 : GAME_HEIGHT - 62, {
       width: 300,
       label: 'PROGRESO DE LAMIDO',
       color: PAL.ok,
@@ -211,7 +215,7 @@ export class Level1Scene extends Phaser.Scene {
       warnAt: 2
     }).setScrollFactor(0).setDepth(6000);
 
-    this.suspicionBar = new ProgressBar(this, GAME_WIDTH - 340, GAME_HEIGHT - 62, {
+    this.suspicionBar = new ProgressBar(this, GAME_WIDTH - 340, touch ? 116 : GAME_HEIGHT - 62, {
       width: 300,
       label: 'MEDIDOR DE SOSPECHA',
       color: PAL.amber,
@@ -233,11 +237,14 @@ export class Level1Scene extends Phaser.Scene {
       .setOrigin(0.5);
     this.statusPanel.add([g, this.statusText]);
 
-    this.hint = new Hint(this, 128);
+    this.hint = new Hint(this, touch ? 240 : 128);
 
-    if (needsTouch(this)) {
+    if (touch) {
       this.touch = new TouchControls(this, {
         stick: false,
+        // Sin joystick, los botones van a la izquierda: a la derecha taparían
+        // a Ratón, que es justo lo que hay que mirar.
+        buttonSide: 'left',
         buttons: [
           { key: 'lick', label: 'LAMER', color: PAL.ok },
           { key: 'hide', label: 'DISIMULAR', color: PAL.pop }
@@ -255,6 +262,11 @@ export class Level1Scene extends Phaser.Scene {
     };
     kb.on('keydown-M', () => Audio.toggleMute());
     kb.on('keydown-ESC', () => this.pauseGame());
+    // Reintento inmediato: en un juego de intentos cortos, volver al menú
+    // de pausa para repetir es un peaje innecesario.
+    kb.on('keydown-R', () => {
+      if (!this.finished) this.scene.restart();
+    });
     kb.on('keydown-P', () => this.pauseGame());
     this.input.keyboard?.addCapture([Phaser.Input.Keyboard.KeyCodes.SPACE]);
   }
@@ -317,15 +329,15 @@ export class Level1Scene extends Phaser.Scene {
       case 'phone': {
         const roll = Math.random();
         if (roll < 0.62) this.setOwnerState('turning', rand(0.85, 1.05) - i * 0.35);
-        else if (roll < 0.82) this.setOwnerState('phone', rand(2.2, 3.4));
+        else if (roll < 0.82) this.setOwnerState('phone', rand(1.6, 2.6));
         else this.setOwnerState('stretch', rand(2.2, 3.0));
         break;
       }
       case 'turning':
-        this.setOwnerState('watch', rand(1.5, 2.4) + i * 0.6);
+        this.setOwnerState('watch', rand(1.2, 1.9) + i * 0.5);
         break;
       case 'watch':
-        this.setOwnerState(Math.random() < 0.6 ? 'work' : 'phone', rand(2.4, 4.2) - i * 1.1);
+        this.setOwnerState(Math.random() < 0.6 ? 'work' : 'phone', rand(1.8, 3.2) - i * 0.8);
         break;
       default:
         this.setOwnerState('work', rand(2.4, 3.8) - i * 0.9);
@@ -477,7 +489,7 @@ export class Level1Scene extends Phaser.Scene {
     }
 
     if (this.raton.isLicking) {
-      this.lick = clamp(this.lick + dt * 0.155, 0, 1);
+      this.lick = clamp(this.lick + dt * 0.24, 0, 1);
       this.need = clamp(this.need - dt * 0.34, 0, 1);
       this.segment += dt;
       if (this.ownerState === 'turning') this.suspicion = clamp(this.suspicion + dt * 0.07, 0, 1);
@@ -699,7 +711,7 @@ export class Level1Scene extends Phaser.Scene {
       this.raton.celebrate();
     });
 
-    const speedBonus = Math.round(clamp((70 - this.elapsed) / 50, 0, 1) * CHAOS.SPEED_BONUS_MAX);
+    const speedBonus = Math.round(clamp((50 - this.elapsed) / 38, 0, 1) * CHAOS.SPEED_BONUS_MAX);
     const stealthBonus = Math.max(0, 3 - this.caughtCount) * 100;
     Run.addChaos(CHAOS.MISSION_COMPLETE, 1);
     if (speedBonus > 0) Run.addChaos(speedBonus, 1);

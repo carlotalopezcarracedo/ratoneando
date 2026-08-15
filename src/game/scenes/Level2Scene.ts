@@ -38,8 +38,9 @@ interface Lane {
 const WORLD_H = 2100;
 const LANE_H = 104;
 const SAFE_H = 120;
-const SPEED = 214;
-const GOAL_Y = 680;
+const SPEED = 232;
+/** Borde superior de la acera de llegada; lo fija buildWorld según los carriles. */
+const GOAL_FALLBACK = 768;
 
 export class Level2Scene extends Phaser.Scene {
   private raton!: Raton;
@@ -71,6 +72,7 @@ export class Level2Scene extends Phaser.Scene {
   private taughtMove = false;
   private taughtBark = false;
   private nearMisses = new Set<Bicycle>();
+  private goalTop = GOAL_FALLBACK;
   private advanceMark = WORLD_H;
   private laneCombo = 0;
   private lastAdvanceAt = 0;
@@ -125,6 +127,7 @@ export class Level2Scene extends Phaser.Scene {
     this.taughtMove = false;
     this.taughtBark = false;
     this.nearMisses = new Set();
+    this.goalTop = GOAL_FALLBACK;
     this.advanceMark = WORLD_H;
     this.laneCombo = 0;
     this.lastAdvanceAt = 0;
@@ -143,12 +146,13 @@ export class Level2Scene extends Phaser.Scene {
       y -= h;
     };
 
+    // Ocho carriles en vez de diez: la travesía se hacía larga y repetitiva.
     push('safe', SAFE_H);
     for (let i = 0; i < 3; i++) push('lane', LANE_H);
     push('safe', SAFE_H);
-    for (let i = 0; i < 3; i++) push('lane', LANE_H);
+    for (let i = 0; i < 2; i++) push('lane', LANE_H);
     push('safe', SAFE_H);
-    for (let i = 0; i < 4; i++) push('lane', LANE_H);
+    for (let i = 0; i < 3; i++) push('lane', LANE_H);
     push('goal', 140);
 
     const roadTop = bands[bands.length - 1].bottom;
@@ -167,7 +171,7 @@ export class Level2Scene extends Phaser.Scene {
         for (let mx = 20; mx < GAME_WIDTH; mx += 130) g.fillRect(mx, band.top + h / 2 - 3, 68, 6);
 
         const dir: -1 | 1 = laneIndex % 2 === 0 ? 1 : -1;
-        const difficulty = laneIndex / 9;
+        const difficulty = laneIndex / 7;
         this.lanes.push({
           y: band.top + h / 2 + 26,
           dir,
@@ -178,6 +182,7 @@ export class Level2Scene extends Phaser.Scene {
         laneIndex++;
       } else {
         const isGoal = band.type === 'goal';
+        if (isGoal) this.goalTop = band.top;
         g.fillStyle(isGoal ? PAL.greenDark : PAL.creamDim, 1);
         g.fillRect(0, band.top, GAME_WIDTH, h);
         g.fillStyle(isGoal ? PAL.green : PAL.cream, 1);
@@ -206,14 +211,14 @@ export class Level2Scene extends Phaser.Scene {
       g.fillRect(0, bottom - 2, GAME_WIDTH, 8);
     });
 
-    // Decoración.
+    // Decoración (después de recorrer las bandas: ya se conoce this.goalTop).
     this.add.existing(makeBench(this, 220, WORLD_H - 34)).setDepth(2);
     this.add.existing(makeBench(this, 1060, WORLD_H - 34)).setDepth(2);
-    this.add.existing(makeBench(this, 640, GOAL_Y - 46)).setDepth(2);
+    this.add.existing(makeBench(this, 640, this.goalTop + 84)).setDepth(2);
 
     for (let i = 0; i < 16; i++) {
       const leaf = this.add
-        .ellipse(rand(0, GAME_WIDTH), rand(GOAL_Y, WORLD_H), rand(7, 13), rand(4, 8), PAL.amber, 0.8)
+        .ellipse(rand(0, GAME_WIDTH), rand(this.goalTop, WORLD_H), rand(7, 13), rand(4, 8), PAL.amber, 0.8)
         .setDepth(70)
         .setAngle(rand(0, 360));
       this.leaves.push(leaf);
@@ -234,7 +239,7 @@ export class Level2Scene extends Phaser.Scene {
     // Peatones decorativos en las aceras.
     const spots: Array<[number, number, -1 | 1]> = [
       [200, WORLD_H - 74, 1],
-      [980, GOAL_Y - 40, -1]
+      [980, this.goalTop + 90, -1]
     ];
     spots.forEach(([x, y, dir]) => {
       const p = new Human(this, x, y, {
@@ -260,7 +265,11 @@ export class Level2Scene extends Phaser.Scene {
     const info = LEVELS[1];
     this.hud = new MissionHUD(this, info.code, info.title);
 
-    this.panicBar = new ProgressBar(this, 40, GAME_HEIGHT - 62, {
+    // Con controles táctiles las barras se van arriba: abajo las tapan el
+    // joystick y los botones, que ocupan las dos esquinas inferiores.
+    const touch = needsTouch(this);
+
+    this.panicBar = new ProgressBar(this, 40, touch ? 116 : GAME_HEIGHT - 62, {
       width: 280,
       label: 'MEDIDOR DE PÁNICO',
       color: PAL.pop,
@@ -270,7 +279,7 @@ export class Level2Scene extends Phaser.Scene {
       .setScrollFactor(0)
       .setDepth(6000);
 
-    this.chaosBar = new ProgressBar(this, GAME_WIDTH - 320, GAME_HEIGHT - 62, {
+    this.chaosBar = new ProgressBar(this, GAME_WIDTH - 320, touch ? 178 : GAME_HEIGHT - 62, {
       width: 280,
       label: 'MEDIDOR DE CAOS (LADRIDOS)',
       color: PAL.amber,
@@ -297,9 +306,9 @@ export class Level2Scene extends Phaser.Scene {
       this.lifeIcons.push(icon);
     }
 
-    this.hint = new Hint(this, 132);
+    this.hint = new Hint(this, touch ? 244 : 132);
 
-    if (needsTouch(this)) {
+    if (touch) {
       this.touch = new TouchControls(this, {
         stick: true,
         buttons: [{ key: 'bark', label: '¡GUAU!', color: PAL.danger }]
@@ -321,6 +330,11 @@ export class Level2Scene extends Phaser.Scene {
     kb.addCapture([K.SPACE, K.UP, K.DOWN, K.LEFT, K.RIGHT]);
     kb.on('keydown-M', () => Audio.toggleMute());
     kb.on('keydown-ESC', () => this.pauseGame());
+    // Reintento inmediato: en un juego de intentos cortos, volver al menú
+    // de pausa para repetir es un peaje innecesario.
+    kb.on('keydown-R', () => {
+      if (!this.finished) this.scene.restart();
+    });
     kb.on('keydown-P', () => this.pauseGame());
   }
 
@@ -371,7 +385,7 @@ export class Level2Scene extends Phaser.Scene {
       leaf.y += 26 * dt;
       leaf.angle += 46 * dt;
       if (leaf.y > WORLD_H) {
-        leaf.y = GOAL_Y - 40;
+        leaf.y = this.goalTop;
         leaf.x = rand(0, GAME_WIDTH);
       }
     });
@@ -484,7 +498,7 @@ export class Level2Scene extends Phaser.Scene {
 
     const speed = SPEED * (Save.data.ratonMode ? 1.1 : 1);
     this.raton.x = clamp(this.raton.x + dx * speed * dt, 60, GAME_WIDTH - 60);
-    this.raton.y = clamp(this.raton.y + dy * speed * dt, GOAL_Y - 90, WORLD_H - 40);
+    this.raton.y = clamp(this.raton.y + dy * speed * dt, this.goalTop + 40, WORLD_H - 40);
     this.raton.setDepth(Math.round(this.raton.y) + 6);
     this.raton.setMotion(Math.min(1, Math.hypot(dx, dy)));
 
@@ -707,7 +721,7 @@ export class Level2Scene extends Phaser.Scene {
       }
     });
 
-    if (y <= GOAL_Y - 40) this.win();
+    if (y <= this.goalTop + 76) this.win();
   }
 
   // ---------------------------------------------------------------- desenlace
@@ -811,7 +825,7 @@ export class Level2Scene extends Phaser.Scene {
         title: 'DEMASIADAS RUEDAS',
         subtitle: 'Ratón se retira a una distancia prudencial. Estratégicamente.',
         notes: [
-          `Distancia recorrida: ${Math.round(((WORLD_H - this.bestY) / (WORLD_H - GOAL_Y)) * 100)}%`,
+          `Distancia recorrida: ${Math.round(clamp((WORLD_H - this.bestY) / (WORLD_H - this.goalTop), 0, 1) * 100)}%`,
           'Las bicicletas siguen ahí fuera.'
         ]
       });

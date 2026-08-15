@@ -12,6 +12,8 @@ export interface TouchButtonSpec {
 export interface TouchControlsOptions {
   stick?: boolean;
   buttons?: TouchButtonSpec[];
+  /** Esquina donde van los botones. A la izquierda sólo si no hay joystick. */
+  buttonSide?: 'left' | 'right';
 }
 
 /** ¿Merece la pena mostrar controles táctiles? */
@@ -37,7 +39,8 @@ export class TouchControls extends Phaser.GameObjects.Container {
     scene.input.addPointer(3);
 
     if (opts.stick !== false) this.buildStick(scene);
-    (opts.buttons ?? []).forEach((spec, i) => this.buildButton(scene, spec, i));
+    const side = opts.buttonSide ?? 'right';
+    (opts.buttons ?? []).forEach((spec, i) => this.buildButton(scene, spec, i, side));
 
     scene.input.on(Phaser.Input.Events.POINTER_DOWN, this.onPointerDown, this);
     scene.input.on(Phaser.Input.Events.POINTER_MOVE, this.onPointerMove, this);
@@ -52,37 +55,53 @@ export class TouchControls extends Phaser.GameObjects.Container {
   }
 
   private buildStick(scene: Phaser.Scene): void {
-    this.stickBase = scene.add.circle(this.stickHome.x, this.stickHome.y, 76, PAL.ink, 0.28);
-    this.stickBase.setStrokeStyle(4, PAL.cream, 0.45);
-    this.stickKnob = scene.add.circle(this.stickHome.x, this.stickHome.y, 38, PAL.cream, 0.55);
-    this.stickKnob.setStrokeStyle(3, PAL.ink, 0.6);
-    this.add([this.stickBase, this.stickKnob]);
+    // Siempre visible: si el joystick sólo aparece al tocar, no se sabe que
+    // está ahí. Además marca las cuatro direcciones.
+    this.stickBase = scene.add.circle(this.stickHome.x, this.stickHome.y, 92, PAL.ink, 0.3);
+    this.stickBase.setStrokeStyle(5, PAL.cream, 0.5);
+    const cross = scene.add.graphics();
+    cross.lineStyle(4, PAL.cream, 0.28);
+    cross.lineBetween(this.stickHome.x - 52, this.stickHome.y, this.stickHome.x + 52, this.stickHome.y);
+    cross.lineBetween(this.stickHome.x, this.stickHome.y - 52, this.stickHome.x, this.stickHome.y + 52);
+    this.stickKnob = scene.add.circle(this.stickHome.x, this.stickHome.y, 46, PAL.cream, 0.62);
+    this.stickKnob.setStrokeStyle(4, PAL.ink, 0.65);
+    this.add([this.stickBase, cross, this.stickKnob]);
   }
 
-  private buildButton(scene: Phaser.Scene, spec: TouchButtonSpec, index: number): void {
-    const x = GAME_WIDTH - 120 - (index % 2) * 168;
-    const y = GAME_HEIGHT - 130 - Math.floor(index / 2) * 150;
-    const circle = scene.add.circle(x, y, 62, spec.color ?? PAL.danger, 0.72);
-    circle.setStrokeStyle(4, PAL.cream, 0.75);
+  private buildButton(
+    scene: Phaser.Scene,
+    spec: TouchButtonSpec,
+    index: number,
+    side: 'left' | 'right'
+  ): void {
+    // Botones grandes y separados: en un móvil el dedo tapa el botón entero.
+    const x =
+      side === 'left' ? 128 + (index % 2) * 190 : GAME_WIDTH - 128 - (index % 2) * 190;
+    const y = GAME_HEIGHT - 132 - Math.floor(index / 2) * 168;
+    const circle = scene.add.circle(x, y, 78, spec.color ?? PAL.danger, 0.78);
+    circle.setStrokeStyle(5, PAL.cream, 0.8);
     const label = scene.add
       .text(x, y, spec.label, {
         fontFamily: FONT_TITLE,
-        fontSize: '22px',
+        fontSize: '25px',
         color: css(PAL.cream),
         fontStyle: '800',
         align: 'center'
       })
       .setOrigin(0.5);
 
-    circle.setInteractive({ useHandCursor: true });
+    // Zona táctil algo mayor que el círculo dibujado: perdona el dedo torpe.
+    circle.setInteractive(new Phaser.Geom.Circle(0, 0, 96), Phaser.Geom.Circle.Contains);
     circle.on('pointerdown', () => {
       this.held.add(spec.key);
       this.pressedThisFrame.add(spec.key);
       circle.setScale(0.9);
+      label.setScale(0.9);
     });
     const release = (): void => {
       this.held.delete(spec.key);
       circle.setScale(1);
+      label.setScale(1);
     };
     circle.on('pointerup', release);
     circle.on('pointerout', release);
@@ -94,11 +113,7 @@ export class TouchControls extends Phaser.GameObjects.Container {
     if (!this.stickBase || this.stickPointerId !== -1) return;
     if (pointer.x > GAME_WIDTH * 0.48) return;
     this.stickPointerId = pointer.id;
-    this.stickHome.set(
-      clamp(pointer.x, 110, GAME_WIDTH * 0.45),
-      clamp(pointer.y, 220, GAME_HEIGHT - 90)
-    );
-    this.stickBase.setPosition(this.stickHome.x, this.stickHome.y);
+    // La base no se mueve: es una referencia fija y predecible.
     this.onPointerMove(pointer);
   }
 
@@ -107,7 +122,7 @@ export class TouchControls extends Phaser.GameObjects.Container {
     const dx = pointer.x - this.stickHome.x;
     const dy = pointer.y - this.stickHome.y;
     const len = Math.hypot(dx, dy);
-    const max = 76;
+    const max = 92;
     const k = len > max ? max / len : 1;
     this.stickKnob.setPosition(this.stickHome.x + dx * k, this.stickHome.y + dy * k);
     this.vec.set(clamp(dx / max, -1, 1), clamp(dy / max, -1, 1));
